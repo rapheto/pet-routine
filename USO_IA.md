@@ -74,3 +74,56 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Tipo de contribuição da IA:** Refatoração de estilos (Regra 3), feedback visual (Regra 6), memoização de `renderItem` (Regra 7) e distinção de estado vazio (Regra 8)
 - **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael, testado no simulador.
 
+## Registro da atividade 0002
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: instalação das dependências
+do app com Expo Router, ícones, câmera/galeria, notificações, gestos/animacões e
+persistência local.
+
+A ferramenta foi utilizada com a finalidade de **preparar o ambiente do projeto**,
+durante a etapa **configuração inicial de dependências**, para realizar a seguinte
+contribuição: **execução dos comandos `npx expo install` e ajuste do registro
+`react-dom` para a versão compatível com o SDK 57**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `package.json`, `package-lock.json`, `app.json`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Instalação via `npx expo install` de expo-router, ícones, image-picker, notifications, gesture-handler, reanimated, worklets, async-storage, sqlite e secure-store; `react-dom` fixado em 19.2.3.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Instalar e validar as dependências do projeto
+- **Etapa da atividade:** Configuração inicial de dependências
+- **Tipo de contribuição da IA:** Execução de comandos de instalação e correção de conflito de peer dependency
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e validação no simulador por Raphael
+
+## Registro da atividade 0003
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: instalação das dependências
+complementares `@expo/ui`, `expo-updates` e `zustand`.
+
+A ferramenta foi utilizada com a finalidade de **completar o conjunto de
+dependências do projeto**, durante a etapa **configuração inicial de dependências**,
+para realizar a seguinte contribuição: **execução de `npx expo install` e
+`npm install`, com verificação de tipagem ao final**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `package.json`, `package-lock.json`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Instalação de `@expo/ui` (~57.0.26) e `expo-updates` (~57.0.27) via `npx expo install` e de `zustand` (^5.1.0) via `npm install`, usando o registro público; `tsc --noEmit` passou.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Instalar as dependências complementares e validar a tipagem
+- **Etapa da atividade:** Configuração inicial de dependências
+- **Tipo de contribuição da IA:** Execução de comandos de instalação e verificação de tipagem
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e validação no simulador por Raphael
+
