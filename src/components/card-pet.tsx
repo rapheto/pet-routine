@@ -8,10 +8,9 @@
 // Mostra: nome, espécie + status do passeio (um em cada ponta), idade.
 // Oferece uma ação "Registrar passeio".
 //
-// Componentes permitidos: View, Text (dos 7 da aula).
-//   Ação de toque via onPress do Text, não Touchable*.
+// Ação de toque via onPress, com feedback visual no estado `pressed`.
 // ============================================================
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 
 import { type Pet, rotuloEspecie, rotuloStatusPasseio } from '../types/pet';
@@ -27,6 +26,7 @@ type CardPetProps = {
   aoRegistrarPasseio: () => void;
 };
 
+// Updated by AI.
 export function CardPet({ /* TODO P2.12: desestruture as props */ pet, aoRegistrarPasseio }: CardPetProps) {
   return (
     <Card>
@@ -67,24 +67,29 @@ export function CardPet({ /* TODO P2.12: desestruture as props */ pet, aoRegistr
             Texto: "Registrar passeio".
             A ação vem das props — o card não sabe O QUE fazer,
             só avisa que o toque aconteceu. */}
-      <Text style={styles.botao} onPress={aoRegistrarPasseio}>Registrar passeio</Text>
+      <Pressable
+        onPress={aoRegistrarPasseio}
+        accessibilityRole="button"
+        style={({ pressed }) => [pressed && styles.pressionado]}
+      >
+        <Text style={styles.textoBotao}>Registrar passeio</Text>
+      </Pressable>
     </Card>
   );
 }
 
+// Updated by AI.
 const styles = StyleSheet.create({
   linha: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    // TODO P2.17: use espaco para o marginTop
-    marginTop: espaco.sm,
   },
-  botao: {
-    // TODO P2.18: marginTop, fontWeight e color — tudo dos tokens.
-    //   Dica: a cor do botão pode ser cores.primaria.
-    marginTop: espaco.md,
+  textoBotao: {
     fontWeight: 'bold',
     color: cores.primaria,
+  },
+  pressionado: {
+    opacity: 0.7,
   },
   miniatura: {
     width: '100%',

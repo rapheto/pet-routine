@@ -13,14 +13,23 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import { cores, espaco, tipografia } from '../theme';
 
+// Updated by AI.
 type ListaVaziaProps = {
   termoBusca?: string;
+  temPets?: boolean;
 };
 
-export function ListaVazia({ termoBusca = '' }: ListaVaziaProps) {
-  const texto = termoBusca.trim()
-    ? `Nenhum pet encontrado para "${termoBusca.trim()}".`
-    : 'Nenhum pet cadastrado. Que tal adicionar um?';
+// Updated by AI.
+export function ListaVazia({ termoBusca = '', temPets = false }: ListaVaziaProps) {
+  const termo = termoBusca.trim();
+  let texto: string;
+  if (!temPets) {
+    texto = 'Nenhum pet cadastrado. Que tal adicionar um?';
+  } else if (termo) {
+    texto = `Nenhum pet encontrado para "${termo}".`;
+  } else {
+    texto = 'Nenhum pet para exibir no momento.';
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.texto}>{texto}</Text>

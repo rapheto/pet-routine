@@ -35,6 +35,7 @@ type TelaRegistroProps = {
   onCancelar: () => void;
 };
 
+// Updated by AI.
 export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
   const [local, setLocal] = useState<Pet['local'] | null>(null);
   const [fotoUri, setFotoUri] = useState<string | null>(null);
@@ -121,10 +122,16 @@ export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
       <View style={styles.tela}>
         <CameraView ref={setCameraRef} style={styles.camera} facing="back" />
         <View style={styles.acoes}>
-          <Pressable onPress={tirarFoto} style={styles.botaoAcao}>
+          <Pressable
+            onPress={tirarFoto}
+            style={({ pressed }) => [styles.botaoAcao, pressed && styles.pressionado]}
+          >
             <Text style={styles.textoBotao}>Tirar foto</Text>
           </Pressable>
-          <Pressable onPress={() => setMostrarCamera(false)} style={styles.botaoCancelar}>
+          <Pressable
+            onPress={() => setMostrarCamera(false)}
+            style={({ pressed }) => [styles.botaoCancelar, pressed && styles.pressionado]}
+          >
             <Text style={styles.textoBotao}>Cancelar</Text>
           </Pressable>
         </View>
@@ -150,7 +157,10 @@ export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
           </Text>
         </View>
       ) : (
-        <Pressable onPress={obterLocalizacao} style={styles.botaoAcao}>
+        <Pressable
+          onPress={obterLocalizacao}
+          style={({ pressed }) => [styles.botaoAcao, pressed && styles.pressionado]}
+        >
           <Text style={styles.textoBotao}>Obter localização</Text>
         </Pressable>
       )}
@@ -163,17 +173,26 @@ export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
           contentFit="cover"
         />
       ) : (
-        <Pressable onPress={abrirCamera} style={styles.botaoAcao}>
+        <Pressable
+          onPress={abrirCamera}
+          style={({ pressed }) => [styles.botaoAcao, pressed && styles.pressionado]}
+        >
           <Text style={styles.textoBotao}>Tirar foto</Text>
         </Pressable>
       )}
 
       {/* Ações */}
       <View style={styles.acoes}>
-        <Pressable onPress={salvar} style={styles.botaoAcao}>
+        <Pressable
+          onPress={salvar}
+          style={({ pressed }) => [styles.botaoAcao, pressed && styles.pressionado]}
+        >
           <Text style={styles.textoBotao}>Salvar</Text>
         </Pressable>
-        <Pressable onPress={onCancelar} style={styles.botaoCancelar}>
+        <Pressable
+          onPress={onCancelar}
+          style={({ pressed }) => [styles.botaoCancelar, pressed && styles.pressionado]}
+        >
           <Text style={styles.textoBotao}>Cancelar</Text>
         </Pressable>
       </View>
@@ -181,6 +200,7 @@ export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
   );
 }
 
+// Updated by AI.
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
@@ -193,6 +213,7 @@ const styles = StyleSheet.create({
   secao: { gap: espaco.sm },
   camera: { flex: 1, borderRadius: espaco.sm },
   previa: { width: '100%', height: 200, borderRadius: espaco.sm },
+  pressionado: { opacity: 0.7 },
   botaoAcao: {
     backgroundColor: cores.primaria,
     padding: espaco.md,

@@ -14,7 +14,7 @@
 //   • Agrupamento e filtro moram em src/lib/, não aqui
 //   • Sem useEffect para sensores (cleanup é assunto da Aula 6)
 // ============================================================
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import type { Pet } from './src/types/pet';
@@ -25,13 +25,15 @@ import { ListaVazia } from './src/components/lista-vazia';
 import { TelaRegistro } from './src/screens/tela-registro';
 import { cores, espaco, tipografia } from './src/theme';
 
+// Updated by AI.
 export default function App() {
   const [pets, setPets] = useState<Pet[]>(PETS);
   const [busca, setBusca] = useState('');
   const [atualizando, setAtualizando] = useState(false);
   const [petRegistrando, setPetRegistrando] = useState<string | null>(null);
 
-  function alternarStatus(id: string) {
+  // Updated by AI.
+  const alternarStatus = useCallback((id: string) => {
     setPets((anteriores) =>
       anteriores.map((pet) =>
         pet.id === id
@@ -39,11 +41,12 @@ export default function App() {
           : pet,
       ),
     );
-  }
+  }, []);
 
-  function removerPet(id: string) {
+  // Updated by AI.
+  const removerPet = useCallback((id: string) => {
     setPets((anteriores) => anteriores.filter((pet) => pet.id !== id));
-  }
+  }, []);
 
   async function recarregar() {
     setAtualizando(true);
@@ -62,6 +65,19 @@ export default function App() {
     );
     setPetRegistrando(null);
   }
+
+  // Created by AI.
+  const renderItem = useCallback(
+    ({ item }: { item: Pet }) => (
+      <ItemPet
+        pet={item}
+        onAlternar={alternarStatus}
+        onRemover={removerPet}
+        onRegistrar={setPetRegistrando}
+      />
+    ),
+    [alternarStatus, removerPet],
+  );
 
   const petAlvo = pets.find((pet) => pet.id === petRegistrando);
   if (petAlvo) {
@@ -82,19 +98,12 @@ export default function App() {
       <SectionList<Pet, Secao>
         sections={secoes}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ItemPet
-            pet={item}
-            onAlternar={alternarStatus}
-            onRemover={removerPet}
-            onRegistrar={setPetRegistrando}
-          />
-        )}
+        renderItem={renderItem}
         renderSectionHeader={({ section }) => (
           <Text style={styles.cabecalhoSecao}>{section.title}</Text>
         )}
         stickySectionHeadersEnabled
-        ListEmptyComponent={<ListaVazia termoBusca={busca} />}
+        ListEmptyComponent={<ListaVazia termoBusca={busca} temPets={pets.length > 0} />}
         refreshing={atualizando}
         onRefresh={recarregar}
         ListHeaderComponent={
