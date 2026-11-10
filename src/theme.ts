@@ -11,25 +11,59 @@
 //
 // ⚠️  Preencha este arquivo PRIMEIRO — os demais dependem dele.
 // ============================================================
+import type { TextStyle } from 'react-native';
 
-export const cores = {
+// ============================================================
+// Etapa 3 — Paletas Claro/Escuro
+// As duas paletas têm EXATAMENTE as mesmas chaves. Quem consome os
+// tokens usa `PaletaCores` e nunca um objeto de cor concreto, então
+// trocar de tema não muda a estrutura dos componentes.
+// ============================================================
+// Created by AI.
+export type PaletaCores = {
+  fundo: string;
+  cartao: string;
+  texto: string;
+  textoFraco: string;
+  primaria: string;
+  sucesso: string;
+  erro: string;
+  sobreposicao: string;
+  destaqueSuave: string;
+  // Cor de texto sobre a cor primária/sucesso/erro (botões cheios).
+  sobrePrimaria: string;
+};
+
+// Updated by AI.
+export const paletaClara: PaletaCores = {
   fundo: '#FEF7EE',
   cartao: '#FFFFFF',
-  // TODO P2.1: complete com pelo menos mais cinco tokens de cor:
-  //   texto, textoFraco, primaria, sucesso, erro.
-  //   Escolha cores que façam sentido para um app de pets.
-  //   Exemplo: primaria poderia ser um laranja acolhedor.
   texto: '#333333',
   textoFraco: '#777777',
   primaria: '#FF8C00',
   sucesso: '#4CAF50',
   erro: '#F44336',
-} as const;
+  sobreposicao: 'rgba(0, 0, 0, 0.45)',
+  destaqueSuave: '#FDE7CC',
+  sobrePrimaria: '#FFFFFF',
+};
 
+// Created by AI.
+export const paletaEscura: PaletaCores = {
+  fundo: '#121212',
+  cartao: '#1F1F1F',
+  texto: '#F4F4F4',
+  textoFraco: '#A6A6A6',
+  primaria: '#FFA94D',
+  sucesso: '#66BB6A',
+  erro: '#EF5350',
+  sobreposicao: 'rgba(0, 0, 0, 0.65)',
+  destaqueSuave: '#3D2C18',
+  sobrePrimaria: '#1A1A1A',
+};
+
+// Updated by AI.
 export const espaco = {
-  // TODO P2.2: escala de no mínimo 4 degraus (xs, sm, md, lg).
-  //   Escolha uma progressão consistente — 4/8/16/24 é um bom default.
-  //   Exemplo: xs: 4, sm: 8, md: 16, lg: 24
   xs: 4,
   sm: 8,
   md: 16,
@@ -37,18 +71,26 @@ export const espaco = {
   xl: 32,
 } as const;
 
-export const tipografia = {
-  // TODO P2.3: titulo, corpo, legenda. Cada um é um objeto de estilo
-  //   de TEXTO (fontSize, fontWeight, color).
-  //   A legenda pode reaproveitar `cores.textoFraco`.
-  //   Não inclua layout (margin, padding) — isso é decisão do componente.
-  //
-  //   Exemplo de formato:
-  //   titulo: { fontSize: 20, fontWeight: '600' as const, color: cores.texto },
-  titulo: { fontSize: 24, fontWeight: '600' as const, color: '#333333' },
-  corpo: { fontSize: 16, fontWeight: '400' as const, color: '#333333' },
-  legenda: { fontSize: 12, fontWeight: '400' as const, color: '#777777' },
-} as const;
+// ============================================================
+// Etapa 3 — Tipografia derivada da paleta ativa
+// Antes os estilos de texto traziam a cor fixa clara; agora a cor
+// vem da paleta recebida, então o texto acompanha o tema.
+// ============================================================
+// Created by AI.
+export type TipografiaTema = {
+  titulo: TextStyle;
+  corpo: TextStyle;
+  legenda: TextStyle;
+};
+
+// Created by AI.
+export function criarTipografia(cores: PaletaCores): TipografiaTema {
+  return {
+    titulo: { fontSize: 24, fontWeight: '600', color: cores.texto },
+    corpo: { fontSize: 16, fontWeight: '400', color: cores.texto },
+    legenda: { fontSize: 12, fontWeight: '400', color: cores.textoFraco },
+  };
+}
 
 // TODO P2.4: por que este arquivo usa `as const` e o StyleSheet.create
 //   do componente NÃO usa? Responda em um comentário de uma linha aqui.

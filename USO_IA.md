@@ -156,3 +156,63 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Tipo de contribuição da IA:** Criação de rotas e layout com Expo Router, implementação do fluxo de foto com `expo-image-picker`, migração de tela e ajustes de configuração
 - **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
 
+## Registro da atividade 0005
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: implementação da Etapa 2 do
+Mini-Projeto — abas, rota dinâmica do pet e notificações locais.
+
+A ferramenta foi utilizada com a finalidade de **estruturar a navegação e os
+lembretes**, durante a etapa **Etapa 2 (Aula 7) do Mini-Projeto**, para realizar a
+seguinte contribuição: **criação de `src/app/(tabs)/_layout.tsx`,
+`src/app/(tabs)/index.tsx`, `src/app/(tabs)/stats.tsx` e `src/app/pet/[id].tsx`,
+store global em memória (`src/store/use-pet-store.ts`), modal de cadastro
+(`src/components/formulario-pet.tsx`), telas de estatísticas e de detalhe, e
+serviço de notificações locais com cleanup dos listeners**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `src/app/_layout.tsx`, `src/app/index.tsx` (removido), `src/app/(tabs)/_layout.tsx`, `src/app/(tabs)/index.tsx`, `src/app/(tabs)/stats.tsx`, `src/app/pet/[id].tsx`, `src/app/foto-do-pet.tsx`, `src/store/use-pet-store.ts`, `src/services/notifications.ts`, `src/components/formulario-pet.tsx`, `src/components/card-pet.tsx`, `src/components/item-pet.tsx`, `src/screens/tela-pets.tsx`, `src/screens/tela-estatisticas.tsx`, `src/screens/tela-pet-detalhe.tsx`, `src/screens/tela-registro.tsx`, `src/theme.ts`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Abas Meus Pets/Estatísticas, detalhe `/pet/[id]` com sensores, lembrete de 5s via expo-notifications com listeners limpos, store global em memória e modal de cadastro de pet.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Implementar a Etapa 2 do Mini-Projeto (abas, rota dinâmica e notificações)
+- **Etapa da atividade:** Etapa 2 (Aula 7) do Mini-Projeto
+- **Tipo de contribuição da IA:** Estrutura de navegação com Tabs e rota dinâmica, store Zustand em memória, componentes de UI e serviço de notificações locais
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+
+
+## Registro da atividade 0006
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: implementação da Etapa 3 do
+Mini-Projeto — contexto de tema, cronômetro de passeio e histórico local em
+SQLite.
+
+A ferramenta foi utilizada com a finalidade de **eliminar estados isolados e
+adicionar persistência local**, durante a etapa **Etapa 3 (Aula 8) do
+Mini-Projeto**, para realizar a seguinte contribuição: **criação de
+`src/context/theme-context.tsx` com `ThemeProvider` e `useTheme` persistidos no
+`AsyncStorage`, paletas claro/escuro em `src/theme.ts`, aplicação do tema em
+todas as telas e layouts, `src/components/walk-timer.tsx` com `useEffect` e
+`clearInterval` no cleanup, `src/services/passeio-db.ts` com a tabela
+`passeio_logs` e a listagem do histórico na tela `/pet/[id]`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `src/theme.ts`, `src/context/theme-context.tsx` (novo), `src/components/walk-timer.tsx` (novo), `src/services/passeio-db.ts` (novo), `src/lib/duracao.ts` (novo), `src/app/_layout.tsx`, `src/app/(tabs)/_layout.tsx`, `src/app/foto-do-pet.tsx`, `src/app/sobre.tsx`, `src/components/card.tsx`, `src/components/card-pet.tsx`, `src/components/formulario-pet.tsx`, `src/components/lista-vazia.tsx`, `src/screens/tela-pets.tsx`, `src/screens/tela-estatisticas.tsx`, `src/screens/tela-pet-detalhe.tsx`, `src/screens/tela-registro.tsx`, `src/screens/pet-form.tsx`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Tema claro/escuro persistido no AsyncStorage e aplicado nas telas, cronômetro de passeio com cleanup no `useEffect` e histórico de sessões salvo e lido do SQLite local (`passeio_logs`).
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Implementar a Etapa 3 do Mini-Projeto (contexto de tema, cronômetro e persistência local)
+- **Etapa da atividade:** Etapa 3 (Aula 8) do Mini-Projeto
+- **Tipo de contribuição da IA:** Criação do contexto de tema com persistência, refatoração dos estilos para consumir a paleta ativa, componente de cronômetro com cleanup e serviço de histórico em `expo-sqlite`
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael

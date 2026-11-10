@@ -1,71 +1,56 @@
 // Created by AI.
 
 // ============================================================
-// Etapa 1 — Tela de lista de pets (movida de App.tsx)
+// Tela de lista de pets (aba "Meus Pets")
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Na Prática 3 esta tela vivia dentro de App.tsx e trocava de tela
-// com um useState condicional. Agora ela é uma TELA de verdade e a
-// navegação é assunto do Expo Router (Regra 17: `router.push` dentro
-// de funções, `Link` no JSX).
+// Etapa 1: saiu de App.tsx e virou tela; a navegação é do Expo Router.
+// Etapa 2: o estado vem da store global e o toque no card abre
+// `/pet/[id]`. O cadastro rápido acontece em um modal.
+// Etapa 3: as cores acompanham o tema Claro/Escuro (useTheme).
 //
 // Restrições:
 //   • Nenhuma ScrollView envolvendo a lista
-//   • Nenhuma mutação de estado — toda mudança cria array novo
+//   • Nenhuma mutação de estado — toda mudança cria array novo (na store)
 //   • Agrupamento e filtro moram em src/lib/, não aqui
 // ============================================================
-import { useCallback, useEffect, useState } from 'react';
-import { SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useCallback, useMemo, useState } from 'react';
+import { Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import type { Pet } from '../types/pet';
-import { PETS } from '../data/pets';
+import type { NovoPet, Pet } from '../types/pet';
 import { agrupar, filtrarPorNome, type Secao } from '../lib/agrupar';
+import { usePetStore } from '../store/use-pet-store';
+import { useTheme } from '../context/theme-context';
+import { FormularioPet } from '../components/formulario-pet';
 import { ItemPet } from '../components/item-pet';
 import { ListaVazia } from '../components/lista-vazia';
-import { TelaRegistro } from './tela-registro';
-import { cores, espaco, tipografia } from '../theme';
+import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
 // Created by AI.
 export function TelaPets() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  // A rota `/foto-do-pet` devolve a foto escolhida por parâmetros de rota.
-  // Isso é temporário: na Etapa 4 a store global assume essa responsabilidade.
-  const { fotoPetId, fotoUri } = useLocalSearchParams<{
-    fotoPetId?: string;
-    fotoUri?: string;
-  }>();
+  const { cores, tipografia } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
 
-  const [pets, setPets] = useState<Pet[]>(PETS);
+  const pets = usePetStore((estado) => estado.pets);
+  const fetchPets = usePetStore((estado) => estado.fetchPets);
+  const addPet = usePetStore((estado) => estado.addPet);
+  const removePet = usePetStore((estado) => estado.removePet);
+
   const [busca, setBusca] = useState('');
   const [atualizando, setAtualizando] = useState(false);
-  const [petRegistrando, setPetRegistrando] = useState<string | null>(null);
+  const [formularioAberto, setFormularioAberto] = useState(false);
 
   // Created by AI.
-  useEffect(() => {
-    if (!fotoPetId || !fotoUri) return;
-    setPets((anteriores) =>
-      anteriores.map((pet) => (pet.id === fotoPetId ? { ...pet, fotoUri } : pet)),
-    );
-    // Limpa os parâmetros para a mesma foto não ser reaplicada a cada render.
-    router.setParams({ fotoPetId: '', fotoUri: '' });
-  }, [fotoPetId, fotoUri, router]);
-
-  const alternarStatus = useCallback((id: string) => {
-    setPets((anteriores) =>
-      anteriores.map((pet) =>
-        pet.id === id
-          ? { ...pet, statusPasseio: pet.statusPasseio === 'concluido' ? 'pendente' : 'concluido' }
-          : pet,
-      ),
-    );
-  }, []);
-
-  const removerPet = useCallback((id: string) => {
-    setPets((anteriores) => anteriores.filter((pet) => pet.id !== id));
-  }, []);
+  const abrirDetalhe = useCallback(
+    (id: string) => {
+      router.push({ pathname: '/pet/[id]', params: { id } });
+    },
+    [router],
+  );
 
   // Created by AI.
   const abrirFoto = useCallback(
@@ -75,22 +60,28 @@ export function TelaPets() {
     [router],
   );
 
+  // Created by AI.
+  const removerPet = useCallback(
+    (id: string) => {
+      void removePet(id);
+    },
+    [removePet],
+  );
+
   async function recarregar() {
     setAtualizando(true);
-    await new Promise((resolve) => setTimeout(resolve, 800));
-    setPets(PETS);
-    setBusca('');
-    setAtualizando(false);
+    try {
+      await fetchPets();
+      setBusca('');
+    } finally {
+      setAtualizando(false);
+    }
   }
 
-  function handleRegistro(local?: Pet['local'], foto?: string) {
-    if (!petRegistrando) return;
-    setPets((anteriores) =>
-      anteriores.map((pet) =>
-        pet.id === petRegistrando ? { ...pet, statusPasseio: 'concluido', local, fotoUri: foto } : pet,
-      ),
-    );
-    setPetRegistrando(null);
+  // Created by AI.
+  function salvarPet(novo: NovoPet) {
+    void addPet(novo);
+    setFormularioAberto(false);
   }
 
   // Created by AI.
@@ -98,25 +89,13 @@ export function TelaPets() {
     ({ item }: { item: Pet }) => (
       <ItemPet
         pet={item}
-        onAlternar={alternarStatus}
+        onAbrir={abrirDetalhe}
         onRemover={removerPet}
-        onRegistrar={setPetRegistrando}
         onEscolherFoto={abrirFoto}
       />
     ),
-    [alternarStatus, removerPet, abrirFoto],
+    [abrirDetalhe, removerPet, abrirFoto],
   );
-
-  const petAlvo = pets.find((pet) => pet.id === petRegistrando);
-  if (petAlvo) {
-    return (
-      <TelaRegistro
-        pet={petAlvo}
-        onSalvar={handleRegistro}
-        onCancelar={() => setPetRegistrando(null)}
-      />
-    );
-  }
 
   const secoes = agrupar(filtrarPorNome(pets, busca));
 
@@ -139,42 +118,73 @@ export function TelaPets() {
               value={busca}
               onChangeText={setBusca}
               placeholder="Buscar pet por nome..."
+              placeholderTextColor={cores.textoFraco}
               style={styles.busca}
             />
+            <Pressable
+              onPress={() => setFormularioAberto(true)}
+              accessibilityRole="button"
+              style={({ pressed }) => [styles.botaoNovoPet, pressed && styles.pressionado]}
+            >
+              <Text style={styles.textoBotao}>Cadastrar pet</Text>
+            </Pressable>
           </View>
         }
         contentContainerStyle={[styles.conteudo, { paddingBottom: insets.bottom + espaco.lg }]}
+      />
+
+      <FormularioPet
+        visivel={formularioAberto}
+        onFechar={() => setFormularioAberto(false)}
+        onSalvar={salvarPet}
       />
     </View>
   );
 }
 
 // Created by AI.
-const styles = StyleSheet.create({
-  tela: {
-    flex: 1,
-    backgroundColor: cores.fundo,
-  },
-  cabecalho: {
-    paddingHorizontal: espaco.md,
-    paddingBottom: espaco.sm,
-  },
-  conteudo: {
-    gap: espaco.sm,
-    paddingHorizontal: espaco.md,
-  },
-  cabecalhoSecao: {
-    ...tipografia.titulo,
-    backgroundColor: cores.fundo,
-    paddingVertical: espaco.sm,
-    paddingHorizontal: espaco.md,
-  },
-  busca: {
-    borderWidth: 1,
-    borderColor: cores.textoFraco,
-    borderRadius: espaco.sm,
-    padding: espaco.sm,
-    fontSize: tipografia.corpo.fontSize,
-    backgroundColor: cores.cartao,
-  },
-});
+function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+  return StyleSheet.create({
+    tela: {
+      flex: 1,
+      backgroundColor: cores.fundo,
+    },
+    cabecalho: {
+      paddingHorizontal: espaco.md,
+      paddingBottom: espaco.sm,
+      gap: espaco.sm,
+    },
+    conteudo: {
+      gap: espaco.sm,
+      paddingHorizontal: espaco.md,
+    },
+    cabecalhoSecao: {
+      ...tipografia.titulo,
+      backgroundColor: cores.fundo,
+      paddingVertical: espaco.sm,
+      paddingHorizontal: espaco.md,
+    },
+    busca: {
+      borderWidth: 1,
+      borderColor: cores.textoFraco,
+      borderRadius: espaco.sm,
+      padding: espaco.sm,
+      fontSize: tipografia.corpo.fontSize,
+      backgroundColor: cores.cartao,
+      color: cores.texto,
+    },
+    botaoNovoPet: {
+      backgroundColor: cores.primaria,
+      padding: espaco.sm,
+      borderRadius: espaco.sm,
+      alignItems: 'center',
+    },
+    textoBotao: {
+      color: cores.sobrePrimaria,
+      fontWeight: 'bold',
+    },
+    pressionado: {
+      opacity: 0.7,
+    },
+  });
+}
