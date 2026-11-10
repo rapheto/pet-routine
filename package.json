@@ -2,7 +2,7 @@
   "name": "pet-routine-expo",
   "version": "1.0.0",
   "private": true,
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "dependencies": {
     "@expo/ui": "~57.0.26",
     "@expo/vector-icons": "^15.0.2",

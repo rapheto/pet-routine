@@ -99,7 +99,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Instalar e validar as dependências do projeto
 - **Etapa da atividade:** Configuração inicial de dependências
 - **Tipo de contribuição da IA:** Execução de comandos de instalação e correção de conflito de peer dependency
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e validação no simulador por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0003
 
@@ -125,5 +125,34 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Instalar as dependências complementares e validar a tipagem
 - **Etapa da atividade:** Configuração inicial de dependências
 - **Tipo de contribuição da IA:** Execução de comandos de instalação e verificação de tipagem
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e validação no simulador por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
+
+## Registro da atividade 0004
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: implementação da Etapa 1 do
+Mini-Projeto — migração para o Expo Router e foto do pet com `expo-image-picker`.
+
+A ferramenta foi utilizada com a finalidade de **migrar o ponto de entrada e criar
+as rotas iniciais**, durante a etapa **Etapa 1 (Aula 6) do Mini-Projeto**, para
+realizar a seguinte contribuição: **criação de `src/app/_layout.tsx`,
+`src/app/index.tsx`, `src/app/foto-do-pet.tsx` e `src/app/sobre.tsx`, movimentação
+da tela de lista para `src/screens/tela-pets.tsx`, remoção de `App.tsx` e
+`index.ts` e configuração de `scheme` e do plugin do `expo-image-picker` no
+`app.json`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `app.json`, `package.json`, `App.tsx` (removido), `index.ts` (removido), `src/app/_layout.tsx`, `src/app/index.tsx`, `src/app/foto-do-pet.tsx`, `src/app/sobre.tsx`, `src/screens/tela-pets.tsx`, `src/components/card-pet.tsx`, `src/components/item-pet.tsx`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Migração para Expo Router com `src/app`, rotas `index`, `foto-do-pet` e `sobre`, lista movida para `src/screens`, `scheme` e plugin do image-picker com mensagens claras e `microphonePermission: false`.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Implementar a Etapa 1 do Mini-Projeto (Expo Router e foto do pet)
+- **Etapa da atividade:** Etapa 1 (Aula 6) do Mini-Projeto
+- **Tipo de contribuição da IA:** Criação de rotas e layout com Expo Router, implementação do fluxo de foto com `expo-image-picker`, migração de tela e ajustes de configuração
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
 
