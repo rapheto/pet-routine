@@ -1,38 +1,58 @@
-// Declaração: este arquivo foi desenvolvido com apoio de IA e revisado por mim.
+// Created by AI.
 
 // ============================================================
-// Prática 3 — Tela principal: lista de pets + registro de passeio
+// Etapa 1 — Tela de lista de pets (movida de App.tsx)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Na Prática 2 esta tela mostrava um pet em destaque.
-// Agora mostra uma lista de verdade com SectionList, toque
-// interativo e registro de passeio com sensores.
+// Na Prática 3 esta tela vivia dentro de App.tsx e trocava de tela
+// com um useState condicional. Agora ela é uma TELA de verdade e a
+// navegação é assunto do Expo Router (Regra 17: `router.push` dentro
+// de funções, `Link` no JSX).
 //
 // Restrições:
 //   • Nenhuma ScrollView envolvendo a lista
 //   • Nenhuma mutação de estado — toda mudança cria array novo
 //   • Agrupamento e filtro moram em src/lib/, não aqui
-//   • Sem useEffect para sensores (cleanup é assunto da Aula 6)
 // ============================================================
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import type { Pet } from './src/types/pet';
-import { PETS } from './src/data/pets';
-import { agrupar, filtrarPorNome, type Secao } from './src/lib/agrupar';
-import { ItemPet } from './src/components/item-pet';
-import { ListaVazia } from './src/components/lista-vazia';
-import { TelaRegistro } from './src/screens/tela-registro';
-import { cores, espaco, tipografia } from './src/theme';
+import type { Pet } from '../types/pet';
+import { PETS } from '../data/pets';
+import { agrupar, filtrarPorNome, type Secao } from '../lib/agrupar';
+import { ItemPet } from '../components/item-pet';
+import { ListaVazia } from '../components/lista-vazia';
+import { TelaRegistro } from './tela-registro';
+import { cores, espaco, tipografia } from '../theme';
 
-// Updated by AI.
-export default function App() {
+// Created by AI.
+export function TelaPets() {
+  const router = useRouter();
+  const insets = useSafeAreaInsets();
+  // A rota `/foto-do-pet` devolve a foto escolhida por parâmetros de rota.
+  // Isso é temporário: na Etapa 4 a store global assume essa responsabilidade.
+  const { fotoPetId, fotoUri } = useLocalSearchParams<{
+    fotoPetId?: string;
+    fotoUri?: string;
+  }>();
+
   const [pets, setPets] = useState<Pet[]>(PETS);
   const [busca, setBusca] = useState('');
   const [atualizando, setAtualizando] = useState(false);
   const [petRegistrando, setPetRegistrando] = useState<string | null>(null);
 
-  // Updated by AI.
+  // Created by AI.
+  useEffect(() => {
+    if (!fotoPetId || !fotoUri) return;
+    setPets((anteriores) =>
+      anteriores.map((pet) => (pet.id === fotoPetId ? { ...pet, fotoUri } : pet)),
+    );
+    // Limpa os parâmetros para a mesma foto não ser reaplicada a cada render.
+    router.setParams({ fotoPetId: '', fotoUri: '' });
+  }, [fotoPetId, fotoUri, router]);
+
   const alternarStatus = useCallback((id: string) => {
     setPets((anteriores) =>
       anteriores.map((pet) =>
@@ -43,10 +63,17 @@ export default function App() {
     );
   }, []);
 
-  // Updated by AI.
   const removerPet = useCallback((id: string) => {
     setPets((anteriores) => anteriores.filter((pet) => pet.id !== id));
   }, []);
+
+  // Created by AI.
+  const abrirFoto = useCallback(
+    (id: string) => {
+      router.push({ pathname: '/foto-do-pet', params: { petId: id } });
+    },
+    [router],
+  );
 
   async function recarregar() {
     setAtualizando(true);
@@ -56,11 +83,11 @@ export default function App() {
     setAtualizando(false);
   }
 
-  function handleRegistro(local?: Pet['local'], fotoUri?: string) {
+  function handleRegistro(local?: Pet['local'], foto?: string) {
     if (!petRegistrando) return;
     setPets((anteriores) =>
       anteriores.map((pet) =>
-        pet.id === petRegistrando ? { ...pet, statusPasseio: 'concluido', local, fotoUri } : pet,
+        pet.id === petRegistrando ? { ...pet, statusPasseio: 'concluido', local, fotoUri: foto } : pet,
       ),
     );
     setPetRegistrando(null);
@@ -74,9 +101,10 @@ export default function App() {
         onAlternar={alternarStatus}
         onRemover={removerPet}
         onRegistrar={setPetRegistrando}
+        onEscolherFoto={abrirFoto}
       />
     ),
-    [alternarStatus, removerPet],
+    [alternarStatus, removerPet, abrirFoto],
   );
 
   const petAlvo = pets.find((pet) => pet.id === petRegistrando);
@@ -91,7 +119,6 @@ export default function App() {
   }
 
   const secoes = agrupar(filtrarPorNome(pets, busca));
-  //   Explique no README por que filtrar antes de agrupar.
 
   return (
     <View style={styles.tela}>
@@ -116,16 +143,16 @@ export default function App() {
             />
           </View>
         }
-        contentContainerStyle={styles.conteudo}
+        contentContainerStyle={[styles.conteudo, { paddingBottom: insets.bottom + espaco.lg }]}
       />
     </View>
   );
 }
 
+// Created by AI.
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    paddingTop: 48,
     backgroundColor: cores.fundo,
   },
   cabecalho: {
@@ -135,7 +162,6 @@ const styles = StyleSheet.create({
   conteudo: {
     gap: espaco.sm,
     paddingHorizontal: espaco.md,
-    paddingBottom: espaco.lg,
   },
   cabecalhoSecao: {
     ...tipografia.titulo,
