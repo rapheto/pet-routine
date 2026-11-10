@@ -14,8 +14,16 @@
 //   • Nenhuma mutação de estado — toda mudança cria array novo (na store)
 //   • Agrupamento e filtro moram em src/lib/, não aqui
 // ============================================================
-import { useCallback, useMemo, useState } from 'react';
-import { Pressable, SectionList, StyleSheet, Text, TextInput, View } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  ActivityIndicator,
+  Pressable,
+  SectionList,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -39,10 +47,19 @@ export function TelaPets() {
   const fetchPets = usePetStore((estado) => estado.fetchPets);
   const addPet = usePetStore((estado) => estado.addPet);
   const removePet = usePetStore((estado) => estado.removePet);
+  const erro = usePetStore((estado) => estado.error);
+  const isLoading = usePetStore((estado) => estado.isLoading);
 
   const [busca, setBusca] = useState('');
   const [atualizando, setAtualizando] = useState(false);
   const [formularioAberto, setFormularioAberto] = useState(false);
+
+  // Etapa 4: a lista nasce do backend. O efeito roda uma vez ao montar
+  // a aba (já autenticada pelo Auth Guard).
+  // Created by AI.
+  useEffect(() => {
+    void fetchPets();
+  }, [fetchPets]);
 
   // Created by AI.
   const abrirDetalhe = useCallback(
@@ -98,40 +115,50 @@ export function TelaPets() {
   );
 
   const secoes = agrupar(filtrarPorNome(pets, busca));
+  const carregandoInicial = isLoading && pets.length === 0;
 
   return (
     <View style={styles.tela}>
-      <SectionList<Pet, Secao>
-        sections={secoes}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-        renderSectionHeader={({ section }) => (
-          <Text style={styles.cabecalhoSecao}>{section.title}</Text>
-        )}
-        stickySectionHeadersEnabled
-        ListEmptyComponent={<ListaVazia termoBusca={busca} temPets={pets.length > 0} />}
-        refreshing={atualizando}
-        onRefresh={recarregar}
-        ListHeaderComponent={
-          <View style={styles.cabecalho}>
-            <TextInput
-              value={busca}
-              onChangeText={setBusca}
-              placeholder="Buscar pet por nome..."
-              placeholderTextColor={cores.textoFraco}
-              style={styles.busca}
-            />
-            <Pressable
-              onPress={() => setFormularioAberto(true)}
-              accessibilityRole="button"
-              style={({ pressed }) => [styles.botaoNovoPet, pressed && styles.pressionado]}
-            >
-              <Text style={styles.textoBotao}>Cadastrar pet</Text>
-            </Pressable>
-          </View>
-        }
-        contentContainerStyle={[styles.conteudo, { paddingBottom: insets.bottom + espaco.lg }]}
-      />
+      {erro !== null && <Text style={styles.erro}>{erro}</Text>}
+
+      {carregandoInicial ? (
+        <View style={styles.carregando}>
+          <ActivityIndicator size="large" color={cores.primaria} />
+          <Text style={styles.textoCarregando}>Carregando seus pets...</Text>
+        </View>
+      ) : (
+        <SectionList<Pet, Secao>
+          sections={secoes}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+          renderSectionHeader={({ section }) => (
+            <Text style={styles.cabecalhoSecao}>{section.title}</Text>
+          )}
+          stickySectionHeadersEnabled
+          ListEmptyComponent={<ListaVazia termoBusca={busca} temPets={pets.length > 0} />}
+          refreshing={atualizando}
+          onRefresh={recarregar}
+          ListHeaderComponent={
+            <View style={styles.cabecalho}>
+              <TextInput
+                value={busca}
+                onChangeText={setBusca}
+                placeholder="Buscar pet por nome..."
+                placeholderTextColor={cores.textoFraco}
+                style={styles.busca}
+              />
+              <Pressable
+                onPress={() => setFormularioAberto(true)}
+                accessibilityRole="button"
+                style={({ pressed }) => [styles.botaoNovoPet, pressed && styles.pressionado]}
+              >
+                <Text style={styles.textoBotao}>Cadastrar pet</Text>
+              </Pressable>
+            </View>
+          }
+          contentContainerStyle={[styles.conteudo, { paddingBottom: insets.bottom + espaco.lg }]}
+        />
+      )}
 
       <FormularioPet
         visivel={formularioAberto}
@@ -182,6 +209,22 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
     textoBotao: {
       color: cores.sobrePrimaria,
       fontWeight: 'bold',
+    },
+    erro: {
+      ...tipografia.corpo,
+      color: cores.erro,
+      paddingHorizontal: espaco.md,
+      paddingBottom: espaco.sm,
+    },
+    carregando: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: espaco.sm,
+    },
+    textoCarregando: {
+      ...tipografia.corpo,
+      color: cores.textoFraco,
     },
     pressionado: {
       opacity: 0.7,

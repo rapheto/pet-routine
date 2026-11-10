@@ -216,3 +216,62 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Etapa da atividade:** Etapa 3 (Aula 8) do Mini-Projeto
 - **Tipo de contribuição da IA:** Criação do contexto de tema com persistência, refatoração dos estilos para consumir a paleta ativa, componente de cronômetro com cleanup e serviço de histórico em `expo-sqlite`
 - **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+
+## Registro da atividade 0007
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: implementação da Etapa 4 do
+Mini-Projeto — autenticação com `sessionToken` (JWT) e integração full stack com
+o backend REST.
+
+A ferramenta foi utilizada com a finalidade de **substituir os dados mockados
+pelo backend real**, durante a etapa **Etapa 4 (Aula 9) do Mini-Projeto**, para
+realizar a seguinte contribuição: **criação de `src/store/use-auth-store.ts`
+com `persist` e `isHydrated`, `src/services/api.ts` com `Bearer` e tratamento de
+401/403, `src/services/auth-service.ts` com signup/login/logout, telas de login
+e cadastro em `src/app/(auth)/` e `src/screens/`, Auth Guard no `_layout.tsx`,
+CRUD completo de pets em `src/store/use-pet-store.ts` e botão de logout em
+Estatísticas/Perfil**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `src/types/auth.ts` (novo), `src/store/use-auth-store.ts` (novo), `src/services/api.ts` (novo), `src/services/auth-service.ts` (novo), `src/lib/erro.ts` (novo), `src/components/campo-texto.tsx` (novo), `src/components/botao-acao.tsx` (novo), `src/components/layout-autenticacao.tsx` (novo), `src/screens/tela-login.tsx` (novo), `src/screens/tela-cadastro.tsx` (novo), `src/app/(auth)/_layout.tsx` (novo), `src/app/(auth)/login.tsx` (novo), `src/app/(auth)/signup.tsx` (novo), `src/app/_layout.tsx`, `src/store/use-pet-store.ts`, `src/types/pet.ts`, `src/screens/tela-pets.tsx`, `src/screens/tela-estatisticas.tsx`, `.env.example`, `README.md`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Sessão JWT persistida com hidratação, Auth Guard com `router.replace`, login/cadastro/logout no backend, `apiFetch` com Bearer e 401/403 e CRUD de pets via REST, substituindo os mocks.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Implementar a Etapa 4 do Mini-Projeto (autenticação e integração com o backend)
+- **Etapa da atividade:** Etapa 4 (Aula 9) do Mini-Projeto
+- **Tipo de contribuição da IA:** Store de sessão persistida, cliente HTTP centralizado, serviço e telas de autenticação, proteção de rotas e integração da store de pets ao CRUD REST
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão, execução do backend e teste em aparelho por Raphael
+
+## Registro da atividade 0008
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **OpenCode
+(modelo DeepSeek V4.1 Flash Free)** nesta atividade: atualização do README e
+criação do guia de testes das Etapas 1 a 4 do Mini-Projeto.
+
+A ferramenta foi utilizada com a finalidade de **documentar o estado atual e o
+roteiro de validação**, durante a etapa **documentação das Etapas 1 a 4**, para
+realizar a seguinte contribuição: **seção "Estado atual do desenvolvimento" no
+`README.md`, com o que foi implementado em cada etapa, e criação de
+`docs/testar_etapas.md` com preparação de ambiente, passo a passo, casos de
+erro, checklist e pendências da Etapa 5**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. O resultado foi submetido à **revisão crítica humana**, e a pessoa
+responsável pela atividade assume a responsabilidade pelo resultado final,
+incluindo sua correção, adequação e integração ao projeto.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `README.md`, `docs/testar_etapas.md` (novo), `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** README com o estado das Etapas 1 a 4 e guia de testes com preparação do ambiente, passo a passo por etapa, casos de erro, checklist e pendências da Etapa 5.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** OpenCode (agente de código) — modelo DeepSeek V4.1 Flash Free
+- **Finalidade do uso da IA:** Documentar o progresso e o roteiro de testes do Mini-Projeto
+- **Etapa da atividade:** Documentação das Etapas 1 a 4
+- **Tipo de contribuição da IA:** Redação de documentação técnica, instruções de execução, casos de teste e checklist de validação
+- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão por Raphael
