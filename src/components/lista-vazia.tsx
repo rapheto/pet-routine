@@ -1,3 +1,5 @@
+// Declaração: este arquivo foi desenvolvido com apoio de IA e revisado por mim.
+
 // ============================================================
 // Prática 3 — Estado vazio da lista
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
@@ -12,28 +14,22 @@ import { StyleSheet, Text, View } from 'react-native';
 import { cores, espaco, tipografia } from '../theme';
 
 type ListaVaziaProps = {
-  // TODO P3.12: uma prop que permita distinguir "primeiro acesso" de "busca sem resultado".
   termoBusca?: string;
 };
 
-export function ListaVazia({ termoBusca }: ListaVaziaProps) {
-  // TODO P3.13: dois textos diferentes, conforme o cenário.
-  const texto = termoBusca && termoBusca.trim() !== ''
-    ? `Nenhum pet encontrado para '${termoBusca}'.`
+export function ListaVazia({ termoBusca = '' }: ListaVaziaProps) {
+  const texto = termoBusca.trim()
+    ? `Nenhum pet encontrado para "${termoBusca.trim()}".`
     : 'Nenhum pet cadastrado. Que tal adicionar um?';
-
   return (
     <View style={styles.container}>
-      <Text style={styles.texto}>
-        {texto}
-      </Text>
+      <Text style={styles.texto}>{texto}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    // TODO P3.14: centralize e use padding generoso
     alignItems: 'center',
     padding: espaco.xl,
   },

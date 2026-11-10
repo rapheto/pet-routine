@@ -1,3 +1,5 @@
+// Declaração: este arquivo foi desenvolvido com apoio de IA e revisado por mim.
+
 // ============================================================
 // Prática 3 — Tela principal: lista de pets + registro de passeio
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
@@ -24,52 +26,44 @@ import { TelaRegistro } from './src/screens/tela-registro';
 import { cores, espaco, tipografia } from './src/theme';
 
 export default function App() {
-  // TODO P3.28: declare os quatro estados da tela:
   const [pets, setPets] = useState<Pet[]>(PETS);
   const [busca, setBusca] = useState('');
   const [atualizando, setAtualizando] = useState(false);
   const [petRegistrando, setPetRegistrando] = useState<string | null>(null);
 
-  // TODO P3.29: alternar status do passeio — array novo, objeto novo. Nada de mutação.
   function alternarStatus(id: string) {
-    setPets(anteriores =>
-      anteriores.map(p =>
-        p.id === id
-          ? { ...p, statusPasseio: p.statusPasseio === 'concluido' ? 'pendente' : 'concluido' }
-          : p
-      )
+    setPets((anteriores) =>
+      anteriores.map((pet) =>
+        pet.id === id
+          ? { ...pet, statusPasseio: pet.statusPasseio === 'concluido' ? 'pendente' : 'concluido' }
+          : pet,
+      ),
     );
   }
 
-  // TODO P3.30: remover pet — array novo via filter.
   function removerPet(id: string) {
-    setPets(anteriores => anteriores.filter(p => p.id !== id));
+    setPets((anteriores) => anteriores.filter((pet) => pet.id !== id));
   }
 
-  // TODO P3.31: recarregar — simula refresh, volta ao mock e limpa a busca.
   async function recarregar() {
     setAtualizando(true);
-    await new Promise(r => setTimeout(r, 800));
+    await new Promise((resolve) => setTimeout(resolve, 800));
     setPets(PETS);
     setBusca('');
     setAtualizando(false);
   }
 
-  // TODO P3.32: receber o registro de passeio da TelaRegistro.
   function handleRegistro(local?: Pet['local'], fotoUri?: string) {
     if (!petRegistrando) return;
-    setPets(anteriores =>
-      anteriores.map(p =>
-        p.id === petRegistrando
-          ? { ...p, statusPasseio: 'concluido' as const, local, fotoUri }
-          : p
-      )
+    setPets((anteriores) =>
+      anteriores.map((pet) =>
+        pet.id === petRegistrando ? { ...pet, statusPasseio: 'concluido', local, fotoUri } : pet,
+      ),
     );
     setPetRegistrando(null);
   }
 
-  // TODO P3.33: renderização condicional
-  const petAlvo = pets.find(p => p.id === petRegistrando);
+  const petAlvo = pets.find((pet) => pet.id === petRegistrando);
   if (petAlvo) {
     return (
       <TelaRegistro
@@ -80,33 +74,31 @@ export default function App() {
     );
   }
 
-  // TODO P3.34: seções da lista — filtrar E DEPOIS agrupar.
   const secoes = agrupar(filtrarPorNome(pets, busca));
+  //   Explique no README por que filtrar antes de agrupar.
 
   return (
     <View style={styles.tela}>
       <SectionList<Pet, Secao>
         sections={secoes}
         keyExtractor={(item) => item.id}
-        // TODO P3.35: configure o SectionList completo
         renderItem={({ item }) => (
           <ItemPet
             pet={item}
             onAlternar={alternarStatus}
             onRemover={removerPet}
-            onRegistrar={(id) => setPetRegistrando(id)}
+            onRegistrar={setPetRegistrando}
           />
         )}
         renderSectionHeader={({ section }) => (
           <Text style={styles.cabecalhoSecao}>{section.title}</Text>
         )}
+        stickySectionHeadersEnabled
         ListEmptyComponent={<ListaVazia termoBusca={busca} />}
-        stickySectionHeadersEnabled={true}
         refreshing={atualizando}
         onRefresh={recarregar}
         ListHeaderComponent={
           <View style={styles.cabecalho}>
-            {/* TODO P3.36: TextInput de busca. */}
             <TextInput
               value={busca}
               onChangeText={setBusca}
@@ -141,8 +133,6 @@ const styles = StyleSheet.create({
     backgroundColor: cores.fundo,
     paddingVertical: espaco.sm,
     paddingHorizontal: espaco.md,
-    // Remover margens negativas, ou padding para alinhar com conteudo sem gap bugar. 
-    // Como conteudo tem paddingHorizontal, o cabecalhoSecao com o mesmo resolve
   },
   busca: {
     borderWidth: 1,
