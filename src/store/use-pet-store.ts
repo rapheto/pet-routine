@@ -1,23 +1,21 @@
 // Created by AI.
 
 // ============================================================
-// Etapa 2 — Store global de pets (em memória)
+// Etapa 4 — Store global de pets integrada ao backend REST
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// A partir da Etapa 2 a lista de pets é usada por rotas diferentes
-// (`(tabs)/index`, `(tabs)/stats`, `pet/[id]` e `foto-do-pet`), então
-// o estado sai da tela e vira store global.
-//
-// Nesta etapa a origem dos dados ainda é o mock `src/data/pets.ts`.
-// Na Etapa 4 as mesmas ações passam a conversar com o backend via
-// `apiFetch`, sem que as telas precisem mudar.
+// A store deixou de usar o mock `src/data/pets.ts`: todas as ações
+// conversam com o backend via `apiFetch` (que injeta o Bearer token).
 //
 // Todas as atualizações são imutáveis: nunca mutamos o pet recebido.
+// Erros de rede/API ficam em `error` para a tela exibir — nenhuma ação
+// lança exceção, então `void addPet(...)` nas telas é seguro.
 // ============================================================
 import { create } from 'zustand';
 
-import { PETS } from '../data/pets';
-import type { AtualizacaoPet, NovoPet, Pet } from '../types/pet';
+import { apiFetch } from '../services/api';
+import { mensagemDoErro } from '../lib/erro';
+import type { AtualizacaoPet, NovoPet, Pet, PetDoServidor } from '../types/pet';
 
 // Created by AI.
 type PetStore = {
@@ -33,77 +31,88 @@ type PetStore = {
   clearPets: () => void;
 };
 
-// O servidor é quem gera `id`, `criadoEm` e o status inicial. Enquanto não
-// há backend nesta etapa, replicamos essa responsabilidade aqui.
 // Created by AI.
-function idLocal(): string {
-  return `pet-${Date.now()}`;
+function converterPet(dto: PetDoServidor): Pet {
+  return { ...dto, criadoEm: new Date(dto.criadoEm) };
 }
 
 // Created by AI.
 export const usePetStore = create<PetStore>((set) => ({
-  // O mock já entra carregado para a primeira renderização não piscar vazio.
-  // Na Etapa 4 o estado começa vazio e `fetchPets` busca no backend.
-  pets: PETS,
+  pets: [],
   isLoading: false,
   error: null,
 
   fetchPets: async () => {
     set({ isLoading: true, error: null });
     try {
-      await new Promise((resolver) => setTimeout(resolver, 400));
-      // Enquanto a origem é o mock, recarregar devolve a lista original.
-      set({ pets: PETS, isLoading: false });
-    } catch {
-      set({ isLoading: false, error: 'Não foi possível carregar os pets. Tente novamente.' });
+      const dados = await apiFetch<PetDoServidor[]>('/pets');
+      set({ pets: dados.map(converterPet), isLoading: false });
+    } catch (erro) {
+      set({ isLoading: false, error: mensagemDoErro(erro) });
     }
   },
 
   addPet: async (novo) => {
-    const pet: Pet = {
-      ...novo,
-      id: idLocal(),
-      statusPasseio: 'pendente',
-      criadoEm: new Date(),
-    };
-    set((estado) => ({ pets: [...estado.pets, pet] }));
+    try {
+      const criado = await apiFetch<PetDoServidor>('/pets', { method: 'POST', body: novo });
+      set((estado) => ({ pets: [converterPet(criado), ...estado.pets], error: null }));
+    } catch (erro) {
+      set({ error: mensagemDoErro(erro) });
+    }
   },
 
   togglePasseio: async (id) => {
-    set((estado) => ({
-      pets: estado.pets.map((pet) =>
-        pet.id === id
-          ? { ...pet, statusPasseio: pet.statusPasseio === 'concluido' ? 'pendente' : 'concluido' }
-          : pet,
-      ),
-    }));
+    try {
+      const atualizado = await apiFetch<PetDoServidor>(`/pets/${id}/toggle`, { method: 'PATCH' });
+      set((estado) => ({
+        pets: estado.pets.map((pet) => (pet.id === id ? converterPet(atualizado) : pet)),
+        error: null,
+      }));
+    } catch (erro) {
+      set({ error: mensagemDoErro(erro) });
+    }
   },
 
   registrarPasseio: async (id, local, fotoUri) => {
-    set((estado) => ({
-      pets: estado.pets.map((pet) =>
-        pet.id === id
-          ? {
-              ...pet,
-              statusPasseio: 'concluido',
-              // Sensores são opcionais: um passeio sem GPS/foto não deve
-              // apagar o que já estava salvo.
-              local: local ?? pet.local,
-              fotoUri: fotoUri ?? pet.fotoUri,
-            }
-          : pet,
-      ),
-    }));
+    try {
+      const atualizado = await apiFetch<PetDoServidor>(`/pets/${id}/passeio`, {
+        method: 'PATCH',
+        body: { statusPasseio: 'concluido', local, fotoUri },
+      });
+      set((estado) => ({
+        pets: estado.pets.map((pet) => (pet.id === id ? converterPet(atualizado) : pet)),
+        error: null,
+      }));
+    } catch (erro) {
+      set({ error: mensagemDoErro(erro) });
+    }
   },
 
   updatePet: async (id, dados) => {
-    set((estado) => ({
-      pets: estado.pets.map((pet) => (pet.id === id ? { ...pet, ...dados } : pet)),
-    }));
+    try {
+      const atualizado = await apiFetch<PetDoServidor>(`/pets/${id}`, {
+        method: 'PUT',
+        body: dados,
+      });
+      set((estado) => ({
+        pets: estado.pets.map((pet) => (pet.id === id ? converterPet(atualizado) : pet)),
+        error: null,
+      }));
+    } catch (erro) {
+      set({ error: mensagemDoErro(erro) });
+    }
   },
 
   removePet: async (id) => {
-    set((estado) => ({ pets: estado.pets.filter((pet) => pet.id !== id) }));
+    try {
+      await apiFetch<{ success: boolean; id: string }>(`/pets/${id}`, { method: 'DELETE' });
+      set((estado) => ({
+        pets: estado.pets.filter((pet) => pet.id !== id),
+        error: null,
+      }));
+    } catch (erro) {
+      set({ error: mensagemDoErro(erro) });
+    }
   },
 
   clearPets: () => set({ pets: [], error: null }),
