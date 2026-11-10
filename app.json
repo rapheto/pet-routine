@@ -3,6 +3,7 @@
     "name": "pet-routine-expo",
     "slug": "pet-routine-expo",
     "version": "1.0.0",
+    "scheme": "petroutine",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -25,7 +26,15 @@
       "expo-image",
       "expo-router",
       "expo-sqlite",
-      "expo-secure-store"
+      "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O app Pet Routine acessa suas fotos para escolher a imagem do seu pet.",
+          "cameraPermission": "O app Pet Routine usa a câmera para tirar a foto do seu pet.",
+          "microphonePermission": false
+        }
+      ]
     ]
   }
 }

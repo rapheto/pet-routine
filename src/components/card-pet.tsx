@@ -20,14 +20,16 @@ import { Card } from './card';
 // TODO P2.11: tipe as props. O card recebe:
 //   - pet: Pet
 //   - aoRegistrarPasseio: () => void
+// Updated by AI.
 type CardPetProps = {
   /* ... */
   pet: Pet;
   aoRegistrarPasseio: () => void;
+  aoEscolherFoto: () => void;
 };
 
 // Updated by AI.
-export function CardPet({ /* TODO P2.12: desestruture as props */ pet, aoRegistrarPasseio }: CardPetProps) {
+export function CardPet({ /* TODO P2.12: desestruture as props */ pet, aoRegistrarPasseio, aoEscolherFoto }: CardPetProps) {
   return (
     <Card>
       {pet.fotoUri ? (
@@ -74,6 +76,15 @@ export function CardPet({ /* TODO P2.12: desestruture as props */ pet, aoRegistr
       >
         <Text style={styles.textoBotao}>Registrar passeio</Text>
       </Pressable>
+
+      {/* Etapa 1: atalho para a rota `/foto-do-pet`. */}
+      <Pressable
+        onPress={aoEscolherFoto}
+        accessibilityRole="button"
+        style={({ pressed }) => [pressed && styles.pressionado]}
+      >
+        <Text style={styles.textoBotaoSecundario}>Trocar foto</Text>
+      </Pressable>
     </Card>
   );
 }
@@ -87,6 +98,10 @@ const styles = StyleSheet.create({
   textoBotao: {
     fontWeight: 'bold',
     color: cores.primaria,
+  },
+  textoBotaoSecundario: {
+    fontWeight: 'bold',
+    color: cores.textoFraco,
   },
   pressionado: {
     opacity: 0.7,

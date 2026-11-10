@@ -13,14 +13,17 @@ import { Pressable, StyleSheet } from 'react-native';
 import type { Pet } from '../types/pet';
 import { CardPet } from './card-pet';
 
+// Updated by AI.
 type ItemPetProps = {
   pet: Pet;
   onAlternar: (id: string) => void;
   onRemover: (id: string) => void;
   onRegistrar: (id: string) => void;
+  onEscolherFoto: (id: string) => void;
 };
 
-export function ItemPet({ pet, onAlternar, onRemover, onRegistrar }: ItemPetProps) {
+// Updated by AI.
+export function ItemPet({ pet, onAlternar, onRemover, onRegistrar, onEscolherFoto }: ItemPetProps) {
   return (
     <Pressable
       onPress={() => onAlternar(pet.id)}
@@ -36,7 +39,11 @@ export function ItemPet({ pet, onAlternar, onRemover, onRegistrar }: ItemPetProp
         pressed && styles.pressionado,
       ]}
     >
-      <CardPet pet={pet} aoRegistrarPasseio={() => onRegistrar(pet.id)} />
+      <CardPet
+        pet={pet}
+        aoRegistrarPasseio={() => onRegistrar(pet.id)}
+        aoEscolherFoto={() => onEscolherFoto(pet.id)}
+      />
     </Pressable>
   );
 }
