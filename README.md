@@ -11,10 +11,9 @@ Este projeto é usado nas atividades guiadas e aplicadas da disciplina ao longo 
 
 ## Mini-Projeto — Segunda Unidade (AV2)
 
-Esta branch contém o ponto de partida para o **Mini-Projeto da Unidade 2 (0,0 a 3,0 pontos)**, partindo das Práticas 1 a 3 concluídas:
+Esta branch parte das Práticas 1 a 3 concluídas e contém:
 
 - **Enunciado completo e roteiro (Etapas 1 a 5):** [`docs/MINI-PROJETO.md`](./docs/MINI-PROJETO.md)
-- **Apresentação do Mini-Projeto (Slides HTML / PDF):** [`docs/apresentacao-mini-projeto/presentation.pdf`](./docs/apresentacao-mini-projeto/presentation.pdf)
 - **Backend REST fornecido pelo professor (Express + SQLite + JWT):** [`backend/README.md`](./backend/README.md)
 - **Template do Relatório de Uso de IA:** [`docs/relatorio-uso-ia.md`](./docs/relatorio-uso-ia.md)
 
@@ -32,10 +31,6 @@ Em outro terminal (App Expo):
 npm install
 npx expo start
 ```
-
-## Estado inicial (histórico da Aula 1)
-
-Scaffold inicial gerado com Expo (`create-expo-app`, template `blank-typescript`). Nenhuma tela ou modelagem de domínio foi implementada ainda — isso é propositalmente deixado para as próximas aulas. Veja os comentários `TODO` em `App.tsx`.
 
 ## Como rodar
 
@@ -65,8 +60,6 @@ npm run typecheck        # equivale a `npx tsc --noEmit`
 npm run pratica:tela     # roda src/tela-pet.ts via tsx
 ```
 
-> ⚠️ **O `typecheck` falha de propósito enquanto os TODOs não estiverem resolvidos.** Cada erro reportado aponta para um `TODO` que ainda falta preencher — é esse o critério de pronto. Alguns blocos marcados como *verificação* precisam **falhar** ao serem descomentados; não os apague.
-
 ## Próximos passos (exercícios)
 
 Os `TODO` deixados no código apontam para os exercícios de `exercises.md` de cada aula. Resolva-os na ordem em que aparecem e mantenha um commit por exercício (ou por bloco), para que o histórico da branch sirva de evidência de progresso.
@@ -78,7 +71,8 @@ Os `TODO` deixados no código apontam para os exercícios de `exercises.md` de c
 
 ## Decisões da Prática 3
 
-- **Por que `SectionList` e não `FlatList`**: Nossa lista deve agrupar os pets naturalmente por um critério (neste caso, o status de passeio, sendo 'Pendente', 'Concluído' ou 'Cancelado'). A API `SectionList` do React Native tem suporte nativo robusto de layout e virtualização (com `renderSectionHeader` entre outros hooks) para seções bidimensionais com alto rendimento, o que a `FlatList` pura exigiria contornos difíceis de manter e propensos a falhas arquiteturais.
-- **Onde os dados são agrupados e filtrados**: Em `/src/lib/agrupar.ts`, separadamente do JSX. Agrupamentos e filtragens são lógicas de negócio cruas (ou lógicas de dados) que independem do ciclo de vida da UI. Ao extraí-las do JSX, ganhamos extrema facilidade em testar funções puras, além de isolar o custo da CPU por re-processamentos na UI.
-- **A escolha de `Accuracy` na obtenção de GPS**: Selecionamos `Location.Accuracy.High` por conta do balanço adequado (oferece precisão satisfatória aos registros via Wi-Fi/Redes, não obrigando um GPS dedicado a 100% de esforço que esgotaria rápido a bateria do dispositivo como `Highest` ou `BestForNavigation` fariam), poupando carga durante a duração estendida dos passeios com pets.
-- **Limitações assumidas**: A tela de registro está implementada utilizando leituras momentâneas/únicas e chamadas manuais (`getCurrentPositionAsync`, leitura simples via Câmera). Apesar de termos subscrições pendentes ou possíveis, assumimos que elas não precisam de *cleanups* profundos no momento. Além disso, as fotos capturadas residem em cachê primário da aplicação (e não são salvas via `FileSystem` ou MediaLibrary diretamente na galeria) em respeito à redução de escopo da funcionalidade.
+- **SectionList**: escolhi `SectionList` em vez de `FlatList` porque a tela precisa separar visualmente os pets por status do passeio. Assim o tutor encontra primeiro os passeios pendentes, sem uma lógica de cabeçalho misturada com cada item.
+- **Agrupamento**: o filtro e o agrupamento ficam em `src/lib/agrupar.ts`, fora do JSX. Primeiro filtro pelo nome e depois agrupo por status; desse jeito uma busca sem resultado não deixa seções vazias aparecendo.
+- **Accuracy**: uso `Location.Accuracy.High` porque o registro precisa de uma localização útil para contextualizar o passeio, mas não precisa da precisão extrema de navegação. É um equilíbrio melhor entre precisão e bateria do que `BestForNavigation`.
+- **Limitações assumidas**: a localização é uma leitura única e a câmera é fechada depois da foto. Não há subscription para limpar nesta prática; a assinatura de sensores fica para a Aula 6. A foto fica no cache do aparelho, sem ser salva na galeria.
+- **Imagens**: uso `contentFit="cover"` nas prévias para preencher o espaço do card sem deformar a imagem, aceitando um pequeno corte nas bordas.
