@@ -19,7 +19,14 @@
 import { useState } from 'react';
 import { Button, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 
-import { cores, espaco, tipografia } from '../theme';
+import { criarTipografia, espaco, paletaClara } from '../theme';
+
+// Created by AI.
+// Tela legada da Prática 2, fora da árvore de rotas do Expo Router.
+// Como não é montada no app, mantém a paleta clara fixa — assim continua
+// compilando sem exigir um provider de tema.
+const cores = paletaClara;
+const tipografia = criarTipografia(paletaClara);
 
 export default function PetForm() {
   const [nome, setNome] = useState('');

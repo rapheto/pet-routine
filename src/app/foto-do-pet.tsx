@@ -14,13 +14,15 @@
 //   18. Todo resultado do picker passa por `if (resultado.canceled) return;`.
 //   19. `mediaTypes` é array (`['images']`), nunca `MediaTypeOptions`.
 // ============================================================
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import { cores, espaco, tipografia } from '../theme';
+import { usePetStore } from '../store/use-pet-store';
+import { useTheme } from '../context/theme-context';
+import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
 // Created by AI.
 type FalhaCamera = 'camera-negada' | 'camera-bloqueada';
@@ -46,6 +48,9 @@ const OPCOES_RECORTE: ImagePicker.ImagePickerOptions = {
 export default function TelaFotoDoPet() {
   const router = useRouter();
   const { petId } = useLocalSearchParams<{ petId?: string }>();
+  const updatePet = usePetStore((estado) => estado.updatePet);
+  const { cores, tipografia } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
   const [fotoUri, setFotoUri] = useState<string | null>(null);
   const [falha, setFalha] = useState<FalhaCamera | null>(null);
   const [erroGaleria, setErroGaleria] = useState('');
@@ -101,15 +106,13 @@ export default function TelaFotoDoPet() {
     }
   }
 
-  // Created by AI.
-  function concluir() {
+  // Updated by AI.
+  async function concluir() {
     if (!fotoUri) return;
-    if (petId) {
-      // Regra 17: navegação dentro de função usa a API do router. O `navigate`
-      // volta para a lista (que já está na pilha) levando a foto por params.
-      router.navigate({ pathname: '/', params: { fotoPetId: petId, fotoUri } });
-      return;
-    }
+    // Etapa 2: a store global guarda a foto, então nenhuma tela precisa
+    // receber a URI por parâmetro de rota. Na Etapa 4 esta chamada vira
+    // um `PUT /pets/${id}` dentro da própria store.
+    if (petId) await updatePet(petId, { fotoUri });
     router.back();
   }
 
@@ -164,53 +167,55 @@ export default function TelaFotoDoPet() {
 }
 
 // Created by AI.
-const styles = StyleSheet.create({
-  tela: {
-    flex: 1,
-    padding: espaco.lg,
-    gap: espaco.md,
-    backgroundColor: cores.fundo,
-  },
-  previa: {
-    width: '100%',
-    aspectRatio: 1,
-    borderRadius: espaco.sm,
-  },
-  previaVazia: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: cores.cartao,
-    borderWidth: 1,
-    borderColor: cores.textoFraco,
-  },
-  textoPreviaVazia: {
-    ...tipografia.legenda,
-    textAlign: 'center',
-  },
-  erro: {
-    ...tipografia.corpo,
-    color: cores.erro,
-  },
-  botaoAcao: {
-    backgroundColor: cores.primaria,
-    padding: espaco.md,
-    borderRadius: espaco.sm,
-    alignItems: 'center',
-  },
-  botaoConcluir: {
-    backgroundColor: cores.sucesso,
-    padding: espaco.md,
-    borderRadius: espaco.sm,
-    alignItems: 'center',
-  },
-  botaoDesabilitado: {
-    opacity: 0.4,
-  },
-  pressionado: {
-    opacity: 0.7,
-  },
-  textoBotao: {
-    color: cores.cartao,
-    fontWeight: 'bold',
-  },
-});
+function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+  return StyleSheet.create({
+    tela: {
+      flex: 1,
+      padding: espaco.lg,
+      gap: espaco.md,
+      backgroundColor: cores.fundo,
+    },
+    previa: {
+      width: '100%',
+      aspectRatio: 1,
+      borderRadius: espaco.sm,
+    },
+    previaVazia: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: cores.cartao,
+      borderWidth: 1,
+      borderColor: cores.textoFraco,
+    },
+    textoPreviaVazia: {
+      ...tipografia.legenda,
+      textAlign: 'center',
+    },
+    erro: {
+      ...tipografia.corpo,
+      color: cores.erro,
+    },
+    botaoAcao: {
+      backgroundColor: cores.primaria,
+      padding: espaco.md,
+      borderRadius: espaco.sm,
+      alignItems: 'center',
+    },
+    botaoConcluir: {
+      backgroundColor: cores.sucesso,
+      padding: espaco.md,
+      borderRadius: espaco.sm,
+      alignItems: 'center',
+    },
+    botaoDesabilitado: {
+      opacity: 0.4,
+    },
+    pressionado: {
+      opacity: 0.7,
+    },
+    textoBotao: {
+      color: cores.sobrePrimaria,
+      fontWeight: 'bold',
+    },
+  });
+}

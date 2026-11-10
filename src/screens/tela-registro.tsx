@@ -20,14 +20,15 @@
 //   • Sem salvar na galeria e sem escolher do rolo
 //   • Sem rede — foto vive no cache
 // ============================================================
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Image } from 'expo-image';
 import * as Location from 'expo-location';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 
 import type { Pet } from '../types/pet';
-import { cores, espaco, tipografia } from '../theme';
+import { useTheme } from '../context/theme-context';
+import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
 type TelaRegistroProps = {
   pet: Pet;
@@ -37,6 +38,9 @@ type TelaRegistroProps = {
 
 // Updated by AI.
 export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
+  const { cores, tipografia } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+
   const [local, setLocal] = useState<Pet['local'] | null>(null);
   const [fotoUri, setFotoUri] = useState<string | null>(null);
   const [erro, setErro] = useState('');
@@ -201,32 +205,33 @@ export function TelaRegistro({ pet, onSalvar, onCancelar }: TelaRegistroProps) {
 }
 
 // Updated by AI.
-const styles = StyleSheet.create({
-  tela: {
-    flex: 1,
-    padding: espaco.md,
-    paddingTop: 48,
-    backgroundColor: cores.fundo,
-    gap: espaco.md,
-  },
-  erro: { ...tipografia.corpo, color: cores.erro },
-  secao: { gap: espaco.sm },
-  camera: { flex: 1, borderRadius: espaco.sm },
-  previa: { width: '100%', height: 200, borderRadius: espaco.sm },
-  pressionado: { opacity: 0.7 },
-  botaoAcao: {
-    backgroundColor: cores.primaria,
-    padding: espaco.md,
-    borderRadius: espaco.sm,
-    alignItems: 'center',
-  },
-  botaoCancelar: {
-    backgroundColor: cores.textoFraco,
-    padding: espaco.md,
-    borderRadius: espaco.sm,
-    alignItems: 'center',
-    flex: 1,
-  },
-  textoBotao: { color: cores.cartao, fontWeight: 'bold' },
-  acoes: { flexDirection: 'row', gap: espaco.md },
-});
+function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+  return StyleSheet.create({
+    tela: {
+      flex: 1,
+      padding: espaco.md,
+      backgroundColor: cores.fundo,
+      gap: espaco.md,
+    },
+    erro: { ...tipografia.corpo, color: cores.erro },
+    secao: { gap: espaco.sm },
+    camera: { flex: 1, borderRadius: espaco.sm },
+    previa: { width: '100%', height: 200, borderRadius: espaco.sm },
+    pressionado: { opacity: 0.7 },
+    botaoAcao: {
+      backgroundColor: cores.primaria,
+      padding: espaco.md,
+      borderRadius: espaco.sm,
+      alignItems: 'center',
+    },
+    botaoCancelar: {
+      backgroundColor: cores.textoFraco,
+      padding: espaco.md,
+      borderRadius: espaco.sm,
+      alignItems: 'center',
+      flex: 1,
+    },
+    textoBotao: { color: cores.sobrePrimaria, fontWeight: 'bold' },
+    acoes: { flexDirection: 'row', gap: espaco.md },
+  });
+}

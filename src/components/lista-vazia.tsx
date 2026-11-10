@@ -8,10 +8,14 @@
 // E o texto do estado vazio precisa AJUDAR o usuário:
 //   - primeiro acesso → o que ele pode fazer
 //   - busca sem resultado → o que ele pode tentar
+//
+// Etapa 3: as cores acompanham o tema Claro/Escuro.
 // ============================================================
+import { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import { cores, espaco, tipografia } from '../theme';
+import { useTheme } from '../context/theme-context';
+import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
 // Updated by AI.
 type ListaVaziaProps = {
@@ -21,6 +25,9 @@ type ListaVaziaProps = {
 
 // Updated by AI.
 export function ListaVazia({ termoBusca = '', temPets = false }: ListaVaziaProps) {
+  const { cores, tipografia } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+
   const termo = termoBusca.trim();
   let texto: string;
   if (!temPets) {
@@ -37,14 +44,17 @@ export function ListaVazia({ termoBusca = '', temPets = false }: ListaVaziaProps
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    alignItems: 'center',
-    padding: espaco.xl,
-  },
-  texto: {
-    ...tipografia.corpo,
-    color: cores.textoFraco,
-    textAlign: 'center',
-  },
-});
+// Created by AI.
+function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+  return StyleSheet.create({
+    container: {
+      alignItems: 'center',
+      padding: espaco.xl,
+    },
+    texto: {
+      ...tipografia.corpo,
+      color: cores.textoFraco,
+      textAlign: 'center',
+    },
+  });
+}
