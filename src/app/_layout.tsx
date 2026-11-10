@@ -15,13 +15,14 @@
 // `useEffect`.
 // ============================================================
 import { useEffect, useMemo } from 'react';
-import { Link, Stack, useRouter } from 'expo-router';
+import { Link, Stack, useRouter, useSegments } from 'expo-router';
 import * as Notifications from 'expo-notifications';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { petIdDaNotificacao, prepararCanalNotificacoes } from '../services/notifications';
+import { useAuthStore } from '../store/use-auth-store';
 import { ThemeProvider, useTheme } from '../context/theme-context';
 import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
@@ -46,8 +47,27 @@ export default function LayoutRaiz() {
 // Created by AI.
 function RotasComTema() {
   const router = useRouter();
+  const segments = useSegments();
   const { tema, cores, tipografia } = useTheme();
   const estilos = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+
+  const sessionToken = useAuthStore((estado) => estado.sessionToken);
+  const isHydrated = useAuthStore((estado) => estado.isHydrated);
+
+  // Auth Guard: só decide depois que a sessão persistida foi lida do
+  // disco, evitando piscar a tela de login para quem já está logado.
+  // Created by AI.
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const estaNoGrupoAuth = segments[0] === '(auth)';
+
+    if (!sessionToken && !estaNoGrupoAuth) {
+      router.replace('/(auth)/login');
+    } else if (sessionToken && estaNoGrupoAuth) {
+      router.replace('/(tabs)');
+    }
+  }, [sessionToken, isHydrated, segments, router]);
 
   // Created by AI.
   useEffect(() => {
@@ -74,33 +94,41 @@ function RotasComTema() {
   return (
     <>
       <StatusBar style={tema === 'escuro' ? 'light' : 'dark'} />
-      <Stack
-        screenOptions={{
-          headerStyle: { backgroundColor: cores.cartao },
-          headerTintColor: cores.texto,
-          headerTitleStyle: { color: cores.texto },
-          contentStyle: { backgroundColor: cores.fundo },
-        }}
-      >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="pet/[id]" options={{ title: 'Detalhes do pet' }} />
-        <Stack.Screen
-          name="foto-do-pet"
-          options={{ title: 'Foto do pet', presentation: 'modal' }}
-        />
-        <Stack.Screen
-          name="sobre"
-          options={{
-            title: 'Sobre',
-            // Regra 17: `Link` no JSX para navegação declarativa.
-            headerRight: () => (
-              <Link href="/" style={estilos.linkCabecalho}>
-                Início
-              </Link>
-            ),
+      {!isHydrated ? (
+        <View style={estilos.carregando}>
+          <ActivityIndicator size="large" color={cores.primaria} />
+          <Text style={estilos.textoCarregando}>Carregando sua sessão...</Text>
+        </View>
+      ) : (
+        <Stack
+          screenOptions={{
+            headerStyle: { backgroundColor: cores.cartao },
+            headerTintColor: cores.texto,
+            headerTitleStyle: { color: cores.texto },
+            contentStyle: { backgroundColor: cores.fundo },
           }}
-        />
-      </Stack>
+        >
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen name="pet/[id]" options={{ title: 'Detalhes do pet' }} />
+          <Stack.Screen
+            name="foto-do-pet"
+            options={{ title: 'Foto do pet', presentation: 'modal' }}
+          />
+          <Stack.Screen
+            name="sobre"
+            options={{
+              title: 'Sobre',
+              // Regra 17: `Link` no JSX para navegação declarativa.
+              headerRight: () => (
+                <Link href="/" style={estilos.linkCabecalho}>
+                  Início
+                </Link>
+              ),
+            }}
+          />
+        </Stack>
+      )}
     </>
   );
 }
@@ -114,6 +142,17 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
       fontWeight: '600',
       paddingHorizontal: espaco.md,
       paddingVertical: espaco.xs,
+    },
+    carregando: {
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: cores.fundo,
+      gap: espaco.sm,
+    },
+    textoCarregando: {
+      ...tipografia.corpo,
+      color: cores.textoFraco,
     },
   });
 }

@@ -10,12 +10,16 @@
 // claro/escuro e oferece o controle que alterna a preferência (que é
 // persistida no AsyncStorage pelo ThemeProvider).
 // ============================================================
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import { Link } from 'expo-router';
 
 import { usePetStore } from '../store/use-pet-store';
+import { useAuthStore } from '../store/use-auth-store';
+import { logoutUser } from '../services/auth-service';
+import { mensagemDoErro } from '../lib/erro';
 import { useTheme } from '../context/theme-context';
+import { BotaoAcao } from '../components/botao-acao';
 import { Card } from '../components/card';
 import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
@@ -43,8 +47,12 @@ function Metrica({ rotulo, valor, styles }: MetricaProps & { styles: Estilos }) 
 // Created by AI.
 export function TelaEstatisticas() {
   const pets = usePetStore((estado) => estado.pets);
+  const user = useAuthStore((estado) => estado.user);
   const { tema, cores, tipografia, alternarTema } = useTheme();
   const styles: Estilos = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+
+  const [saindo, setSaindo] = useState(false);
+  const [erroLogout, setErroLogout] = useState('');
 
   const total = pets.length;
   const concluidos = pets.filter((pet) => pet.statusPasseio === 'concluido').length;
@@ -54,6 +62,20 @@ export function TelaEstatisticas() {
   // O status do passeio representa o passeio de hoje: por isso a
   // porcentagem concluída é a fração dos pets já passeados hoje.
   const percentualConcluido = total === 0 ? 0 : Math.round((concluidos / total) * 100);
+
+  // Created by AI.
+  async function sair() {
+    setSaindo(true);
+    setErroLogout('');
+    try {
+      await logoutUser();
+      // O Auth Guard redireciona para o login ao perder o sessionToken.
+    } catch (falha) {
+      setErroLogout(mensagemDoErro(falha, 'Não foi possível sair. Tente novamente.'));
+    } finally {
+      setSaindo(false);
+    }
+  }
 
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
@@ -93,6 +115,19 @@ export function TelaEstatisticas() {
             trackColor={{ false: cores.textoFraco, true: cores.primaria }}
           />
         </View>
+      </Card>
+
+      <Card>
+        <Text style={styles.rotuloSecao}>Conta do tutor</Text>
+        <Text style={tipografia.corpo}>{user?.name ?? 'Tutor'}</Text>
+        <Text style={tipografia.legenda}>{user?.email ?? 'Sessão não identificada'}</Text>
+        {erroLogout !== '' && <Text style={styles.erro}>{erroLogout}</Text>}
+        <BotaoAcao
+          rotulo="Sair da conta"
+          variante="perigo"
+          aoPressionar={() => void sair()}
+          carregando={saindo}
+        />
       </Card>
 
       <Card>
@@ -160,6 +195,10 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
       ...tipografia.corpo,
       color: cores.primaria,
       fontWeight: '600',
+    },
+    erro: {
+      ...tipografia.corpo,
+      color: cores.erro,
     },
   });
 }

@@ -17,6 +17,7 @@ Esta branch contém o ponto de partida para o **Mini-Projeto da Unidade 2 (0,0 a
 - **Apresentação do Mini-Projeto (Slides HTML / PDF):** [`docs/apresentacao-mini-projeto/presentation.pdf`](./docs/apresentacao-mini-projeto/presentation.pdf)
 - **Backend REST fornecido pelo professor (Express + SQLite + JWT):** [`backend/README.md`](./backend/README.md)
 - **Template do Relatório de Uso de IA:** [`docs/relatorio-uso-ia.md`](./docs/relatorio-uso-ia.md)
+- **Passo a passo de teste e checklist:** [`docs/testar_etapas.md`](./docs/testar_etapas.md)
 
 ### Como rodar o Backend e o App
 
@@ -45,6 +46,65 @@ npx expo start
 ```
 
 Abra o app **Expo Go** no celular e escaneie o QR code (ou use um emulador). Requisito: **Node.js 22.11+**.
+
+### Autenticação e backend (Etapa 4)
+
+O app não usa mais dados mockados: login, cadastro e o CRUD de pets conversam com o backend em `./backend`.
+
+1. Copie `.env.example` para `.env` e ajuste `EXPO_PUBLIC_API_URL` conforme o ambiente:
+
+| Ambiente | Valor |
+|---|---|
+| iOS Simulator / Web | `http://localhost:3000` |
+| Android Emulator | `http://10.0.2.2:3000` |
+| Celular físico | `http://SEU_IP_NA_REDE:3000` |
+
+2. Suba o backend (`cd backend && npm install && npm run dev`) e entre com a conta de demonstração `tutor@cesar.school` / `123456`, ou crie uma conta em `/(auth)/signup`.
+
+A sessão (`sessionToken` + usuário) é persistida no `AsyncStorage` pela `useAuthStore`; ao reabrir o app, o Auth Guard do `src/app/_layout.tsx` mantém o tutor logado sem piscar a tela de login.
+
+## Estado atual do desenvolvimento
+
+| Etapa | Escopo | Situação |
+|---|---|---|
+| **1 (Aula 6)** | Expo Router, foto do pet com `expo-image-picker` e rota `/sobre` | ✅ Concluída |
+| **2 (Aula 7)** | Abas, detalhe `/pet/[id]` e notificações locais | ✅ Concluída |
+| **3 (Aula 8)** | Tema claro/escuro, cronômetro de passeio e histórico em SQLite | ✅ Concluída |
+| **4 (Aula 9)** | Autenticação JWT, Auth Guard e CRUD de pets no backend | ✅ Concluída |
+| **5 (Aula 10)** | GlueStack/NativeWind, `@expo/ui`, OTA e EAS Build | ⏳ Pendente |
+
+> 🧪 **Como validar:** o passo a passo de teste e o checklist completo estão em [`docs/testar_etapas.md`](./docs/testar_etapas.md).
+
+### O que já está implementado
+
+**Etapa 1 — navegação e foto**
+- `package.json` com `"main": "expo-router/entry"`; `App.tsx` e `index.ts` removidos.
+- Rotas em `src/app/`: `_layout.tsx`, `sobre.tsx` e `foto-do-pet.tsx`.
+- Foto da galeria ou da câmera com recorte `1:1`, `quality: 0.8`, `mediaTypes: ['images']`, cancelamento tratado e mensagens distintas para permissão **negada** e **bloqueada**.
+- `app.json` com `scheme: petroutine` e plugin do `expo-image-picker` (sem microfone).
+
+**Etapa 2 — abas, detalhe e notificações**
+- Abas **Meus Pets** e **Estatísticas** com ícones do `@expo/vector-icons`.
+- Lista em `SectionList` agrupada por status, com busca por nome, cadastro em modal e `ListEmptyComponent` que diferencia conta sem pets de busca sem resultado.
+- Rota dinâmica `src/app/pet/[id].tsx` com todos os dados do pet, alternância de passeio, registro com GPS/câmera, troca de foto e exclusão.
+- `expo-notifications`: handler em foreground, canal Android, lembrete agendado para **5 s** com `{ petId }` e listeners com cleanup que abrem `/pet/[id]` ao tocar na notificação.
+
+**Etapa 3 — tema, hooks e persistência local**
+- `ThemeProvider` + `useTheme()` (`src/context/theme-context.tsx`) com paletas clara/escura em `src/theme.ts`, aplicadas em todas as telas, abas, cabeçalhos e status bar; preferência persistida em `@petroutine:theme`.
+- `src/components/walk-timer.tsx`: cronômetro com `useEffect`, atualização funcional e `clearInterval` no cleanup.
+- `src/services/passeio-db.ts`: banco `petroutine.db`, tabela `passeio_logs` (`id`, `petId`, `seconds`, `createdAt`) com placeholders `?`; histórico listado no detalhe do pet.
+- Controle de tema na aba Estatísticas.
+
+**Etapa 4 — autenticação e backend**
+- `useAuthStore` persistida em `@petroutine:auth-session` com `sessionToken`, `user` e `isHydrated`.
+- `apiFetch` centralizado com `BASE_URL`, `Authorization: Bearer <token>`, leitura de JSON/texto e logout automático em `401/403`.
+- Telas de **Login** e **Cadastro** com validação, loading e mensagens de erro; **Sair da conta** em Estatísticas/Perfil.
+- Auth Guard no layout raiz: sem token vai para `/(auth)/login`; com token em `(auth)` vai para `/(tabs)`.
+- `usePetStore` 100% REST: `GET`, `POST`, `PATCH` (toggle/passeio), `PUT` e `DELETE` em `/pets`, com estados de carregamento e erro na lista.
+
+**Regras da disciplina**
+- Sem `any`, sem `JSX.Element`, sem `margin` entre irmãos, sombra com `boxShadow`, `gap` para espaçamento, `renderItem` memoizado, listas com estado vazio, listeners e intervalos com cleanup e `expo-image` com `contentFit` explícito.
+- `npm run typecheck` passa sem erros.
 
 ## Práticas da Aula 1
 

@@ -48,6 +48,11 @@ export interface Pet {
   fotoUri?: string;
 }
 
+// Created by AI.
+// Etapa 4: formato devolvido pelo backend, onde `criadoEm` chega como
+// string ISO. A conversão para `Date` acontece na fronteira da store.
+export type PetDoServidor = Omit<Pet, 'criadoEm'> & { criadoEm: string };
+
 // ============================================================
 // TODO P1.1.3 — Tipos DERIVADOS. Use utility types; não redigite campos.
 //   NovoPet         → o que o formulário de cadastro envia
