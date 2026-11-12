@@ -56,7 +56,7 @@ export function TelaLogin() {
 
   return (
     <LayoutAutenticacao
-      titulo="Entrar"
+      titulo=""
       subtitulo="Acesse sua conta para cuidar da rotina dos seus pets."
       erro={erro}
       rodape={

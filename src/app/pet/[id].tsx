@@ -13,7 +13,8 @@ import { useLocalSearchParams } from 'expo-router';
 import { TelaPetDetalhe } from '../../screens/tela-pet-detalhe';
 
 // Created by AI.
+// Updated by AI.
 export default function RotaPet() {
-  const { id } = useLocalSearchParams<{ id?: string }>();
-  return <TelaPetDetalhe petId={id} />;
+  const { id, registrar } = useLocalSearchParams<{ id?: string; registrar?: string }>();
+  return <TelaPetDetalhe petId={id} iniciarRegistro={registrar === 'true'} />;
 }

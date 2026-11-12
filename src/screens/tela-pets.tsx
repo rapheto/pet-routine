@@ -70,10 +70,10 @@ export function TelaPets() {
     [router],
   );
 
-  // Created by AI.
-  const abrirFoto = useCallback(
+  // Updated by AI.
+  const abrirRegistroPasseio = useCallback(
     (id: string) => {
-      router.push({ pathname: '/foto-do-pet', params: { petId: id } });
+      router.push({ pathname: '/pet/[id]', params: { id, registrar: 'true' } });
     },
     [router],
   );
@@ -127,10 +127,10 @@ export function TelaPets() {
         pet={item}
         onAbrir={abrirDetalhe}
         onRemover={removerPet}
-        onEscolherFoto={abrirFoto}
+        onRegistrarPasseio={abrirRegistroPasseio}
       />
     ),
-    [abrirDetalhe, removerPet, abrirFoto],
+    [abrirDetalhe, removerPet, abrirRegistroPasseio],
   );
 
   // Created by AI.
