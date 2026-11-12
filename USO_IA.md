@@ -880,4 +880,30 @@ integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Documentar evidências visuais do redesign
 - **Etapa da atividade:** Atualização da documentação da interface
 - **Tipo de contribuição da IA:** Organização de imagens fornecidas e edição da seção de capturas do README
-- **Confirmação de revisão crítica e responsabilidade humana:** Rrevisão por Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Revisão por Raphael Miranda
+
+## Registro da atividade 0031
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
+VS Code (versão não informada pelo ambiente)** nesta atividade: inclusão no
+repositório da imagem `Code_Generated_Image.png`, solicitada pelo usuário.
+
+A ferramenta foi utilizada com a finalidade de **incluir no commit o arquivo
+de imagem que permanecia fora do controle de versão**, durante a etapa de
+**preparação do PR**, para realizar a seguinte contribuição: **verificar o
+arquivo, confirmar que é idêntico ao logo já usado no app e adicioná-lo ao
+repositório pelo nome solicitado**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `Code_Generated_Image.png`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Adiciona a imagem solicitada ao repositório; seu conteúdo é idêntico ao asset `assets/pet-routine-logo.png`.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Incluir o arquivo de imagem solicitado no repositório
+- **Etapa da atividade:** Preparação do PR
+- **Tipo de contribuição da IA:** Verificação de identidade da imagem e preparação do registro para commit
+- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
