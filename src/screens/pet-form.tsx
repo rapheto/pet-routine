@@ -28,43 +28,33 @@ import { criarTipografia, espaco, paletaClara } from '../theme';
 const cores = paletaClara;
 const tipografia = criarTipografia(paletaClara);
 
+// Updated by AI.
 export default function PetForm() {
   const [nome, setNome] = useState('');
   const [raca, setRaca] = useState('');
   const [alertaVacina, setAlertaVacina] = useState(false);
 
-  // TODO P2.24: substitua `true` pela condição correta.
-  //   O nome está vazio quando nome.trim() === ''.
   const nomeVazio = nome.trim() === '';
 
   return (
     <ScrollView
       style={styles.tela}
-      // TODO P2.25: por que o padding fica em contentContainerStyle e não em style?
-      //   Responda em um comentário e confirme que está na prop certa.
-      // Resposta: O padding deve ficar em contentContainerStyle para aplicar no conteúdo interno, permitindo que a rolagem aconteça corretamente sem cortar o início ou o final.
+      // O padding fica em contentContainerStyle para acompanhar todo o conteúdo rolável.
       contentContainerStyle={styles.conteudo}
     >
       <Text style={styles.rotulo}>Nome do pet</Text>
-      {/* TODO P2.26: adicione value={nome} e onChangeText={setNome} ao TextInput.
-          TODO P2.27: troque style por array de estilos com inputInvalido quando nomeVazio.
-            Exemplo: style={[styles.input, nomeVazio && styles.inputInvalido]} */}
       <TextInput style={[styles.input, nomeVazio && styles.inputInvalido]} placeholder="Ex: Rex" value={nome} onChangeText={setNome} />
 
       <Text style={styles.rotulo}>Raça</Text>
-      {/* TODO P2.28: segundo TextInput controlado (value={raca} + onChangeText={setRaca}) */}
       <TextInput style={styles.input} placeholder="Ex: Golden Retriever" value={raca} onChangeText={setRaca} />
 
       <View style={styles.linha}>
         <Text style={styles.rotulo}>Alerta de vacina</Text>
-        {/* TODO P2.29: Switch controlado (value={alertaVacina} + onValueChange={setAlertaVacina}) */}
         <Switch value={alertaVacina} onValueChange={setAlertaVacina} />
       </View>
 
       {/* O Button não aceita style — a View estilizada ao redor controla a aparência */}
       <View style={styles.areaBotao}>
-        {/* TODO P2.30: adicione disabled={nomeVazio} ao Button.
-            TODO P2.31: adicione color={cores.primaria} ao Button. */}
         <Button title="Salvar" onPress={() => {}} disabled={nomeVazio} color={cores.primaria} />
       </View>
     </ScrollView>
@@ -75,40 +65,28 @@ export default function PetForm() {
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
-    // TODO P2.32: backgroundColor dos tokens (cores.fundo)
     backgroundColor: cores.fundo,
   },
   conteudo: {
-    // TODO P2.33: padding e gap — daqui saem TODOS os espaçamentos do formulário.
-    //   Se você precisar de margin em algum filho, algo está errado.
-    //   Use espaco.md para padding e espaco.md para gap (ou a escala que escolheu).
     padding: espaco.md,
     gap: espaco.md,
   },
   input: {
     borderWidth: 1,
-    // TODO P2.34: borderColor, borderRadius, padding e fontSize — tudo dos tokens.
-    //   Exemplo: borderColor: cores.textoFraco, padding: espaco.sm
     borderColor: cores.textoFraco,
     borderRadius: espaco.sm,
     padding: espaco.sm,
     fontSize: tipografia.corpo.fontSize,
   },
   inputInvalido: {
-    // TODO P2.35: só o que MUDA em relação ao input normal.
-    //   Não repita borderWidth, padding etc. — o array de estilos já herda.
-    //   Exemplo: borderColor: cores.erro
     borderColor: cores.erro,
   },
   linha: {
-    // TODO P2.36: flexDirection 'row', justifyContent 'space-between',
-    //   alignItems 'center' — os dois filhos ficam nas pontas, alinhados.
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   rotulo: {
-    // TODO P2.37: use um estilo de tipografia (ex: tipografia.corpo ou equivalente)
     ...tipografia.corpo,
   },
   areaBotao: {

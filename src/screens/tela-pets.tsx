@@ -1,13 +1,13 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Tela de lista de pets (aba "Meus Pets")
+// Etapa 5 — Tela "Meus Pets" (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Etapa 1: saiu de App.tsx e virou tela; a navegação é do Expo Router.
-// Etapa 2: o estado vem da store global e o toque no card abre
-// `/pet/[id]`. O cadastro rápido acontece em um modal.
-// Etapa 3: as cores acompanham o tema Claro/Escuro (useTheme).
+// Reformulação: cabeçalho com título e contagem, busca com campo do
+// kit de UI, CTA de cadastro e cabeçalhos de seção com badge de
+// quantidade. Estados de carregamento, erro e vazio são distintos.
 //
 // Restrições:
 //   • Nenhuma ScrollView envolvendo a lista
@@ -15,15 +15,7 @@
 //   • Agrupamento e filtro moram em src/lib/, não aqui
 // ============================================================
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import {
-  ActivityIndicator,
-  Pressable,
-  SectionList,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from 'react-native';
+import { ActivityIndicator, Alert, SectionList, StyleSheet, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -31,17 +23,26 @@ import type { NovoPet, Pet } from '../types/pet';
 import { agrupar, filtrarPorNome, type Secao } from '../lib/agrupar';
 import { usePetStore } from '../store/use-pet-store';
 import { useTheme } from '../context/theme-context';
+import { Badge } from '../components/badge';
+import { Button } from '../components/botao';
+import { Card } from '../components/card';
+import { Input } from '../components/campo-texto';
 import { FormularioPet } from '../components/formulario-pet';
+import { Heading } from '../components/heading';
+import { HStack } from '../components/hstack';
 import { ItemPet } from '../components/item-pet';
 import { ListaVazia } from '../components/lista-vazia';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { Text } from '../components/texto';
+import { VStack } from '../components/vstack';
+import { espaco, type PaletaCores } from '../theme';
 
 // Created by AI.
+// Updated by AI.
 export function TelaPets() {
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const estilos = useMemo(() => criarEstilos(cores), [cores]);
 
   const pets = usePetStore((estado) => estado.pets);
   const fetchPets = usePetStore((estado) => estado.fetchPets);
@@ -78,13 +79,31 @@ export function TelaPets() {
   );
 
   // Created by AI.
+  // Updated by AI.
   const removerPet = useCallback(
     (id: string) => {
-      void removePet(id);
+      const pet = pets.find((item) => item.id === id);
+      if (!pet) return;
+
+      Alert.alert(
+        'Excluir pet',
+        `Tem certeza de que deseja excluir ${pet.nome}? Esta ação não pode ser desfeita.`,
+        [
+          { text: 'Não', style: 'cancel' },
+          {
+            text: 'Sim',
+            style: 'destructive',
+            onPress: () => {
+              void removePet(id);
+            },
+          },
+        ],
+      );
     },
-    [removePet],
+    [pets, removePet],
   );
 
+  // Created by AI.
   async function recarregar() {
     setAtualizando(true);
     try {
@@ -114,49 +133,90 @@ export function TelaPets() {
     [abrirDetalhe, removerPet, abrirFoto],
   );
 
+  // Created by AI.
+  // Updated by AI.
+  const renderCabecalhoSecao = useCallback(
+    ({ section }: { section: Secao }) => (
+      <HStack className="justify-between px-4 py-2.5" style={estilos.cabecalhoSecao}>
+        <Heading nivel="secao">{section.title}</Heading>
+        <Badge texto={String(section.data.length)} tom="azul" />
+      </HStack>
+    ),
+    [estilos.cabecalhoSecao],
+  );
+
   const secoes = agrupar(filtrarPorNome(pets, busca));
   const carregandoInicial = isLoading && pets.length === 0;
 
   return (
-    <View style={styles.tela}>
-      {erro !== null && <Text style={styles.erro}>{erro}</Text>}
+    <View className="flex-1" style={[estilos.tela, { paddingTop: insets.top }]}>
+      {erro !== null && (
+        <VStack className="px-4 pt-3">
+          <Card className="border-2" style={estilos.cartaoErro}>
+            <HStack className="justify-between gap-3">
+              <Text className="flex-1 text-sm" tom="sobreRosa">
+                {erro}
+              </Text>
+              <Button
+                rotulo="Tentar"
+                variante="fantasma"
+                aoPressionar={() => void fetchPets()}
+                compacto
+              />
+            </HStack>
+          </Card>
+        </VStack>
+      )}
 
       {carregandoInicial ? (
-        <View style={styles.carregando}>
+        <VStack className="flex-1 items-center justify-center gap-3">
           <ActivityIndicator size="large" color={cores.primaria} />
-          <Text style={styles.textoCarregando}>Carregando seus pets...</Text>
-        </View>
+          <Text className="text-base" tom="fraco">
+            Carregando seus pets...
+          </Text>
+        </VStack>
       ) : (
         <SectionList<Pet, Secao>
           sections={secoes}
           keyExtractor={(item) => item.id}
           renderItem={renderItem}
-          renderSectionHeader={({ section }) => (
-            <Text style={styles.cabecalhoSecao}>{section.title}</Text>
-          )}
+          renderSectionHeader={renderCabecalhoSecao}
           stickySectionHeadersEnabled
-          ListEmptyComponent={<ListaVazia termoBusca={busca} temPets={pets.length > 0} />}
+          ListEmptyComponent={
+            <ListaVazia
+              termoBusca={busca}
+              temPets={pets.length > 0}
+              aoCadastrar={() => setFormularioAberto(true)}
+            />
+          }
           refreshing={atualizando}
           onRefresh={recarregar}
           ListHeaderComponent={
-            <View style={styles.cabecalho}>
-              <TextInput
-                value={busca}
-                onChangeText={setBusca}
+            <VStack className="gap-3 px-4 pb-2">
+              <VStack className="gap-1">
+                <Heading nivel="pagina">Meus Pets</Heading>
+                <Text className="text-sm" tom="fraco">
+                  {pets.length === 0
+                    ? 'Sua rotina pet começa aqui.'
+                    : `${pets.length} ${pets.length === 1 ? 'pet cadastrado' : 'pets cadastrados'} · ${secoes.length} ${secoes.length === 1 ? 'grupo' : 'grupos'} de status`}
+                </Text>
+              </VStack>
+
+              <Input
+                valor={busca}
+                aoMudar={setBusca}
                 placeholder="Buscar pet por nome..."
-                placeholderTextColor={cores.textoFraco}
-                style={styles.busca}
+                autoCapitalize="words"
               />
-              <Pressable
-                onPress={() => setFormularioAberto(true)}
-                accessibilityRole="button"
-                style={({ pressed }) => [styles.botaoNovoPet, pressed && styles.pressionado]}
-              >
-                <Text style={styles.textoBotao}>Cadastrar pet</Text>
-              </Pressable>
-            </View>
+
+              <Button
+                rotulo="Cadastrar pet"
+                aoPressionar={() => setFormularioAberto(true)}
+                rotuloAcessivel="Cadastrar um novo pet"
+              />
+            </VStack>
           }
-          contentContainerStyle={[styles.conteudo, { paddingBottom: insets.bottom + espaco.lg }]}
+          contentContainerStyle={[estilos.conteudo, { paddingBottom: insets.bottom + espaco.lg }]}
         />
       )}
 
@@ -169,65 +229,24 @@ export function TelaPets() {
   );
 }
 
-// Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+// Updated by AI.
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     tela: {
-      flex: 1,
       backgroundColor: cores.fundo,
-    },
-    cabecalho: {
-      paddingHorizontal: espaco.md,
-      paddingBottom: espaco.sm,
-      gap: espaco.sm,
     },
     conteudo: {
       gap: espaco.sm,
-      paddingHorizontal: espaco.md,
+      paddingTop: espaco.sm,
     },
     cabecalhoSecao: {
-      ...tipografia.titulo,
       backgroundColor: cores.fundo,
-      paddingVertical: espaco.sm,
-      paddingHorizontal: espaco.md,
+      borderBottomWidth: 1,
+      borderBottomColor: cores.borda,
     },
-    busca: {
-      borderWidth: 1,
-      borderColor: cores.textoFraco,
-      borderRadius: espaco.sm,
-      padding: espaco.sm,
-      fontSize: tipografia.corpo.fontSize,
-      backgroundColor: cores.cartao,
-      color: cores.texto,
-    },
-    botaoNovoPet: {
-      backgroundColor: cores.primaria,
-      padding: espaco.sm,
-      borderRadius: espaco.sm,
-      alignItems: 'center',
-    },
-    textoBotao: {
-      color: cores.sobrePrimaria,
-      fontWeight: 'bold',
-    },
-    erro: {
-      ...tipografia.corpo,
-      color: cores.erro,
-      paddingHorizontal: espaco.md,
-      paddingBottom: espaco.sm,
-    },
-    carregando: {
-      flex: 1,
-      alignItems: 'center',
-      justifyContent: 'center',
-      gap: espaco.sm,
-    },
-    textoCarregando: {
-      ...tipografia.corpo,
-      color: cores.textoFraco,
-    },
-    pressionado: {
-      opacity: 0.7,
+    cartaoErro: {
+      borderColor: cores.erro,
+      backgroundColor: cores.rosa,
     },
   });
 }

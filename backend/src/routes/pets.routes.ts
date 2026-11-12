@@ -9,36 +9,30 @@ import {
   rowToPetDTO,
   seedPetsForUser,
 } from '../db.js';
-import type { EspeciePet, LocalPasseio, PortePet, StatusPasseio } from '../types.js';
+import { isRecord } from '../request-body.js';
+import type { EspeciePet, PortePet, StatusPasseio } from '../types.js';
 
 export const petsRouter = Router();
 
 petsRouter.use(authMiddleware);
 
-const ESPECIES_VALIDAS: ReadonlySet<EspeciePet> = new Set(['cachorro', 'gato', 'ave', 'outro']);
-const PORTES_VALIDOS: ReadonlySet<PortePet> = new Set(['pequeno', 'medio', 'grande']);
-const STATUS_VALIDOS: ReadonlySet<StatusPasseio> = new Set(['pendente', 'concluido', 'cancelado']);
+const ESPECIES_VALIDAS: ReadonlySet<string> = new Set(['cachorro', 'gato', 'ave', 'outro']);
+const PORTES_VALIDOS: ReadonlySet<string> = new Set(['pequeno', 'medio', 'grande']);
+const STATUS_VALIDOS: ReadonlySet<string> = new Set(['pendente', 'concluido', 'cancelado']);
 
+// Updated by AI.
 function isEspeciePet(val: unknown): val is EspeciePet {
-  return typeof val === 'string' && ESPECIES_VALIDAS.has(val as EspeciePet);
+  return typeof val === 'string' && ESPECIES_VALIDAS.has(val);
 }
 
+// Updated by AI.
 function isPortePet(val: unknown): val is PortePet {
-  return typeof val === 'string' && PORTES_VALIDOS.has(val as PortePet);
+  return typeof val === 'string' && PORTES_VALIDOS.has(val);
 }
 
+// Updated by AI.
 function isStatusPasseio(val: unknown): val is StatusPasseio {
-  return typeof val === 'string' && STATUS_VALIDOS.has(val as StatusPasseio);
-}
-
-interface PetPayload {
-  nome?: string;
-  especie?: EspeciePet;
-  porte?: PortePet;
-  statusPasseio?: StatusPasseio;
-  idadeMeses?: number;
-  local?: LocalPasseio | null;
-  fotoUri?: string | null;
+  return typeof val === 'string' && STATUS_VALIDOS.has(val);
 }
 
 // GET /pets — Lista todos os pets do tutor autenticado
@@ -87,10 +81,11 @@ petsRouter.get('/:id', (req: AuthenticatedRequest, res: Response) => {
 });
 
 // POST /pets — Cadastra um novo pet para o tutor autenticado
+// Updated by AI.
 petsRouter.post('/', (req: AuthenticatedRequest, res: Response) => {
   try {
     const userId = req.user!.id;
-    const body = req.body as PetPayload;
+    const body = isRecord(req.body) ? req.body : {};
 
     const nome = typeof body.nome === 'string' ? body.nome.trim() : '';
     if (!nome) {
@@ -110,9 +105,11 @@ petsRouter.post('/', (req: AuthenticatedRequest, res: Response) => {
 
     const id = randomUUID();
     const criadoEm = new Date().toISOString();
-    const latitude = body.local?.latitude ?? null;
-    const longitude = body.local?.longitude ?? null;
-    const precisaoMetros = body.local?.precisaoMetros ?? null;
+    const local = isRecord(body.local) ? body.local : {};
+    const latitude = typeof local.latitude === 'number' ? local.latitude : null;
+    const longitude = typeof local.longitude === 'number' ? local.longitude : null;
+    const precisaoMetros =
+      typeof local.precisaoMetros === 'number' ? local.precisaoMetros : null;
     const fotoUri = typeof body.fotoUri === 'string' && body.fotoUri.trim() !== '' ? body.fotoUri.trim() : null;
 
     db.prepare(`
@@ -143,11 +140,12 @@ petsRouter.post('/', (req: AuthenticatedRequest, res: Response) => {
 });
 
 // Handler compartilhado para atualizar/alternar passeio ou dados do pet
+// Updated by AI.
 function updatePetHandler(req: AuthenticatedRequest, res: Response, toggleDefault: boolean): void {
   try {
     const userId = req.user!.id;
     const id = String(req.params.id);
-    const body = (req.body ?? {}) as PetPayload;
+    const body = isRecord(req.body) ? req.body : {};
 
     const existing = findPetById(id);
 
@@ -177,23 +175,24 @@ function updatePetHandler(req: AuthenticatedRequest, res: Response, toggleDefaul
       statusPasseio = existing.statusPasseio === 'concluido' ? 'pendente' : 'concluido';
     }
 
+    const local = isRecord(body.local) ? body.local : undefined;
     const latitude =
       body.local === null
         ? null
-        : typeof body.local?.latitude === 'number'
-          ? body.local.latitude
+        : typeof local?.latitude === 'number'
+          ? local.latitude
           : existing.latitude;
     const longitude =
       body.local === null
         ? null
-        : typeof body.local?.longitude === 'number'
-          ? body.local.longitude
+        : typeof local?.longitude === 'number'
+          ? local.longitude
           : existing.longitude;
     const precisaoMetros =
       body.local === null
         ? null
-        : typeof body.local?.precisaoMetros === 'number'
-          ? body.local.precisaoMetros
+        : typeof local?.precisaoMetros === 'number'
+          ? local.precisaoMetros
           : existing.precisaoMetros;
 
     const fotoUri =
@@ -236,8 +235,9 @@ petsRouter.patch('/:id/toggle', (req: AuthenticatedRequest, res: Response) => {
 });
 
 // PATCH /pets/:id/passeio — Registra passeio com local/fotoUri opcionais e marca como concluído por padrão
+// Updated by AI.
 petsRouter.patch('/:id/passeio', (req: AuthenticatedRequest, res: Response) => {
-  const body = (req.body ?? {}) as PetPayload;
+  const body = isRecord(req.body) ? req.body : {};
   if (!body.statusPasseio) {
     req.body = { ...body, statusPasseio: 'concluido' };
   }
