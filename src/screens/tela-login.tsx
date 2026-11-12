@@ -1,7 +1,8 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 4 — Tela de Login integrada ao backend
+// Etapa 5 — Tela de Login (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // A ação chama `loginUser`; em caso de sucesso a sessão persistida é
@@ -9,21 +10,25 @@
 // Erros do backend (credenciais inválidas, rede) aparecem na tela.
 // ============================================================
 import { useMemo, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Link } from 'expo-router';
 
 import { loginUser } from '../services/auth-service';
 import { mensagemDoErro } from '../lib/erro';
 import { useTheme } from '../context/theme-context';
-import { BotaoAcao } from '../components/botao-acao';
-import { CampoTexto } from '../components/campo-texto';
+import { Button } from '../components/botao';
+import { Card } from '../components/card';
+import { Input } from '../components/campo-texto';
 import { LayoutAutenticacao } from '../components/layout-autenticacao';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { Text } from '../components/texto';
+import { VStack } from '../components/vstack';
+import { espaco, type PaletaCores } from '../theme';
 
 // Created by AI.
+// Updated by AI.
 export function TelaLogin() {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores), [cores]);
 
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
@@ -59,57 +64,55 @@ export function TelaLogin() {
           <Link href="/(auth)/signup" style={styles.link}>
             Ainda não tem conta? Criar conta
           </Link>
-          <View style={styles.dica}>
-            <Text style={styles.textoDica}>Conta de demonstração</Text>
-            <Text style={styles.textoDica}>tutor@cesar.school · senha 123456</Text>
-          </View>
+          <Card className="w-full items-center" style={styles.cartaoDemo}>
+            <Text className="text-xs font-semibold uppercase" tom="sobreAzul">
+              Conta de demonstração
+            </Text>
+            <Text className="text-sm" tom="sobreAzul">
+              tutor@cesar.school · senha 123456
+            </Text>
+          </Card>
         </>
       }
     >
-      <CampoTexto
-        rotulo="E-mail"
-        valor={email}
-        aoMudar={setEmail}
-        placeholder="voce@exemplo.com"
-        tipoTeclado="email-address"
-        autoComplete="email"
-      />
-      <CampoTexto
-        rotulo="Senha"
-        valor={senha}
-        aoMudar={setSenha}
-        placeholder="Sua senha"
-        seguro
-        autoComplete="current-password"
-      />
-      <BotaoAcao
-        rotulo="Entrar"
-        aoPressionar={() => void entrar()}
-        carregando={carregando}
-      />
+      <VStack className="gap-4">
+        <Input
+          rotulo="E-mail"
+          valor={email}
+          aoMudar={setEmail}
+          placeholder="voce@exemplo.com"
+          tipoTeclado="email-address"
+          autoComplete="email"
+        />
+        <Input
+          rotulo="Senha"
+          valor={senha}
+          aoMudar={setSenha}
+          placeholder="Sua senha"
+          seguro
+          autoComplete="current-password"
+        />
+        <Button
+          rotulo={carregando ? 'Entrando...' : 'Entrar'}
+          aoPressionar={() => void entrar()}
+          carregando={carregando}
+        />
+      </VStack>
     </LayoutAutenticacao>
   );
 }
 
 // Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     link: {
-      ...tipografia.corpo,
-      color: cores.primaria,
+      color: cores.primariaForte,
       fontWeight: '600',
       paddingVertical: espaco.xs,
     },
-    dica: {
-      padding: espaco.sm,
-      borderRadius: espaco.sm,
-      backgroundColor: cores.destaqueSuave,
-      alignItems: 'center',
-      gap: espaco.xs,
-    },
-    textoDica: {
-      ...tipografia.legenda,
-      color: cores.texto,
+    cartaoDemo: {
+      backgroundColor: cores.azul,
+      borderColor: cores.azul,
     },
   });
 }

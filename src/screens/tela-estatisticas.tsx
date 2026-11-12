@@ -1,58 +1,87 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 2 — Tela de Estatísticas e Perfil
+// Etapa 5 — Tela de Estatísticas (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Contadores calculados em tempo real a partir da store global.
+// Reformulação: métricas em grade 2×2, barra de progresso do dia,
+// controles nativos (@expo/ui) e verificação de atualização OTA.
 //
-// Etapa 3: a tela consome o contexto de tema, aplica as cores no modo
-// claro/escuro e oferece o controle que alterna a preferência (que é
-// persistida no AsyncStorage pelo ThemeProvider).
+// Contadores calculados em tempo real a partir da store global.
+// Conta, tema, "Sobre" e logout passaram para a aba Configurações.
 // ============================================================
-import { useMemo, useState } from 'react';
-import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
-import { Link } from 'expo-router';
+import { useMemo } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { usePetStore } from '../store/use-pet-store';
 import { useAuthStore } from '../store/use-auth-store';
-import { logoutUser } from '../services/auth-service';
-import { mensagemDoErro } from '../lib/erro';
 import { useTheme } from '../context/theme-context';
-import { BotaoAcao } from '../components/botao-acao';
 import { Card } from '../components/card';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { Heading } from '../components/heading';
+import { HStack } from '../components/hstack';
+import { OtaStatusCard } from '../components/ota-status-card';
+import { Text } from '../components/texto';
+import { VStack } from '../components/vstack';
+import { espaco, type PaletaCores } from '../theme';
 
 // Created by AI.
+// Updated by AI.
+type TomMetrica = 'azul' | 'verde' | 'ambar' | 'rosa';
+
+// Created by AI.
+// Updated by AI.
 type MetricaProps = {
   rotulo: string;
   valor: string;
+  tom: TomMetrica;
 };
 
 // Created by AI.
-type Estilos = ReturnType<typeof criarEstilos>;
+// Updated by AI.
+// Cada métrica usa um pastel da paleta e o tom escuro correspondente,
+// então o número (concluídos, pendentes…) fica legível e colorido sem
+// sair da identidade visual.
+const ESTILO_DO_TOM: Record<
+  TomMetrica,
+  { fundo: keyof PaletaCores; texto: 'sobreAzul' | 'sobreVerde' | 'sobreAmbar' | 'sobreRosa' }
+> = {
+  azul: { fundo: 'azul', texto: 'sobreAzul' },
+  verde: { fundo: 'verde', texto: 'sobreVerde' },
+  ambar: { fundo: 'ambar', texto: 'sobreAmbar' },
+  rosa: { fundo: 'rosa', texto: 'sobreRosa' },
+};
 
 // Created by AI.
-function Metrica({ rotulo, valor, styles }: MetricaProps & { styles: Estilos }) {
-  const { tipografia } = useTheme();
+// Updated by AI.
+function Metrica({ rotulo, valor, tom }: MetricaProps) {
+  const { cores } = useTheme();
+  const receita = ESTILO_DO_TOM[tom];
 
   return (
-    <View style={styles.metrica}>
-      <Text style={styles.valorMetrica}>{valor}</Text>
-      <Text style={tipografia.legenda}>{rotulo}</Text>
-    </View>
+    <VStack
+      className="flex-1 items-center gap-1 rounded-xl py-3"
+      style={{ backgroundColor: cores[receita.fundo] }}
+    >
+      <Text className="text-2xl font-bold" tom={receita.texto}>
+        {valor}
+      </Text>
+      <Text className="text-xs font-semibold" tom={receita.texto}>
+        {rotulo}
+      </Text>
+    </VStack>
   );
 }
 
 // Created by AI.
+// Updated by AI.
 export function TelaEstatisticas() {
+  const insets = useSafeAreaInsets();
   const pets = usePetStore((estado) => estado.pets);
   const user = useAuthStore((estado) => estado.user);
-  const { tema, cores, tipografia, alternarTema } = useTheme();
-  const styles: Estilos = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
-
-  const [saindo, setSaindo] = useState(false);
-  const [erroLogout, setErroLogout] = useState('');
+  const { cores } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores), [cores]);
 
   const total = pets.length;
   const concluidos = pets.filter((pet) => pet.statusPasseio === 'concluido').length;
@@ -63,89 +92,54 @@ export function TelaEstatisticas() {
   // porcentagem concluída é a fração dos pets já passeados hoje.
   const percentualConcluido = total === 0 ? 0 : Math.round((concluidos / total) * 100);
 
-  // Created by AI.
-  async function sair() {
-    setSaindo(true);
-    setErroLogout('');
-    try {
-      await logoutUser();
-      // O Auth Guard redireciona para o login ao perder o sessionToken.
-    } catch (falha) {
-      setErroLogout(mensagemDoErro(falha, 'Não foi possível sair. Tente novamente.'));
-    } finally {
-      setSaindo(false);
-    }
-  }
-
   return (
-    <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
+    <ScrollView
+      style={[styles.tela, { paddingTop: insets.top }]}
+      contentContainerStyle={styles.conteudo}
+    >
+      <VStack className="gap-1">
+        <Heading nivel="pagina">Estatísticas</Heading>
+        <Text className="text-sm" tom="fraco">
+          Olá, {user?.name ?? 'tutor'}! Acompanhe a rotina dos seus pets.
+        </Text>
+      </VStack>
+
       <Card>
-        <Text style={tipografia.titulo}>Resumo da rotina</Text>
-        <View style={styles.linhaMetricas}>
-          <Metrica rotulo="Pets" valor={String(total)} styles={styles} />
-          <Metrica rotulo="Concluídos" valor={String(concluidos)} styles={styles} />
-        </View>
-        <View style={styles.linhaMetricas}>
-          <Metrica rotulo="Pendentes" valor={String(pendentes)} styles={styles} />
-          <Metrica rotulo="Cancelados" valor={String(cancelados)} styles={styles} />
-        </View>
+        <Heading nivel="secao">Resumo da rotina</Heading>
+        <HStack className="gap-2">
+          <Metrica rotulo="Pets" valor={String(total)} tom="azul" />
+          <Metrica rotulo="Concluídos" valor={String(concluidos)} tom="verde" />
+        </HStack>
+        <HStack className="gap-2">
+          <Metrica rotulo="Pendentes" valor={String(pendentes)} tom="ambar" />
+          <Metrica rotulo="Cancelados" valor={String(cancelados)} tom="rosa" />
+        </HStack>
       </Card>
 
       <Card destacado>
-        <Text style={styles.rotuloSecao}>Passeios concluídos hoje</Text>
-        <Text style={styles.percentual}>{percentualConcluido}%</Text>
-        <Text style={tipografia.legenda}>
-          {concluidos} de {total} {total === 1 ? 'pet' : 'pets'} já passearam hoje.
-        </Text>
+        <Text className="text-sm font-semibold">Passeios concluídos hoje</Text>
+        <HStack className="gap-2">
+          <Text className="text-4xl font-bold" tom="sucesso">
+            {percentualConcluido}%
+          </Text>
+          <Text className="text-xs" tom="fraco">
+            {concluidos} de {total} {total === 1 ? 'pet' : 'pets'}
+          </Text>
+        </HStack>
+
+        <HStack className="h-3 w-full overflow-hidden rounded-full" style={styles.trilhaProgresso}>
+          <View style={[styles.preenchimentoProgresso, { flex: percentualConcluido }]} />
+          <View style={{ flex: 100 - percentualConcluido }} />
+        </HStack>
       </Card>
 
-      <Card>
-        <Text style={styles.rotuloSecao}>Aparência</Text>
-        <View style={styles.linhaTema}>
-          <View style={styles.textoTema}>
-            <Text style={tipografia.corpo}>Tema escuro</Text>
-            <Text style={tipografia.legenda}>
-              Preferência salva no aparelho: {tema === 'escuro' ? 'escuro' : 'claro'}.
-            </Text>
-          </View>
-          <Switch
-            value={tema === 'escuro'}
-            onValueChange={alternarTema}
-            accessibilityLabel="Alternar entre tema claro e escuro"
-            trackColor={{ false: cores.textoFraco, true: cores.primaria }}
-          />
-        </View>
-      </Card>
-
-      <Card>
-        <Text style={styles.rotuloSecao}>Conta do tutor</Text>
-        <Text style={tipografia.corpo}>{user?.name ?? 'Tutor'}</Text>
-        <Text style={tipografia.legenda}>{user?.email ?? 'Sessão não identificada'}</Text>
-        {erroLogout !== '' && <Text style={styles.erro}>{erroLogout}</Text>}
-        <BotaoAcao
-          rotulo="Sair da conta"
-          variante="perigo"
-          aoPressionar={() => void sair()}
-          carregando={saindo}
-        />
-      </Card>
-
-      <Card>
-        <Text style={styles.rotuloSecao}>Sobre o app</Text>
-        <Text style={tipografia.corpo}>
-          Pet Routine organiza a rotina dos seus pets: status do passeio do dia, registro com
-          localização e foto, e histórico das sessões de passeio no aparelho.
-        </Text>
-        <Link href="/sobre" style={styles.link}>
-          Ver informações do app e da equipe
-        </Link>
-      </Card>
+      <OtaStatusCard />
     </ScrollView>
   );
 }
 
-// Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+// Updated by AI.
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     tela: {
       flex: 1,
@@ -153,52 +147,15 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
     },
     conteudo: {
       padding: espaco.md,
+      paddingBottom: espaco.xl,
       gap: espaco.md,
     },
-    linhaMetricas: {
-      flexDirection: 'row',
-      gap: espaco.sm,
+    trilhaProgresso: {
+      backgroundColor: cores.destaqueSuave,
     },
-    metrica: {
-      flex: 1,
-      alignItems: 'center',
-      paddingVertical: espaco.sm,
-      borderRadius: espaco.sm,
-      backgroundColor: cores.fundo,
-      gap: espaco.xs,
-    },
-    valorMetrica: {
-      fontSize: 24,
-      fontWeight: '700',
-      color: cores.primaria,
-    },
-    rotuloSecao: {
-      ...tipografia.corpo,
-      fontWeight: '600',
-    },
-    percentual: {
-      fontSize: 32,
-      fontWeight: '700',
-      color: cores.sucesso,
-    },
-    linhaTema: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      gap: espaco.md,
-    },
-    textoTema: {
-      flex: 1,
-      gap: espaco.xs,
-    },
-    link: {
-      ...tipografia.corpo,
-      color: cores.primaria,
-      fontWeight: '600',
-    },
-    erro: {
-      ...tipografia.corpo,
-      color: cores.erro,
+    preenchimentoProgresso: {
+      height: '100%',
+      backgroundColor: cores.sucesso,
     },
   });
 }

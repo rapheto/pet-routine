@@ -1,33 +1,33 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 2 — Formulário de cadastro de pet em modal
+// Etapa 5 — Formulário de cadastro de pet (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // Componente reutilizável (Regra 15: fora de `src/app/`).
 // Controlado, com validação local e sem nenhum `any`.
-// O espaçamento entre irmãos vem de `gap`, nunca de `margin`.
-//
-// Etapa 3: as cores acompanham o tema Claro/Escuro.
+// Reformulação: painel em formato de bottom sheet, campos do kit de
+// UI e chips de seleção com estado selecionado acessível.
 // ============================================================
 import { useMemo, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import type { EspeciePet, NovoPet, PortePet } from '../types/pet';
-import { rotuloEspecie } from '../types/pet';
+import { rotuloEspecie, rotuloPorte } from '../types/pet';
 import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { espaco, type PaletaCores } from '../theme';
+import { Button } from './botao';
+import { Input } from './campo-texto';
+import { Heading } from './heading';
+import { HStack } from './hstack';
+import { Text } from './texto';
+import { VStack } from './vstack';
 
 // Created by AI.
 const ESPECIES: EspeciePet[] = ['cachorro', 'gato', 'ave', 'outro'];
 // Created by AI.
 const PORTES: PortePet[] = ['pequeno', 'medio', 'grande'];
-// Created by AI.
-const ROTULOS_PORTE: Record<PortePet, string> = {
-  pequeno: 'Pequeno',
-  medio: 'Médio',
-  grande: 'Grande',
-};
 
 // Created by AI.
 type FormularioPetProps = {
@@ -37,9 +37,64 @@ type FormularioPetProps = {
 };
 
 // Created by AI.
+type ChipProps = {
+  rotulo: string;
+  selecionado: boolean;
+  aoSelecionar: () => void;
+};
+
+// Created by AI.
+// Chip de seleção sempre preenchido: azul quando inativo e verde da
+// marca quando selecionado. Antes o chip inativo era branco sobre o
+// cartão branco e praticamente sumia.
+function Chip({ rotulo, selecionado, aoSelecionar }: ChipProps) {
+  const { cores } = useTheme();
+  const estilos = useMemo(() => criarEstilosChip(cores), [cores]);
+  const [pressionado, setPressionado] = useState(false);
+
+  return (
+    <Pressable
+      onPress={aoSelecionar}
+      onPressIn={() => setPressionado(true)}
+      onPressOut={() => setPressionado(false)}
+      accessibilityRole="button"
+      accessibilityState={{ selected: selecionado }}
+      className="min-h-[40px] items-center justify-center rounded-full border px-3.5 py-2"
+      style={[
+        estilos.chip,
+        selecionado && estilos.chipSelecionado,
+        pressionado && estilos.chipPressionado,
+      ]}
+    >
+      <Text className="text-sm font-semibold" tom={selecionado ? 'sobrePrimaria' : 'sobreAzul'}>
+        {rotulo}
+      </Text>
+    </Pressable>
+  );
+}
+
+// Created by AI.
+function criarEstilosChip(cores: PaletaCores) {
+  return StyleSheet.create({
+    chip: {
+      borderColor: cores.azul,
+      backgroundColor: cores.azul,
+    },
+    chipSelecionado: {
+      borderColor: cores.primariaForte,
+      backgroundColor: cores.primariaForte,
+    },
+    chipPressionado: {
+      opacity: 0.78,
+    },
+  });
+}
+
+// Created by AI.
+// Updated by AI.
 export function FormularioPet({ visivel, onFechar, onSalvar }: FormularioPetProps) {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores), [cores]);
 
   const [nome, setNome] = useState('');
   const [especie, setEspecie] = useState<EspeciePet>('cachorro');
@@ -58,11 +113,13 @@ export function FormularioPet({ visivel, onFechar, onSalvar }: FormularioPetProp
     setIdade('');
   }
 
+  // Created by AI.
   function fechar() {
     limpar();
     onFechar();
   }
 
+  // Created by AI.
   function salvar() {
     if (nomeVazio || idadeInvalida) return;
     onSalvar({
@@ -77,93 +134,84 @@ export function FormularioPet({ visivel, onFechar, onSalvar }: FormularioPetProp
   return (
     <Modal visible={visivel} animationType="slide" transparent onRequestClose={fechar}>
       <View style={styles.fundo}>
+        {/* Toque fora do painel fecha o formulário. Fica atrás do painel
+            (irmão anterior), então não interfere nos controles internos. */}
+        <Pressable
+          style={StyleSheet.absoluteFill}
+          onPress={fechar}
+          accessibilityRole="button"
+          accessibilityLabel="Fechar formulário"
+        />
         <View style={styles.painel}>
           <ScrollView contentContainerStyle={styles.conteudo} keyboardShouldPersistTaps="handled">
-            <Text style={tipografia.titulo}>Novo pet</Text>
+            <VStack className="gap-1">
+              <Heading nivel="pagina">Novo pet</Heading>
+              <Text className="text-sm" tom="fraco">
+                Preencha os dados para começar a acompanhar a rotina.
+              </Text>
+            </VStack>
 
-            <Text style={styles.rotulo}>Nome</Text>
-            <TextInput
-              value={nome}
-              onChangeText={setNome}
+            <Input
+              rotulo="Nome"
+              valor={nome}
+              aoMudar={setNome}
               placeholder="Ex: Rex"
-              style={[styles.input, nomeVazio && styles.inputInvalido]}
+              autoCapitalize="words"
+              invalido={nomeVazio && nome !== ''}
             />
 
-            <Text style={styles.rotulo}>Espécie</Text>
-            <View style={styles.opcoes}>
-              {ESPECIES.map((opcao) => (
-                <Pressable
-                  key={opcao}
-                  onPress={() => setEspecie(opcao)}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: especie === opcao }}
-                  style={({ pressed }) => [
-                    styles.chip,
-                    especie === opcao && styles.chipSelecionado,
-                    pressed && styles.pressionado,
-                  ]}
-                >
-                  <Text style={[styles.textoChip, especie === opcao && styles.textoChipSelecionado]}>
-                    {rotuloEspecie(opcao)}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
+            <VStack className="gap-2">
+              <Text className="text-xs font-semibold uppercase" tom="fraco">
+                Espécie
+              </Text>
+              <HStack className="flex-wrap gap-2">
+                {ESPECIES.map((opcao) => (
+                  <Chip
+                    key={opcao}
+                    rotulo={rotuloEspecie(opcao)}
+                    selecionado={especie === opcao}
+                    aoSelecionar={() => setEspecie(opcao)}
+                  />
+                ))}
+              </HStack>
+            </VStack>
 
-            <Text style={styles.rotulo}>Porte</Text>
-            <View style={styles.opcoes}>
-              {PORTES.map((opcao) => (
-                <Pressable
-                  key={opcao}
-                  onPress={() => setPorte(opcao)}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: porte === opcao }}
-                  style={({ pressed }) => [
-                    styles.chip,
-                    porte === opcao && styles.chipSelecionado,
-                    pressed && styles.pressionado,
-                  ]}
-                >
-                  <Text style={[styles.textoChip, porte === opcao && styles.textoChipSelecionado]}>
-                    {ROTULOS_PORTE[opcao]}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
+            <VStack className="gap-2">
+              <Text className="text-xs font-semibold uppercase" tom="fraco">
+                Porte
+              </Text>
+              <HStack className="flex-wrap gap-2">
+                {PORTES.map((opcao) => (
+                  <Chip
+                    key={opcao}
+                    rotulo={rotuloPorte(opcao)}
+                    selecionado={porte === opcao}
+                    aoSelecionar={() => setPorte(opcao)}
+                  />
+                ))}
+              </HStack>
+            </VStack>
 
-            <Text style={styles.rotulo}>Idade em meses</Text>
-            <TextInput
-              value={idade}
-              onChangeText={setIdade}
+            <Input
+              rotulo="Idade em meses"
+              valor={idade}
+              aoMudar={setIdade}
               placeholder="Ex: 24"
-              keyboardType="number-pad"
-              style={[styles.input, idadeInvalida && styles.inputInvalido]}
+              tipoTeclado="number-pad"
+              invalido={idadeInvalida}
             />
             {idadeInvalida && (
-              <Text style={styles.erro}>Informe a idade em meses usando apenas números.</Text>
+              <Text className="text-xs" tom="erro">
+                Informe a idade em meses usando apenas números.
+              </Text>
             )}
 
-            <Pressable
-              onPress={salvar}
-              disabled={nomeVazio || idadeInvalida}
-              accessibilityRole="button"
-              accessibilityState={{ disabled: nomeVazio || idadeInvalida }}
-              style={({ pressed }) => [
-                styles.botaoSalvar,
-                (nomeVazio || idadeInvalida) && styles.botaoDesabilitado,
-                pressed && styles.pressionado,
-              ]}
-            >
-              <Text style={styles.textoBotao}>Salvar pet</Text>
-            </Pressable>
-
-            <Pressable
-              onPress={fechar}
-              accessibilityRole="button"
-              style={({ pressed }) => [styles.botaoCancelar, pressed && styles.pressionado]}
-            >
-              <Text style={styles.textoBotao}>Cancelar</Text>
-            </Pressable>
+            <Button
+              rotulo="Salvar pet"
+              aoPressionar={salvar}
+              desabilitado={nomeVazio || idadeInvalida}
+            />
+            <Button rotulo="Cancelar" variante="secundario" aoPressionar={fechar} />
           </ScrollView>
         </View>
       </View>
@@ -171,9 +219,8 @@ export function FormularioPet({ visivel, onFechar, onSalvar }: FormularioPetProp
   );
 }
 
-// Created by AI.
 // Updated by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     fundo: {
       flex: 1,
@@ -181,80 +228,14 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
       backgroundColor: cores.sobreposicao,
     },
     painel: {
-      maxHeight: '90%',
-      borderTopLeftRadius: espaco.md,
-      borderTopRightRadius: espaco.md,
+      maxHeight: '92%',
+      borderTopLeftRadius: espaco.lg,
+      borderTopRightRadius: espaco.lg,
       backgroundColor: cores.cartao,
     },
     conteudo: {
-      padding: espaco.md,
-      gap: espaco.sm,
-    },
-    rotulo: {
-      ...tipografia.corpo,
-      fontWeight: '600',
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: cores.textoFraco,
-      borderRadius: espaco.sm,
-      padding: espaco.sm,
-      fontSize: tipografia.corpo.fontSize,
-      backgroundColor: cores.cartao,
-      color: cores.texto,
-    },
-    inputInvalido: {
-      borderColor: cores.erro,
-    },
-    erro: {
-      ...tipografia.legenda,
-      color: cores.erro,
-    },
-    opcoes: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-      gap: espaco.sm,
-    },
-    chip: {
-      borderWidth: 1,
-      borderColor: cores.textoFraco,
-      borderRadius: espaco.sm,
-      paddingVertical: espaco.xs,
-      paddingHorizontal: espaco.sm,
-    },
-    chipSelecionado: {
-      borderColor: cores.primaria,
-      backgroundColor: cores.destaqueSuave,
-    },
-    textoChip: {
-      ...tipografia.legenda,
-      color: cores.texto,
-    },
-    textoChipSelecionado: {
-      color: cores.primaria,
-      fontWeight: '600',
-    },
-    botaoSalvar: {
-      backgroundColor: cores.primaria,
-      padding: espaco.md,
-      borderRadius: espaco.sm,
-      alignItems: 'center',
-    },
-    botaoCancelar: {
-      backgroundColor: cores.textoFraco,
-      padding: espaco.md,
-      borderRadius: espaco.sm,
-      alignItems: 'center',
-    },
-    botaoDesabilitado: {
-      opacity: 0.4,
-    },
-    pressionado: {
-      opacity: 0.7,
-    },
-    textoBotao: {
-      color: cores.sobrePrimaria,
-      fontWeight: 'bold',
+      padding: espaco.lg,
+      gap: espaco.md,
     },
   });
 }

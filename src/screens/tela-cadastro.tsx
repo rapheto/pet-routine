@@ -1,7 +1,8 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 4 — Tela de Cadastro integrada ao backend
+// Etapa 5 — Tela de Cadastro (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // Valida os campos localmente (espelhando as regras do backend) e cria
@@ -15,19 +16,21 @@ import { Link } from 'expo-router';
 import { signupUser } from '../services/auth-service';
 import { mensagemDoErro } from '../lib/erro';
 import { useTheme } from '../context/theme-context';
-import { BotaoAcao } from '../components/botao-acao';
-import { CampoTexto } from '../components/campo-texto';
+import { Button } from '../components/botao';
+import { Input } from '../components/campo-texto';
 import { LayoutAutenticacao } from '../components/layout-autenticacao';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { VStack } from '../components/vstack';
+import { espaco, type PaletaCores } from '../theme';
 
 // Mesma regra do backend: a senha precisa de pelo menos 4 caracteres.
 // Created by AI.
 const TAMANHO_MINIMO_SENHA = 4;
 
 // Created by AI.
+// Updated by AI.
 export function TelaCadastro() {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores), [cores]);
 
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
@@ -70,45 +73,47 @@ export function TelaCadastro() {
         </Link>
       }
     >
-      <CampoTexto
-        rotulo="Nome"
-        valor={nome}
-        aoMudar={setNome}
-        placeholder="Como podemos te chamar?"
-        autoCapitalize="words"
-        autoComplete="name"
-      />
-      <CampoTexto
-        rotulo="E-mail"
-        valor={email}
-        aoMudar={setEmail}
-        placeholder="voce@exemplo.com"
-        tipoTeclado="email-address"
-        autoComplete="email"
-      />
-      <CampoTexto
-        rotulo="Senha"
-        valor={senha}
-        aoMudar={setSenha}
-        placeholder="Mínimo de 4 caracteres"
-        seguro
-        autoComplete="new-password"
-      />
-      <BotaoAcao
-        rotulo="Criar conta"
-        aoPressionar={() => void cadastrar()}
-        carregando={carregando}
-      />
+      <VStack className="gap-4">
+        <Input
+          rotulo="Nome"
+          valor={nome}
+          aoMudar={setNome}
+          placeholder="Como podemos te chamar?"
+          autoCapitalize="words"
+          autoComplete="name"
+        />
+        <Input
+          rotulo="E-mail"
+          valor={email}
+          aoMudar={setEmail}
+          placeholder="voce@exemplo.com"
+          tipoTeclado="email-address"
+          autoComplete="email"
+        />
+        <Input
+          rotulo="Senha"
+          valor={senha}
+          aoMudar={setSenha}
+          placeholder="Mínimo de 4 caracteres"
+          seguro
+          autoComplete="new-password"
+        />
+        <Button
+          rotulo={carregando ? 'Criando conta...' : 'Criar conta'}
+          aoPressionar={() => void cadastrar()}
+          carregando={carregando}
+        />
+      </VStack>
     </LayoutAutenticacao>
   );
 }
 
 // Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     link: {
-      ...tipografia.corpo,
-      color: cores.primaria,
+      color: cores.primariaForte,
+      fontSize: 16,
       fontWeight: '600',
       paddingVertical: espaco.xs,
     },

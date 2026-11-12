@@ -1,48 +1,61 @@
+// Created by AI.
+// Updated by AI.
+
 // ============================================================
-// Prática 2 — Componente Card reutilizável
+// Etapa 5 — Componente Card do kit de UI (GlueStack + NativeWind)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Este componente é genérico — ele não sabe nada sobre Pet.
-// Props tipadas, children: ReactNode, prop opcional `destacado`.
+// Componente genérico, sem conhecimento do domínio Pet.
 //
 // Restrições:
-//   • Sombra com `boxShadow` (uma string), não com shadow*/elevation
-//   • Espaçamento interno com `gap`
-//   • Nenhum hex ou número mágico — tudo vem do theme.ts
+//   • Layout, espaçamento e raio via `className` (NativeWind)
+//   • Sombra com `boxShadow` (Regra 4), nunca com o quarteto legado
+//   • Espaçamento entre irmãos com `gap` (Regra 3)
+//   • Nenhum hex solto — as cores vêm do `theme.ts` pelo `useTheme`
 //
-// Etapa 3: as cores passam a vir do tema Claro/Escuro via `useTheme`.
+// Design: sobre o fundo branco o cartão ganha uma borda fina e uma
+// sombra com tinta verde (não preta), então ele se destaca sem
+// "sujar" a paleta.
 // ============================================================
-import { type ReactNode, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { useMemo, type ReactNode } from 'react';
+import { StyleSheet, View, type ViewProps } from 'react-native';
 
 import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores } from '../theme';
+import type { PaletaCores } from '../theme';
 
 // Updated by AI.
-type CardProps = {
+type CardProps = ViewProps & {
   children: ReactNode;
+  className?: string;
   destacado?: boolean;
 };
 
 // Updated by AI.
-export function Card({ children, destacado }: CardProps) {
+export function Card({ children, className, destacado, style, ...rest }: CardProps) {
   const { cores } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores), [cores]);
+  const estilos = useMemo(() => criarEstilos(cores), [cores]);
 
-  return <View style={[styles.card, destacado && styles.cardDestacado]}>{children}</View>;
+  return (
+    <View
+      {...rest}
+      className={`rounded-2xl p-4 gap-3 ${className ?? ''}`}
+      style={[estilos.card, destacado && estilos.destacado, style]}
+    >
+      {children}
+    </View>
+  );
 }
 
-// Created by AI.
+// Updated by AI.
 function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     card: {
-      padding: espaco.md,
-      borderRadius: espaco.sm,
       backgroundColor: cores.cartao,
-      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-      gap: espaco.sm,
+      borderWidth: 1,
+      borderColor: cores.borda,
+      boxShadow: '0 6px 18px rgba(1, 120, 110, 0.08)',
     },
-    cardDestacado: {
+    destacado: {
       borderWidth: 2,
       borderColor: cores.primaria,
     },

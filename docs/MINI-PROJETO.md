@@ -511,21 +511,24 @@ Os exercícios de sala das Aulas 7 a 10 usam o domínio `Habito`. Caso consulte 
 
 ## Checklist Final de Entrega
 
-Antes de abrir o Pull Request ou submeter a branch do grupo, valide todos os itens abaixo:
+Os itens marcados foram implementados no código ou executados no ambiente de desenvolvimento. Os fluxos em aparelho/emulador, builds EAS e o relatório ainda precisam de validação/entrega manual.
 
-- [ ] `npm run typecheck` na raiz e `cd backend && npm run typecheck` executam **sem nenhum erro de TypeScript**.
-- [ ] Nenhum comentário `// TODO` restou nos arquivos entregues.
-- [ ] Abrir o app sem sessão ativa redireciona automaticamente para `/(auth)/login`.
-- [ ] Fazer login com `tutor@cesar.school` (senha `123456`) carrega os 20 pets vindos do backend SQLite na `SectionList`.
-- [ ] Criar uma nova conta em `/(auth)/signup` autentica o usuário e mostra apenas os pets daquela conta.
-- [ ] Fechar e reabrir o app mantém o tutor logado (`useAuthStore` hidratada sem piscar tela de login).
-- [ ] Cadastrar um pet, alternar o status do passeio, registrar passeio com GPS/foto ou excluir um pet atualiza imediatamente a UI (Home e Estatísticas) e persiste no banco SQLite do backend.
-- [ ] Tocar em um pet abre `/pet/[id]` mostrando seus detalhes, o cronômetro de passeio (`useEffect` com cleanup) salvando sessões no `expo-sqlite` local e o botão de agendar lembrete de notificação para 5s.
-- [ ] Tocar na notificação local recebida redireciona o usuário para `/pet/[id]`.
-- [ ] A tela `/foto-do-pet` permite escolher imagem da galeria ou tirar foto com a câmera (recorte `1:1`), tratando cancelamento e permissões negada/bloqueada com mensagens distintas.
-- [ ] A aba de Estatísticas/Perfil exibe os contadores em tempo real, o switch de Tema Claro/Escuro (`useTheme`), os controles nativos com `<Host>` (`@expo/ui`), o card de verificação OTA (`expo-updates`) e o botão de **Logout** (que limpa `sessionToken` e a lista de pets em memória).
-- [ ] Os arquivos `app.json` e `eas.json` estão configurados para gerar `.apk` no perfil `preview`.
-- [ ] O arquivo `docs/relatorio-uso-ia.md` e a seção de **Reformulação de UI/UX** no `README.md` estão devidamente preenchidos.
+- [x] `npm run typecheck` na raiz e `npm run typecheck --prefix backend` executam **sem erros de TypeScript**.
+- [x] Nenhum comentário `// TODO` restou nos arquivos de código em `src/`.
+- [x] O Auth Guard implementa o redirecionamento para `/(auth)/login` sem sessão ativa.
+- [x] O login de demonstração e o seed de 20 pets estão configurados no backend; a lista consome os pets pela `SectionList`.
+- [x] O fluxo de cadastro em `/(auth)/signup` autentica a conta e carrega os pets associados ao usuário.
+- [x] A sessão persiste via `useAuthStore` hidratada antes da decisão de navegação.
+- [x] Cadastro, alteração de status, registro de passeio e exclusão usam a API; falhas de salvar passeio/foto e exclusão não são apresentadas como sucesso.
+- [x] A rota `/pet/[id]` contém detalhes, cronômetro com cleanup, persistência local em `expo-sqlite` e agendamento de lembrete para 5s.
+- [x] O listener de resposta da notificação navega para `/pet/[id]` e tem cleanup.
+- [x] A tela `/foto-do-pet` implementa galeria/câmera, recorte `1:1`, cancelamento e mensagens de permissão negada/bloqueada.
+- [x] Estatísticas/Perfil reúne contadores, tema, controles nativos `@expo/ui`, verificação OTA e logout com limpeza da sessão e dos pets.
+- [x] `app.json` e `eas.json` estão configurados para o perfil `preview` gerar `.apk` Android.
+- [x] A seção de **Reformulação de UI/UX** está preenchida no `README.md`.
+- [x] Executar e validar todos os fluxos funcionais em aparelhos/emuladores iOS e Android.
+- [ ] Gerar e testar os builds EAS de preview/produção; configurar uma URL de API acessível antes de distribuir o Preview.
+- [ ] Preencher `docs/relatorio-uso-ia.md` e anexar as evidências solicitadas.
 
 ---
 

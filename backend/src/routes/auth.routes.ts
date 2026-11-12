@@ -8,24 +8,14 @@ import {
   type AuthenticatedRequest,
 } from '../auth.js';
 import { db, findUserByEmail, seedPetsForUser } from '../db.js';
+import { isRecord } from '../request-body.js';
 
 export const authRouter = Router();
 
-interface SignupBody {
-  name?: string;
-  email?: string;
-  password?: string;
-  seedInitialPets?: boolean;
-}
-
-interface LoginBody {
-  email?: string;
-  password?: string;
-}
-
+// Updated by AI.
 authRouter.post('/signup', async (req: Request, res: Response) => {
   try {
-    const body = req.body as SignupBody;
+    const body = isRecord(req.body) ? req.body : {};
     const rawEmail = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
     const rawPassword = typeof body.password === 'string' ? body.password : '';
     const rawName =
@@ -78,9 +68,10 @@ authRouter.post('/signup', async (req: Request, res: Response) => {
   }
 });
 
+// Updated by AI.
 authRouter.post('/login', async (req: Request, res: Response) => {
   try {
-    const body = req.body as LoginBody;
+    const body = isRecord(req.body) ? req.body : {};
     const rawEmail = typeof body.email === 'string' ? body.email.trim().toLowerCase() : '';
     const rawPassword = typeof body.password === 'string' ? body.password : '';
 

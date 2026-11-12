@@ -1,7 +1,8 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 1 — Rota de captura/escolha da foto do pet
+// Etapa 1/5 — Rota de captura/escolha da foto do pet (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // Regra 15: este arquivo é uma ROTA. Ele pode conter lógica de tela,
@@ -15,14 +16,19 @@
 //   19. `mediaTypes` é array (`['images']`), nunca `MediaTypeOptions`.
 // ============================================================
 import { useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { usePetStore } from '../store/use-pet-store';
 import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { Button } from '../components/botao';
+import { Card } from '../components/card';
+import { Heading } from '../components/heading';
+import { Text } from '../components/texto';
+import { VStack } from '../components/vstack';
+import { espaco, type PaletaCores } from '../theme';
 
 // Created by AI.
 type FalhaCamera = 'camera-negada' | 'camera-bloqueada';
@@ -45,15 +51,18 @@ const OPCOES_RECORTE: ImagePicker.ImagePickerOptions = {
 };
 
 // Created by AI.
+// Updated by AI.
 export default function TelaFotoDoPet() {
   const router = useRouter();
   const { petId } = useLocalSearchParams<{ petId?: string }>();
   const updatePet = usePetStore((estado) => estado.updatePet);
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const estilos = useMemo(() => criarEstilos(cores), [cores]);
   const [fotoUri, setFotoUri] = useState<string | null>(null);
   const [falha, setFalha] = useState<FalhaCamera | null>(null);
   const [erroGaleria, setErroGaleria] = useState('');
+  const [erroSalvar, setErroSalvar] = useState('');
+  const [salvando, setSalvando] = useState(false);
 
   // CONTRATO DE TRÊS TEMPOS — galeria
   //   1. PEDIR → requestMediaLibraryPermissionsAsync()
@@ -76,6 +85,7 @@ export default function TelaFotoDoPet() {
 
       setFotoUri(resultado.assets[0].uri);
       setErroGaleria('');
+      setErroSalvar('');
       setFalha(null);
     } catch {
       setErroGaleria('Não foi possível abrir a galeria. Tente novamente em instantes.');
@@ -100,6 +110,7 @@ export default function TelaFotoDoPet() {
       setFotoUri(resultado.assets[0].uri);
       setFalha(null);
       setErroGaleria('');
+      setErroSalvar('');
     } catch {
       setFalha(null);
       setErroGaleria('Não foi possível abrir a câmera. Confira se o aparelho possui uma câmera.');
@@ -108,114 +119,105 @@ export default function TelaFotoDoPet() {
 
   // Updated by AI.
   async function concluir() {
-    if (!fotoUri) return;
-    // Etapa 2: a store global guarda a foto, então nenhuma tela precisa
-    // receber a URI por parâmetro de rota. Na Etapa 4 esta chamada vira
-    // um `PUT /pets/${id}` dentro da própria store.
-    if (petId) await updatePet(petId, { fotoUri });
+    if (!fotoUri || salvando) return;
+    if (petId) {
+      setSalvando(true);
+      try {
+        const resultado = await updatePet(petId, { fotoUri });
+        if (resultado.sucesso) {
+          router.back();
+        } else {
+          setErroSalvar(resultado.erro);
+        }
+      } finally {
+        setSalvando(false);
+      }
+      return;
+    }
     router.back();
   }
 
   return (
-    <View style={styles.tela}>
-      <Text style={tipografia.corpo}>
+    <VStack className="flex-1 gap-4 p-6" style={estilos.tela}>
+      <Heading nivel="pagina">Foto do pet</Heading>
+      <Text className="text-sm" tom="fraco">
         Escolha uma foto quadrada para o seu pet. Você pode tirar uma nova foto ou usar uma da galeria.
       </Text>
 
       {fotoUri ? (
-        <Image source={{ uri: fotoUri }} style={styles.previa} contentFit="cover" />
+        <Image
+          source={{ uri: fotoUri }}
+          style={estilos.previa}
+          contentFit="cover"
+        />
       ) : (
-        <View style={[styles.previa, styles.previaVazia]}>
-          <Text style={styles.textoPreviaVazia}>Nenhuma foto escolhida ainda</Text>
-        </View>
+        <VStack className="w-full items-center justify-center gap-2 rounded-2xl" style={[estilos.previa, estilos.previaVazia]}>
+          <Text className="text-4xl">📷</Text>
+          <Text className="text-sm" tom="fraco">
+            Nenhuma foto escolhida ainda
+          </Text>
+        </VStack>
       )}
 
-      {falha !== null && <Text style={styles.erro}>{MENSAGENS_FALHA[falha]}</Text>}
-      {erroGaleria !== '' && <Text style={styles.erro}>{erroGaleria}</Text>}
+      {falha !== null && (
+        <Card className="border-2" style={estilos.cartaoErro}>
+          <Text className="text-sm" tom="sobreRosa">
+            {MENSAGENS_FALHA[falha]}
+          </Text>
+        </Card>
+      )}
+      {erroGaleria !== '' && (
+        <Card className="border-2 py-3" style={estilos.cartaoErro}>
+          <Text className="text-sm" tom="sobreRosa">
+            {erroGaleria}
+          </Text>
+        </Card>
+      )}
+      {erroSalvar !== '' && (
+        <Card className="border-2 py-3" style={estilos.cartaoErro}>
+          <Text className="text-sm" tom="sobreRosa">
+            {erroSalvar}
+          </Text>
+        </Card>
+      )}
 
-      <Pressable
-        onPress={tirarFoto}
-        accessibilityRole="button"
-        style={({ pressed }) => [styles.botaoAcao, pressed && styles.pressionado]}
-      >
-        <Text style={styles.textoBotao}>Tirar foto</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={escolherDaGaleria}
-        accessibilityRole="button"
-        style={({ pressed }) => [styles.botaoAcao, pressed && styles.pressionado]}
-      >
-        <Text style={styles.textoBotao}>Escolher da galeria</Text>
-      </Pressable>
-
-      <Pressable
-        onPress={concluir}
-        disabled={!fotoUri}
-        accessibilityRole="button"
-        accessibilityState={{ disabled: !fotoUri }}
-        style={({ pressed }) => [
-          styles.botaoConcluir,
-          !fotoUri && styles.botaoDesabilitado,
-          pressed && fotoUri !== null && styles.pressionado,
-        ]}
-      >
-        <Text style={styles.textoBotao}>Concluir</Text>
-      </Pressable>
-    </View>
+      <VStack className="gap-2">
+        <Button rotulo="Tirar foto" aoPressionar={() => void tirarFoto()} />
+        <Button
+          rotulo="Escolher da galeria"
+          variante="secundario"
+          aoPressionar={() => void escolherDaGaleria()}
+        />
+        <Button
+          rotulo={salvando ? 'Salvando...' : 'Concluir'}
+          aoPressionar={() => void concluir()}
+          desabilitado={fotoUri === null}
+          carregando={salvando}
+        />
+      </VStack>
+    </VStack>
   );
 }
 
-// Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+// Updated by AI.
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     tela: {
-      flex: 1,
-      padding: espaco.lg,
-      gap: espaco.md,
       backgroundColor: cores.fundo,
     },
     previa: {
       width: '100%',
       aspectRatio: 1,
-      borderRadius: espaco.sm,
+      borderRadius: espaco.md,
     },
     previaVazia: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: cores.cartao,
+      backgroundColor: cores.cartaoSuave,
       borderWidth: 1,
-      borderColor: cores.textoFraco,
+      borderColor: cores.borda,
     },
-    textoPreviaVazia: {
-      ...tipografia.legenda,
-      textAlign: 'center',
-    },
-    erro: {
-      ...tipografia.corpo,
-      color: cores.erro,
-    },
-    botaoAcao: {
-      backgroundColor: cores.primaria,
-      padding: espaco.md,
-      borderRadius: espaco.sm,
-      alignItems: 'center',
-    },
-    botaoConcluir: {
-      backgroundColor: cores.sucesso,
-      padding: espaco.md,
-      borderRadius: espaco.sm,
-      alignItems: 'center',
-    },
-    botaoDesabilitado: {
-      opacity: 0.4,
-    },
-    pressionado: {
-      opacity: 0.7,
-    },
-    textoBotao: {
-      color: cores.sobrePrimaria,
-      fontWeight: 'bold',
+    cartaoErro: {
+      borderColor: cores.erro,
+      backgroundColor: cores.rosa,
     },
   });
 }

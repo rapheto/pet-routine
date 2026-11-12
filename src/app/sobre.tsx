@@ -1,19 +1,25 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 1 — Rota estática institucional "/sobre"
+// Etapa 1/5 — Rota estática institucional "/sobre" (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // Tela sem estado e sem efeitos: só apresenta o app, a equipe, a
 // versão instalada e um resumo da arquitetura.
-// Etapa 3: as cores acompanham o tema Claro/Escuro.
 // ============================================================
 import { useMemo } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 import Constants from 'expo-constants';
 
 import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { Badge } from '../components/badge';
+import { Card } from '../components/card';
+import { Heading } from '../components/heading';
+import { HStack } from '../components/hstack';
+import { Text } from '../components/texto';
+import { VStack } from '../components/vstack';
+import { espaco, type PaletaCores } from '../theme';
 
 // Created by AI.
 const INTEGRANTES = ['Raphael Miranda'];
@@ -24,56 +30,61 @@ const ARQUITETURA = [
   'Telas maiores isoladas em src/screens/ e componentes reutilizáveis em src/components/.',
   'Tokens de design em src/theme.ts — nenhum componente declara cor ou espaçamento mágico.',
   'Tema Claro/Escuro em src/context/ e histórico de passeios em expo-sqlite.',
-  'Regras de domínio tipadas em src/types/pet.ts, sem any e sem mutação de estado.',
+  'UI com NativeWind + componentes no estilo GlueStack e controles nativos do @expo/ui.',
 ];
 
 // Created by AI.
 export default function RotaSobre() {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const styles = useMemo(() => criarEstilos(cores), [cores]);
 
   // `expoConfig` já traz a versão do app.json sem precisar de rede.
   const versao = Constants.expoConfig?.version ?? 'desconhecida';
 
   return (
     <ScrollView style={styles.tela} contentContainerStyle={styles.conteudo}>
-      <View style={styles.bloco}>
-        <Text style={tipografia.titulo}>Pet Routine</Text>
-        <Text style={tipografia.legenda}>Versão {versao}</Text>
-      </View>
+      <VStack className="gap-1">
+        <Heading nivel="destaque">🐾 Pet Routine</Heading>
+        <HStack className="gap-2">
+          <Badge texto={`Versão ${versao}`} tom="primaria" />
+          <Badge texto="Expo + Router" />
+        </HStack>
+      </VStack>
 
-      <View style={styles.bloco}>
-        <Text style={styles.secao}>O que este app faz</Text>
-        <Text style={tipografia.corpo}>
+      <Card>
+        <Heading nivel="secao">O que este app faz</Heading>
+        <Text className="text-sm">
           Organiza a rotina dos seus pets: cadastro, status do passeio do dia, registro do passeio
           com localização e foto, e histórico das sessões de passeio no próprio aparelho.
         </Text>
-      </View>
+      </Card>
 
-      <View style={styles.bloco}>
-        <Text style={styles.secao}>Integrantes do grupo</Text>
+      <Card>
+        <Heading nivel="secao">Integrantes do grupo</Heading>
         {INTEGRANTES.map((integrante) => (
-          <Text key={integrante} style={tipografia.corpo}>
+          <Text key={integrante} className="text-sm">
             {integrante}
           </Text>
         ))}
-        <Text style={tipografia.legenda}>Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School</Text>
-      </View>
+        <Text className="text-xs" tom="fraco">
+          Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
+        </Text>
+      </Card>
 
-      <View style={styles.bloco}>
-        <Text style={styles.secao}>Arquitetura, em resumo</Text>
+      <Card>
+        <Heading nivel="secao">Arquitetura, em resumo</Heading>
         {ARQUITETURA.map((linha) => (
-          <Text key={linha} style={tipografia.corpo}>
+          <Text key={linha} className="text-sm" tom="fraco">
             • {linha}
           </Text>
         ))}
-      </View>
+      </Card>
     </ScrollView>
   );
 }
 
-// Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+// Updated by AI.
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     tela: {
       flex: 1,
@@ -82,14 +93,6 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
     conteudo: {
       padding: espaco.md,
       gap: espaco.lg,
-    },
-    bloco: {
-      gap: espaco.sm,
-    },
-    secao: {
-      ...tipografia.corpo,
-      color: cores.primaria,
-      fontWeight: '600',
     },
   });
 }

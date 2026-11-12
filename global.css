@@ -1,0 +1,13 @@
+/* Created by AI. */
+
+/* ============================================================
+ * Etapa 5 — Diretivas globais do Tailwind/NativeWind
+ * Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
+ *
+ * As cores continuam centralizadas em `src/theme.ts` (regra da
+ * disciplina: nenhum hex solto nos componentes). O NativeWind é
+ * usado para layout, espaçamento e tipografia via `className`.
+ * ============================================================ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

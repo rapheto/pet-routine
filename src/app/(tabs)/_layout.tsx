@@ -1,35 +1,39 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
 // Etapa 2 — Navegação em abas
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // Regra 15: layout de navegação. Nenhuma tela mora aqui.
-// Regra 17: `Link` no JSX para o acesso às telas fora das abas.
 // Etapa 3: abas acompanham o tema Claro/Escuro.
+//
+// Revisão de UI: os cabeçalhos nativos das abas foram removidos. Cada
+// tela já tem o próprio título no conteúdo e o "Sobre" passou a morar
+// na aba de Configurações, então o header só duplicava informação.
 // ============================================================
-import { useMemo } from 'react';
-import { Link, Tabs } from 'expo-router';
-import { StyleSheet } from 'react-native';
+import { Tabs } from 'expo-router';
 import { Feather } from '@expo/vector-icons';
 
 import { useTheme } from '../../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../../theme';
 
 // Created by AI.
+// Updated by AI.
 export default function LayoutAbas() {
-  const { cores, tipografia } = useTheme();
-  const estilos = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
 
   return (
     <Tabs
       screenOptions={{
-        headerStyle: { backgroundColor: cores.cartao },
-        headerTintColor: cores.texto,
-        headerTitleStyle: { color: cores.texto },
+        headerShown: false,
         tabBarActiveTintColor: cores.primaria,
         tabBarInactiveTintColor: cores.textoFraco,
-        tabBarStyle: { backgroundColor: cores.cartao },
+        tabBarStyle: {
+          backgroundColor: cores.cartao,
+          borderTopColor: cores.borda,
+          borderTopWidth: 1,
+        },
+        tabBarLabelStyle: { fontSize: 12, fontWeight: '600' },
         sceneStyle: { backgroundColor: cores.fundo },
       }}
     >
@@ -38,11 +42,6 @@ export default function LayoutAbas() {
         options={{
           title: 'Meus Pets',
           tabBarIcon: ({ color, size }) => <Feather name="heart" size={size} color={color} />,
-          headerRight: () => (
-            <Link href="/sobre" style={estilos.linkCabecalho}>
-              Sobre
-            </Link>
-          ),
         }}
       />
       <Tabs.Screen
@@ -50,26 +49,15 @@ export default function LayoutAbas() {
         options={{
           title: 'Estatísticas',
           tabBarIcon: ({ color, size }) => <Feather name="bar-chart-2" size={size} color={color} />,
-          headerRight: () => (
-            <Link href="/sobre" style={estilos.linkCabecalho}>
-              Sobre
-            </Link>
-          ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Configurações',
+          tabBarIcon: ({ color, size }) => <Feather name="settings" size={size} color={color} />,
         }}
       />
     </Tabs>
   );
-}
-
-// Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
-  return StyleSheet.create({
-    linkCabecalho: {
-      ...tipografia.corpo,
-      color: cores.primaria,
-      fontWeight: '600',
-      paddingHorizontal: espaco.md,
-      paddingVertical: espaco.xs,
-    },
-  });
 }
