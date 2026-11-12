@@ -1,0 +1,12 @@
+schema: "classroom50/repo-config/v1"
+classroom: "desenvolvimento-mobile"
+assignment: "pet-routine-mini-projeto"
+owner:
+  username: "rapheto"
+  id: 78823263
+  accepted_at: "2026-11-12T03:54:58Z"
+source:
+  owner: "mr-costaalencar"
+  owner_id: 183925876
+  repo: "pet-routine-expo"
+  branch: "main"
