@@ -1,16 +1,20 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 4 — Campo de texto rotulado, ciente do tema
+// Etapa 5 — Componente Input do kit de UI
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Componente reutilizável (Regra 15: fora de src/app/).
-// Usado nas telas de Login e Cadastro.
+// Campo de texto rotulado, com estado de erro acessível. Usado nas
+// telas de Login/Cadastro e na busca de pets.
+//
+// Design: a borda neutra vira verde da marca enquanto o campo está em
+// foco. Esse retorno visual é o que faltava para o usuário perceber
+// qual campo está ativo — antes todos pareciam "mortos".
 // ============================================================
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import {
   StyleSheet,
-  Text,
   TextInput,
   View,
   type KeyboardTypeOptions,
@@ -18,11 +22,12 @@ import {
 } from 'react-native';
 
 import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import type { PaletaCores } from '../theme';
+import { Text } from './texto';
 
 // Created by AI.
-type CampoTextoProps = {
-  rotulo: string;
+type InputProps = {
+  rotulo?: string;
   valor: string;
   aoMudar: (texto: string) => void;
   placeholder?: string;
@@ -30,10 +35,13 @@ type CampoTextoProps = {
   tipoTeclado?: KeyboardTypeOptions;
   autoCapitalize?: TextInputProps['autoCapitalize'];
   autoComplete?: TextInputProps['autoComplete'];
+  invalido?: boolean;
+  className?: string;
 };
 
 // Created by AI.
-export function CampoTexto({
+// Updated by AI.
+export function Input({
   rotulo,
   valor,
   aoMudar,
@@ -42,16 +50,25 @@ export function CampoTexto({
   tipoTeclado = 'default',
   autoCapitalize = 'none',
   autoComplete,
-}: CampoTextoProps) {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  invalido = false,
+  className,
+}: InputProps) {
+  const { cores } = useTheme();
+  const estilos = useMemo(() => criarEstilos(cores), [cores]);
+  const [focado, setFocado] = useState(false);
 
   return (
-    <View style={styles.campo}>
-      <Text style={styles.rotulo}>{rotulo}</Text>
+    <View className="gap-1.5">
+      {rotulo !== undefined && (
+        <Text className="text-xs font-semibold uppercase tracking-wide" tom="primariaForte">
+          {rotulo}
+        </Text>
+      )}
       <TextInput
         value={valor}
         onChangeText={aoMudar}
+        onFocus={() => setFocado(true)}
+        onBlur={() => setFocado(false)}
         placeholder={placeholder}
         placeholderTextColor={cores.textoFraco}
         secureTextEntry={seguro}
@@ -59,30 +76,29 @@ export function CampoTexto({
         autoCapitalize={autoCapitalize}
         autoComplete={autoComplete}
         autoCorrect={false}
-        style={styles.input}
+        accessibilityLabel={rotulo}
+        className={`min-h-[52px] rounded-xl border px-4 py-3 text-base ${className ?? ''}`}
+        style={[estilos.input, focado && estilos.focado, invalido && estilos.invalido]}
       />
     </View>
   );
 }
 
 // Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+// Updated by AI.
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
-    campo: {
-      gap: espaco.xs,
-    },
-    rotulo: {
-      ...tipografia.legenda,
-      fontWeight: '600',
-    },
     input: {
-      borderWidth: 1,
-      borderColor: cores.textoFraco,
-      borderRadius: espaco.sm,
-      padding: espaco.sm,
-      fontSize: tipografia.corpo.fontSize,
+      borderColor: cores.bordaForte,
       backgroundColor: cores.cartao,
       color: cores.texto,
+    },
+    focado: {
+      borderColor: cores.primaria,
+      borderWidth: 2,
+    },
+    invalido: {
+      borderColor: cores.erro,
     },
   });
 }

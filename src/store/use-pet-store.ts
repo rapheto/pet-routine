@@ -8,8 +8,7 @@
 // conversam com o backend via `apiFetch` (que injeta o Bearer token).
 //
 // Todas as atualizações são imutáveis: nunca mutamos o pet recebido.
-// Erros de rede/API ficam em `error` para a tela exibir — nenhuma ação
-// lança exceção, então `void addPet(...)` nas telas é seguro.
+// Erros de rede/API ficam em `error` para a tela exibir.
 // ============================================================
 import { create } from 'zustand';
 
@@ -18,6 +17,13 @@ import { mensagemDoErro } from '../lib/erro';
 import type { AtualizacaoPet, NovoPet, Pet, PetDoServidor } from '../types/pet';
 
 // Created by AI.
+// Updated by AI.
+export type ResultadoAcao =
+  | { sucesso: true }
+  | { sucesso: false; erro: string };
+
+// Created by AI.
+// Updated by AI.
 type PetStore = {
   pets: Pet[];
   isLoading: boolean;
@@ -25,9 +31,9 @@ type PetStore = {
   fetchPets: () => Promise<void>;
   addPet: (novo: NovoPet) => Promise<void>;
   togglePasseio: (id: string) => Promise<void>;
-  registrarPasseio: (id: string, local?: Pet['local'], fotoUri?: string) => Promise<void>;
-  updatePet: (id: string, dados: AtualizacaoPet) => Promise<void>;
-  removePet: (id: string) => Promise<void>;
+  registrarPasseio: (id: string, local?: Pet['local'], fotoUri?: string) => Promise<ResultadoAcao>;
+  updatePet: (id: string, dados: AtualizacaoPet) => Promise<ResultadoAcao>;
+  removePet: (id: string) => Promise<ResultadoAcao>;
   clearPets: () => void;
 };
 
@@ -73,6 +79,7 @@ export const usePetStore = create<PetStore>((set) => ({
     }
   },
 
+  // Updated by AI.
   registrarPasseio: async (id, local, fotoUri) => {
     try {
       const atualizado = await apiFetch<PetDoServidor>(`/pets/${id}/passeio`, {
@@ -83,11 +90,15 @@ export const usePetStore = create<PetStore>((set) => ({
         pets: estado.pets.map((pet) => (pet.id === id ? converterPet(atualizado) : pet)),
         error: null,
       }));
+      return { sucesso: true };
     } catch (erro) {
-      set({ error: mensagemDoErro(erro) });
+      const mensagem = mensagemDoErro(erro);
+      set({ error: mensagem });
+      return { sucesso: false, erro: mensagem };
     }
   },
 
+  // Updated by AI.
   updatePet: async (id, dados) => {
     try {
       const atualizado = await apiFetch<PetDoServidor>(`/pets/${id}`, {
@@ -98,11 +109,15 @@ export const usePetStore = create<PetStore>((set) => ({
         pets: estado.pets.map((pet) => (pet.id === id ? converterPet(atualizado) : pet)),
         error: null,
       }));
+      return { sucesso: true };
     } catch (erro) {
-      set({ error: mensagemDoErro(erro) });
+      const mensagem = mensagemDoErro(erro);
+      set({ error: mensagem });
+      return { sucesso: false, erro: mensagem };
     }
   },
 
+  // Updated by AI.
   removePet: async (id) => {
     try {
       await apiFetch<{ success: boolean; id: string }>(`/pets/${id}`, { method: 'DELETE' });
@@ -110,8 +125,11 @@ export const usePetStore = create<PetStore>((set) => ({
         pets: estado.pets.filter((pet) => pet.id !== id),
         error: null,
       }));
+      return { sucesso: true };
     } catch (erro) {
-      set({ error: mensagemDoErro(erro) });
+      const mensagem = mensagemDoErro(erro);
+      set({ error: mensagem });
+      return { sucesso: false, erro: mensagem };
     }
   },
 

@@ -1,4 +1,11 @@
 // Created by AI.
+// Updated by AI.
+
+// O CSS do Tailwind/NativeWind precisa ser importado UMA vez no layout
+// raiz. Sem este import o Metro não registra as classes `className`,
+// e os componentes ficam sem espaçamento/altura — o botão "Entrar"
+// chega a ser renderizado, mas sem área visível de toque.
+import '../../global.css';
 
 // ============================================================
 // Layout raiz do Expo Router
@@ -24,6 +31,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { petIdDaNotificacao, prepararCanalNotificacoes } from '../services/notifications';
 import { useAuthStore } from '../store/use-auth-store';
 import { ThemeProvider, useTheme } from '../context/theme-context';
+import { GluestackUIProvider } from '../components/gluestack-provider';
 import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
 
 // Created by AI.
@@ -31,12 +39,14 @@ export const unstable_settings = {
   initialRouteName: '(tabs)',
 };
 
-// Created by AI.
+// Updated by AI.
 export default function LayoutRaiz() {
   return (
     <SafeAreaProvider>
       <ThemeProvider>
-        <RotasComTema />
+        <GluestackUIProvider>
+          <RotasComTema />
+        </GluestackUIProvider>
       </ThemeProvider>
     </SafeAreaProvider>
   );
@@ -45,6 +55,7 @@ export default function LayoutRaiz() {
 // Componente interno: só ele pode usar `useTheme`, pois já está
 // dentro do `ThemeProvider`.
 // Created by AI.
+// Updated by AI.
 function RotasComTema() {
   const router = useRouter();
   const segments = useSegments();
@@ -103,8 +114,8 @@ function RotasComTema() {
         <Stack
           screenOptions={{
             headerStyle: { backgroundColor: cores.cartao },
-            headerTintColor: cores.texto,
-            headerTitleStyle: { color: cores.texto },
+            headerTintColor: cores.primaria,
+            headerTitleStyle: { color: cores.primaria, fontWeight: '700' },
             contentStyle: { backgroundColor: cores.fundo },
           }}
         >
@@ -138,7 +149,7 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
   return StyleSheet.create({
     linkCabecalho: {
       ...tipografia.corpo,
-      color: cores.primaria,
+      color: cores.primariaForte,
       fontWeight: '600',
       paddingHorizontal: espaco.md,
       paddingVertical: espaco.xs,

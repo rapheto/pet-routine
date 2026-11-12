@@ -1,18 +1,24 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 4 — Layout compartilhado das telas de autenticação
+// Etapa 5 — Layout compartilhado das telas de autenticação
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Centraliza título, subtítulo, mensagem de erro e rodapé das telas
-// públicas de Login e Cadastro, mantendo as duas visualmente coesas.
+// Reformulação: marca, título e subtítulo com hierarquia clara, erro
+// em destaque, campos agrupados por `gap` e rodapé com links. O fundo
+// segue o tema claro/escuro persistido.
 // Regra 15: componente reutilizável fora de src/app/.
 // ============================================================
 import { useMemo, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { espaco, type PaletaCores } from '../theme';
+import { Card } from './card';
+import { Heading } from './heading';
+import { Text } from './texto';
+import { VStack } from './vstack';
 
 // Created by AI.
 type LayoutAutenticacaoProps = {
@@ -24,6 +30,7 @@ type LayoutAutenticacaoProps = {
 };
 
 // Created by AI.
+// Updated by AI.
 export function LayoutAutenticacao({
   titulo,
   subtitulo,
@@ -31,32 +38,48 @@ export function LayoutAutenticacao({
   children,
   rodape,
 }: LayoutAutenticacaoProps) {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
+  const { cores } = useTheme();
+  const estilos = useMemo(() => criarEstilos(cores), [cores]);
 
+  // No iOS o teclado não redimensiona a janela: sem este ajuste o
+  // botão "Entrar" fica atrás do teclado e parece não existir.
+  // Created by AI.
   return (
     <ScrollView
-      style={styles.tela}
-      contentContainerStyle={styles.conteudo}
+      style={estilos.tela}
+      contentContainerStyle={estilos.conteudo}
       keyboardShouldPersistTaps="handled"
+      automaticallyAdjustKeyboardInsets
     >
-      <View style={styles.cabecalho}>
-        <Text style={styles.marca}>🐾 Pet Routine</Text>
-        <Text style={tipografia.titulo}>{titulo}</Text>
-        <Text style={tipografia.legenda}>{subtitulo}</Text>
-      </View>
+      <VStack className="gap-6">
+        <VStack className="gap-1">
+          <Text className="text-sm font-bold" tom="primaria">
+            🐾 Pet Routine
+          </Text>
+          <Heading nivel="destaque">{titulo}</Heading>
+          <Text className="text-base" tom="fraco">
+            {subtitulo}
+          </Text>
+        </VStack>
 
-      {erro !== '' && <Text style={styles.erro}>{erro}</Text>}
+        {erro !== '' && (
+          <Card className="border-2" style={estilos.cartaoErro}>
+            <Text className="text-sm" tom="sobreRosa" accessibilityRole="alert">
+              {erro}
+            </Text>
+          </Card>
+        )}
 
-      {children}
+        <VStack className="gap-4">{children}</VStack>
 
-      <View style={styles.rodape}>{rodape}</View>
+        <VStack className="items-center gap-3">{rodape}</VStack>
+      </VStack>
     </ScrollView>
   );
 }
 
 // Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
+function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     tela: {
       flex: 1,
@@ -65,24 +88,12 @@ function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
     conteudo: {
       flexGrow: 1,
       justifyContent: 'center',
-      padding: espaco.lg,
-      gap: espaco.md,
+      paddingHorizontal: espaco.lg,
+      paddingVertical: espaco.xl,
     },
-    cabecalho: {
-      gap: espaco.xs,
-    },
-    marca: {
-      ...tipografia.legenda,
-      color: cores.primaria,
-      fontWeight: '700',
-    },
-    erro: {
-      ...tipografia.corpo,
-      color: cores.erro,
-    },
-    rodape: {
-      alignItems: 'center',
-      gap: espaco.sm,
+    cartaoErro: {
+      borderColor: cores.erro,
+      backgroundColor: cores.rosa,
     },
   });
 }

@@ -2,8 +2,7 @@
 // Prática 1.1 — Modelagem do domínio Pet
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Leia o enunciado completo em `PRATICA.md` › "Prática 1".
-// Onde houver `/* … */` ou `TODO`, é a sua vez de escrever.
+// Enunciado completo em `PRATICA.md` › "Prática 1".
 // Os blocos marcados como VERIFICAÇÃO **não devem ser apagados**.
 //
 // Regras do domínio (resumo — o enunciado manda):
@@ -17,22 +16,14 @@
 // comentário; nenhum campo de domínio tipado como `string` genérica.
 // ============================================================
 
-// ============================================================
-// TODO P1.1.1 — Union types literais. Nenhum destes pode ser `string`.
-//   EspeciePet     → cachorro, gato, ave, outro
-//   PortePet       → pequeno, medio, grande
-//   StatusPasseio  → pendente, concluido, cancelado
-// ============================================================
+// Updated by AI.
 export type EspeciePet = 'cachorro' | 'gato' | 'ave' | 'outro';
+// Updated by AI.
 export type PortePet = 'pequeno' | 'medio' | 'grande';
+// Updated by AI.
 export type StatusPasseio = 'pendente' | 'concluido' | 'cancelado';
 
-// ============================================================
-// TODO P1.1.2 — A entidade completa, como ela virá do servidor um dia.
-//   Campos: id, nome, especie, porte, statusPasseio, idadeMeses, criadoEm.
-//   Pense no tipo de cada um. Você vai justificar uma dessas escolhas
-//   na Prática 2.
-// ============================================================
+// Updated by AI.
 export interface Pet {
   id: string;
   nome: string;
@@ -53,24 +44,14 @@ export interface Pet {
 // string ISO. A conversão para `Date` acontece na fronteira da store.
 export type PetDoServidor = Omit<Pet, 'criadoEm'> & { criadoEm: string };
 
-// ============================================================
-// TODO P1.1.3 — Tipos DERIVADOS. Use utility types; não redigite campos.
-//   NovoPet         → o que o formulário de cadastro envia
-//   ResumoPet       → o que o card da lista "Meus pets" precisa
-//   AtualizacaoPet  → edição parcial de um pet já cadastrado
-//
-//   Dica: os utility types desta prática são `Omit`, `Pick` e `Partial`.
-//   Pergunte-se de QUEM cada um deve derivar — nem sempre é de `Pet`.
-// ============================================================
+// Updated by AI.
 export type NovoPet = Omit<Pet, 'id' | 'statusPasseio' | 'criadoEm'>;
+// Updated by AI.
 export type ResumoPet = Pick<Pet, 'id' | 'nome' | 'especie' | 'statusPasseio'>;
-export type AtualizacaoPet = Partial<NovoPet>;
+// Updated by AI.
+export type AtualizacaoPet = Partial<Omit<Pet, 'id' | 'criadoEm'>>;
 
-// ============================================================
-// TODO P1.1.4 — Rótulos legíveis, com switch exaustivo e SEM `default`.
-//   Sem `default`, o compilador avisa se um dia você acrescentar uma
-//   variante ao union e esquecer de tratá-la aqui. É esse o ponto.
-// ============================================================
+// Updated by AI.
 export function rotuloStatusPasseio(status: StatusPasseio): string {
   switch (status) {
     case 'pendente': return 'Pendente';
@@ -79,12 +60,24 @@ export function rotuloStatusPasseio(status: StatusPasseio): string {
   }
 }
 
+// Updated by AI.
 export function rotuloEspecie(especie: EspeciePet): string {
   switch (especie) {
     case 'cachorro': return 'Cachorro';
     case 'gato': return 'Gato';
     case 'ave': return 'Ave';
     case 'outro': return 'Outro';
+  }
+}
+
+// Created by AI.
+// Etapa 5: o rótulo do porte passou a ser usado pelo CardPet (badge) e
+// pela tela de detalhe, então saiu da tela e virou função de domínio.
+export function rotuloPorte(porte: PortePet): string {
+  switch (porte) {
+    case 'pequeno': return 'Pequeno';
+    case 'medio': return 'Médio';
+    case 'grande': return 'Grande';
   }
 }
 
@@ -130,10 +123,4 @@ void novo;
 void resumo;
 void parcial;
 
-// ============================================================
-// TODO P1.1.5 — Teste final da prática (responda aqui, em comentário)
-//   Acrescente o campo `microchip: string` à interface `Pet`.
-//   Quantos dos três tipos derivados você precisou editar à mão?
-//
-//   Resposta: Zero. Por usarmos utility types (`Omit`, `Pick`, `Partial`), as alterações na interface base refletem automaticamente nos tipos derivados. A ausência do uso de redigitação evita inconsistências.
-// ============================================================
+// Verificação: os tipos derivados acompanham `Pet` via `Omit`, `Pick` e `Partial`.
