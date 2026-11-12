@@ -10,6 +10,7 @@
 // ============================================================
 
 // Created by AI.
+// Updated by AI.
 export type AuthUser = {
   id: string;
   name: string;

@@ -1,38 +1,35 @@
 // Created by AI.
+// Updated by AI.
 
 // ============================================================
-// Etapa 3 — Cronômetro de passeio com cleanup
+// Etapa 5 — Cronômetro de passeio (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
 // Regra 9: o `setInterval` criado aqui é SEMPRE removido no retorno do
-// `useEffect` — ao pausar, salvar ou sair da tela. Sem isso o contador
-// continuaria rodando em memória e atualizaria um componente desmontado.
+// `useEffect` — ao pausar, salvar ou sair da tela.
 //
-// Regra 6: a ação fica em `onPress`; o feedback visual vem do `pressed`.
-//
-// Ao salvar, a sessão vai para o SQLite local e a tela de detalhe é
-// avisada para recarregar o histórico.
+// Reformulação: tempo em destaque, dois botões de controle lado a lado
+// e um botão principal para salvar no histórico local (SQLite).
 // ============================================================
-import { useEffect, useMemo, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useEffect, useState } from 'react';
 
 import { formatarDuracao } from '../lib/duracao';
 import { salvarSessaoPasseio } from '../services/passeio-db';
-import { useTheme } from '../context/theme-context';
-import { espaco, type PaletaCores, type TipografiaTema } from '../theme';
+import { Button } from './botao';
 import { Card } from './card';
+import { Heading } from './heading';
+import { HStack } from './hstack';
+import { Text } from './texto';
+import { VStack } from './vstack';
 
-// Created by AI.
+// Updated by AI.
 type WalkTimerProps = {
   petId: string;
   onSessaoSalva: () => void;
 };
 
-// Created by AI.
+// Updated by AI.
 export function WalkTimer({ petId, onSessaoSalva }: WalkTimerProps) {
-  const { cores, tipografia } = useTheme();
-  const styles = useMemo(() => criarEstilos(cores, tipografia), [cores, tipografia]);
-
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [salvando, setSalvando] = useState(false);
@@ -84,100 +81,58 @@ export function WalkTimer({ petId, onSessaoSalva }: WalkTimerProps) {
 
   return (
     <Card>
-      <Text style={styles.rotulo}>Cronômetro de passeio</Text>
-      <Text style={styles.tempo}>{formatarDuracao(seconds)}</Text>
-      <Text style={tipografia.legenda}>
-        {isRunning ? 'Contando o tempo do passeio...' : 'Toque em Iniciar quando sair para o passeio.'}
+      <VStack className="gap-1">
+        <Heading nivel="secao">Cronômetro de passeio</Heading>
+        <Text className="text-xs" tom="fraco">
+          {isRunning
+            ? 'Contando o tempo do passeio...'
+            : 'Toque em Iniciar quando sair para o passeio.'}
+        </Text>
+      </VStack>
+
+      <Text
+        className="text-center text-5xl font-bold"
+        tom="primaria"
+        style={{ fontVariant: ['tabular-nums'] }}
+      >
+        {formatarDuracao(seconds)}
       </Text>
 
-      {erro !== '' && <Text style={styles.erro}>{erro}</Text>}
+      {isRunning && (
+        <HStack className="justify-center gap-2">
+          <Text className="text-xs" tom="sucesso">
+            ● Em andamento
+          </Text>
+        </HStack>
+      )}
 
-      <View style={styles.acoes}>
-        <Pressable
-          onPress={alternarCronometro}
-          accessibilityRole="button"
-          accessibilityState={{ selected: isRunning }}
-          style={({ pressed }) => [styles.botao, styles.botaoPrimario, pressed && styles.pressionado]}
-        >
-          <Text style={styles.textoBotao}>{isRunning ? 'Pausar' : 'Iniciar'}</Text>
-        </Pressable>
-
-        <Pressable
-          onPress={zerar}
-          accessibilityRole="button"
-          style={({ pressed }) => [styles.botao, styles.botaoNeutro, pressed && styles.pressionado]}
-        >
-          <Text style={styles.textoBotao}>Zerar</Text>
-        </Pressable>
-      </View>
-
-      <Pressable
-        onPress={() => void salvar()}
-        disabled={salvarDesabilitado}
-        accessibilityRole="button"
-        accessibilityState={{ disabled: salvarDesabilitado }}
-        style={({ pressed }) => [
-          styles.botao,
-          styles.botaoSalvar,
-          salvarDesabilitado && styles.botaoDesabilitado,
-          pressed && !salvarDesabilitado && styles.pressionado,
-        ]}
-      >
-        <Text style={styles.textoBotao}>
-          {salvando ? 'Salvando...' : 'Salvar sessão no histórico'}
+      {erro !== '' && (
+        <Text className="text-sm" tom="erro">
+          {erro}
         </Text>
-      </Pressable>
+      )}
+
+      <HStack className="gap-2">
+        <Button
+          rotulo={isRunning ? 'Pausar' : 'Iniciar'}
+          aoPressionar={alternarCronometro}
+          className="flex-1"
+        />
+        <Button
+          rotulo="Zerar"
+          variante="secundario"
+          aoPressionar={zerar}
+          desabilitado={seconds === 0 && !isRunning}
+          className="flex-1"
+        />
+      </HStack>
+
+      <Button
+        rotulo={salvando ? 'Salvando...' : 'Salvar sessão no histórico'}
+        aoPressionar={() => void salvar()}
+        carregando={salvando}
+        desabilitado={salvarDesabilitado}
+      />
     </Card>
   );
-}
-
-// Created by AI.
-function criarEstilos(cores: PaletaCores, tipografia: TipografiaTema) {
-  return StyleSheet.create({
-    rotulo: {
-      ...tipografia.corpo,
-      fontWeight: '600',
-    },
-    tempo: {
-      fontSize: 40,
-      fontWeight: '700',
-      color: cores.primaria,
-      fontVariant: ['tabular-nums'],
-      textAlign: 'center',
-    },
-    erro: {
-      ...tipografia.corpo,
-      color: cores.erro,
-    },
-    acoes: {
-      flexDirection: 'row',
-      gap: espaco.sm,
-    },
-    botao: {
-      padding: espaco.md,
-      borderRadius: espaco.sm,
-      alignItems: 'center',
-    },
-    botaoPrimario: {
-      flex: 1,
-      backgroundColor: cores.primaria,
-    },
-    botaoNeutro: {
-      flex: 1,
-      backgroundColor: cores.textoFraco,
-    },
-    botaoSalvar: {
-      backgroundColor: cores.sucesso,
-    },
-    botaoDesabilitado: {
-      opacity: 0.4,
-    },
-    pressionado: {
-      opacity: 0.7,
-    },
-    textoBotao: {
-      color: cores.sobrePrimaria,
-      fontWeight: 'bold',
-    },
-  });
 }
