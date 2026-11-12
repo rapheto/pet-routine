@@ -1,45 +1,48 @@
 // ============================================================
-// Prática 3 — Estado vazio da lista
+// Etapa 5 — Estado vazio da lista (UI reformulada)
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
 //
-// Toda lista tem ListEmptyComponent. Sem exceção.
-// E o texto do estado vazio precisa AJUDAR o usuário:
-//   - primeiro acesso → o que ele pode fazer
-//   - busca sem resultado → o que ele pode tentar
+// Toda lista tem `ListEmptyComponent` (Regra 8), e o texto precisa
+// AJUDAR o tutor: primeiro acesso → o que fazer; busca sem resultado
+// → o que tentar. O visual agora é um cartão com ícone e CTA.
 // ============================================================
-import { StyleSheet, Text, View } from 'react-native';
+import { Button } from './botao';
+import { Card } from './card';
+import { Heading } from './heading';
+import { Text } from './texto';
+import { VStack } from './vstack';
 
-import { cores, espaco, tipografia } from '../theme';
-
+// Updated by AI.
 type ListaVaziaProps = {
-  // TODO P3.12: uma prop que permita distinguir "primeiro acesso" de "busca sem resultado".
   termoBusca?: string;
+  temPets?: boolean;
+  aoCadastrar?: () => void;
 };
 
-export function ListaVazia({ termoBusca }: ListaVaziaProps) {
-  // TODO P3.13: dois textos diferentes, conforme o cenário.
-  const texto = termoBusca && termoBusca.trim() !== ''
-    ? `Nenhum pet encontrado para '${termoBusca}'.`
-    : 'Nenhum pet cadastrado. Que tal adicionar um?';
+// Updated by AI.
+export function ListaVazia({ termoBusca = '', temPets = false, aoCadastrar }: ListaVaziaProps) {
+  const termo = termoBusca.trim();
+  const primeiroAcesso = !temPets;
+
+  const titulo = primeiroAcesso ? 'Nenhum pet por aqui ainda' : 'Nenhum resultado encontrado';
+  const descricao = primeiroAcesso
+    ? 'Cadastre seu primeiro pet para acompanhar os passeios do dia, a foto e o histórico.'
+    : `Não encontramos nenhum pet para "${termo}". Tente outro nome ou limpe a busca.`;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.texto}>
-        {texto}
-      </Text>
-    </View>
+    <VStack className="px-4 py-4">
+      <Card className="items-center">
+        <Text className="text-4xl">{primeiroAcesso ? '🐾' : '🔎'}</Text>
+        <Heading nivel="secao" className="text-center">
+          {titulo}
+        </Heading>
+        <Text className="text-center text-base" tom="fraco">
+          {descricao}
+        </Text>
+        {primeiroAcesso && aoCadastrar !== undefined && (
+          <Button rotulo="Cadastrar meu primeiro pet" aoPressionar={aoCadastrar} />
+        )}
+      </Card>
+    </VStack>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    // TODO P3.14: centralize e use padding generoso
-    alignItems: 'center',
-    padding: espaco.xl,
-  },
-  texto: {
-    ...tipografia.corpo,
-    color: cores.textoFraco,
-    textAlign: 'center',
-  },
-});

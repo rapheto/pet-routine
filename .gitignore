@@ -41,7 +41,7 @@ yarn-error.*
 /android
 
 .env
-AGENTS.md
+
 CLAUDE.md
 .claude
 .agents
