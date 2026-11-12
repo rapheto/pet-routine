@@ -7,8 +7,8 @@
 //
 // Reformulação: miniatura quadrada à esquerda, hierarquia tipográfica
 // à direita (nome → badges de espécie/porte → badge de status) e ação
-// de foto como botão preenchido da marca. O card continua sendo só
-// apresentação: abrir o detalhe é responsabilidade do `ItemPet`.
+// para registrar passeio. Abrir o detalhe continua disponível no botão
+// secundário e no toque do item.
 //
 // Design: status usa os pastéis semânticos (âmbar/verde/rosa) e os
 // dados fixos (espécie/porte) usam o pastel azul, para o usuário
@@ -35,7 +35,7 @@ import { VStack } from './vstack';
 // Updated by AI.
 type CardPetProps = {
   pet: Pet;
-  aoEscolherFoto: () => void;
+  aoRegistrarPasseio: () => void;
   aoAbrir: () => void;
 };
 
@@ -48,7 +48,7 @@ const TOM_DO_STATUS: Record<Pet['statusPasseio'], TomBadge> = {
 };
 
 // Updated by AI.
-export function CardPet({ pet, aoEscolherFoto, aoAbrir }: CardPetProps) {
+export function CardPet({ pet, aoRegistrarPasseio, aoAbrir }: CardPetProps) {
   const { cores } = useTheme();
   const estilos = useMemo(() => criarEstilos(cores), [cores]);
 
@@ -108,13 +108,13 @@ export function CardPet({ pet, aoEscolherFoto, aoAbrir }: CardPetProps) {
           compacto
         />
         <Button
-          rotulo={pet.fotoUri ? 'Trocar foto' : 'Adicionar foto'}
+          rotulo="Registrar passeio"
           variante="primario"
           aoPressionar={(evento) => {
             evento?.stopPropagation();
-            aoEscolherFoto();
+            aoRegistrarPasseio();
           }}
-          rotuloAcessivel={`${pet.fotoUri ? 'Trocar' : 'Adicionar'} foto de ${pet.nome}`}
+          rotuloAcessivel={`Registrar passeio de ${pet.nome}`}
           compacto
         />
       </HStack>

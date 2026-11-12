@@ -12,6 +12,7 @@
 // ============================================================
 import { useMemo, type ReactNode } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
 
 import { useTheme } from '../context/theme-context';
 import { espaco, type PaletaCores } from '../theme';
@@ -52,12 +53,15 @@ export function LayoutAutenticacao({
       automaticallyAdjustKeyboardInsets
     >
       <VStack className="gap-6">
-        <VStack className="gap-1">
-          <Text className="text-sm font-bold" tom="primaria">
-            🐾 Pet Routine
-          </Text>
-          <Heading nivel="destaque">{titulo}</Heading>
-          <Text className="text-base" tom="fraco">
+        <VStack className="items-center gap-2">
+          <Image
+            source={require('../../assets/pet-routine-logo.png')}
+            contentFit="contain"
+            accessibilityLabel="Logo Pet Routine"
+            style={estilos.logo}
+          />
+          <Heading nivel="destaque" className="text-center">{titulo}</Heading>
+          <Text className="text-center text-base" tom="fraco">
             {subtitulo}
           </Text>
         </VStack>
@@ -79,6 +83,7 @@ export function LayoutAutenticacao({
 }
 
 // Created by AI.
+// Updated by AI.
 function criarEstilos(cores: PaletaCores) {
   return StyleSheet.create({
     tela: {
@@ -90,6 +95,11 @@ function criarEstilos(cores: PaletaCores) {
       justifyContent: 'center',
       paddingHorizontal: espaco.lg,
       paddingVertical: espaco.xl,
+    },
+    logo: {
+      width: 240,
+      height: 185,
+      alignSelf: 'center',
     },
     cartaoErro: {
       borderColor: cores.erro,
