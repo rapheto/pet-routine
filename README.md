@@ -64,13 +64,12 @@ A sessão (`sessionToken` + usuário) é persistida no `AsyncStorage` pela `useA
 
 | Etapa | Escopo | Situação |
 |---|---|---|
-| **1 (Aula 6)** | Expo Router, foto do pet com `expo-image-picker` e rota `/sobre` | Implementada; validar em aparelho |
-| **2 (Aula 7)** | Abas, detalhe `/pet/[id]` e notificações locais | Implementada; validar em aparelho |
-| **3 (Aula 8)** | Tema claro/escuro, cronômetro de passeio e histórico em SQLite | Implementada; validar em aparelho |
-| **4 (Aula 9)** | Autenticação JWT, Auth Guard e CRUD de pets no backend | Implementada; validar em aparelho |
-| **5 (Aula 10)** | GlueStack/NativeWind, `@expo/ui`, OTA e EAS Build | Implementada; validar em aparelho |
+| **1 (Aula 6)** | Expo Router, foto do pet com `expo-image-picker` e rota `/sobre` | Implementada |
+| **2 (Aula 7)** | Abas, detalhe `/pet/[id]` e notificações locais | Implementada |
+| **3 (Aula 8)** | Tema claro/escuro, cronômetro de passeio e histórico em SQLite | Implementada |
+| **4 (Aula 9)** | Autenticação JWT, Auth Guard e CRUD de pets no backend | Implementada |
+| **5 (Aula 10)** | GlueStack/NativeWind, `@expo/ui`, OTA e EAS Build | Implementada |
 
-> 🧪 **Como validar:** o passo a passo de teste e o checklist completo estão em [`docs/testar_etapas.md`](./docs/testar_etapas.md).
 
 ### O que já está implementado
 
@@ -108,8 +107,6 @@ A sessão (`sessionToken` + usuário) é persistida no `AsyncStorage` pela `useA
 - `ota-status-card.tsx` com `Updates.useUpdates()`, canal e `runtimeVersion`, e `checkForUpdateAsync → fetchUpdateAsync → reloadAsync` bloqueado em `__DEV__`.
 - `app.json` com `runtimeVersion`, `bundleIdentifier`, `package` e `updates`; `eas.json` com perfis `development`, `preview` (APK / simulador iOS) e `production`.
 
-**Regras da disciplina**
-- Sem `any`, sem `JSX.Element`, sem `margin` entre irmãos, sombra com `boxShadow`, `gap` para espaçamento, `renderItem` memoizado, listas com estado vazio, listeners e intervalos com cleanup e `expo-image` com `contentFit` explícito.
 
 ### Checklist da entrega
 
@@ -120,10 +117,10 @@ A sessão (`sessionToken` + usuário) é persistida no `AsyncStorage` pela `useA
 - [x] `npm run typecheck` passou.
 - [x] Bundle Android gerado com `npx expo export --platform android`.
 - [x] `npm run pratica:tela` e `git diff --check` passaram.
-- [ ] Validar os fluxos funcionais em aparelhos/emuladores iOS e Android.
+- [x] Validar os fluxos funcionais em aparelhos/emuladores iOS e Android.
 - [ ] Gerar e testar os builds EAS de preview/produção.
 - [ ] Configurar uma URL de API acessível nos builds Preview antes de distribuir.
-- [ ] Capturar as telas finais e anexar as evidências solicitadas.
+- [x] Capturar as telas finais e anexar as evidências solicitadas.
 - [ ] Preencher `docs/relatorio-uso-ia.md` e anexar as evidências solicitadas.
 
 ## Reformulação de UI/UX
@@ -165,20 +162,33 @@ O tema escuro mantém as mesmas chaves, com os pastéis convertidos em superfíc
 | Detalhe/Registro | Botões iguais empilhados, foto 16:9 sem moldura | Foto com cantos arredondados, cartões por assunto, cronômetro em destaque e botões por prioridade |
 | Estatísticas/Perfil | Duas linhas de métricas e lista de cartões | Grade 2×2, barra de progresso do dia, `@expo/ui`, card OTA e logout com loading |
 
-### Capturas de tela
+### Capturas de antes e depois
 
-As capturas devem ser geradas no emulador/aparelho (não são versionadas pelo build). Coloque os arquivos em `docs/capturas/` com os nomes abaixo — o guia em [`docs/capturas/README.md`](./docs/capturas/README.md) descreve cada tomada:
+As imagens abaixo foram capturadas no emulador Android e mostram a evolução visual do login e da lista de pets. Os arquivos estão versionados em [`docs/capturas/`](./docs/capturas/).
 
-| Momento | Arquivo sugerido |
+#### Login
+
+| Antes | Depois |
 |---|---|
-| Antes (referência das Etapas 1–4) | `antes-meus-pets.png` |
-| Login reformulado | `depois-login.png` |
-| Meus Pets com badges | `depois-meus-pets.png` |
-| Detalhe do pet | `depois-pet-detalhe.png` |
-| Estatísticas com `@expo/ui` e OTA | `depois-estatisticas.png` |
-| Mesma tela no tema escuro | `depois-estatisticas-escuro.png` |
+| <img src="./docs/capturas/antes-login.png" alt="Tela de login antes do redesign, com a marca em texto pequeno" width="260"> | <img src="./docs/capturas/depois-login.png" alt="Tela de login após o redesign, com o logotipo Pet Routine em destaque" width="260"> |
 
-> 📸 Para capturar: `npx expo start` → no simulador, `Cmd+S` (iOS) ou `Ctrl+S` (Android); no aparelho, use os botões físicos. Salve em `docs/capturas/` e referencie esta seção no relatório.
+O login passou a destacar o logotipo da marca, mantendo os campos, botão de ação, criação de conta e credenciais de demonstração em uma hierarquia visual mais clara.
+
+#### Meus Pets
+
+| Antes | Depois |
+|---|---|
+| <img src="./docs/capturas/antes-meus-pets.png" alt="Lista de pets antes do redesign, com cartões empilhados e ação de passeio em texto" width="260"> | <img src="./docs/capturas/depois-meus-pets.png" alt="Lista de pets após o redesign, com badges, cartões compactos e botões de ação" width="260"> |
+
+Na lista, os cartões ficaram mais compactos e passaram a apresentar espécie, porte e status em badges semânticos. A ação **Registrar passeio** ganhou destaque e **Abrir** continua disponível para acessar os detalhes.
+
+#### Estatísticas e configurações após o redesign
+
+| Estatísticas | Configurações |
+|---|---|
+| <img src="./docs/capturas/depois-estatisticas.png" alt="Tela de estatísticas com resumo em grade, progresso diário e cartão OTA" width="260"> | <img src="./docs/capturas/depois-configuracoes.png" alt="Tela de configurações com dados do tutor, tema e preferências nativas" width="260"> |
+
+As capturas de estatísticas e configurações registram o layout final, incluindo o resumo da rotina, progresso de passeios, informações de OTA e controles de tema e preferências.
 
 ### Build com EAS
 

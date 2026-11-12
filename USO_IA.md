@@ -215,7 +215,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Implementar a Etapa 3 do Mini-Projeto (contexto de tema, cronômetro e persistência local)
 - **Etapa da atividade:** Etapa 3 (Aula 8) do Mini-Projeto
 - **Tipo de contribuição da IA:** Criação do contexto de tema com persistência, refatoração dos estilos para consumir a paleta ativa, componente de cronômetro com cleanup e serviço de histórico em `expo-sqlite`
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0007
 
@@ -246,7 +246,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Implementar a Etapa 4 do Mini-Projeto (autenticação e integração com o backend)
 - **Etapa da atividade:** Etapa 4 (Aula 9) do Mini-Projeto
 - **Tipo de contribuição da IA:** Store de sessão persistida, cliente HTTP centralizado, serviço e telas de autenticação, proteção de rotas e integração da store de pets ao CRUD REST
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão, execução do backend e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** backend e app testados por Raphael
 
 ## Registro da atividade 0008
 
@@ -274,7 +274,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Documentar o progresso e o roteiro de testes do Mini-Projeto
 - **Etapa da atividade:** Documentação das Etapas 1 a 4
 - **Tipo de contribuição da IA:** Redação de documentação técnica, instruções de execução, casos de teste e checklist de validação
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0009
 
@@ -309,7 +309,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Implementar a Etapa 5 do Mini-Projeto (UI/UX, `@expo/ui`, OTA e EAS Build)
 - **Etapa da atividade:** Etapa 5 (Aula 10) do Mini-Projeto
 - **Tipo de contribuição da IA:** Configuração do NativeWind/Tailwind, criação do kit de componentes e do provider, refatoração visual de todas as telas, componentes de preferências nativas e de atualização OTA, e configuração de build
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão, teste em aparelho e capturas de tela por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Testado em emulador por Raphael
 
 ## Registro da atividade 0010
 
@@ -337,7 +337,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Corrigir o `NullPointerException` do canal de notificações no Expo Go Android
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Correção de compatibilidade com o Expo Go, tratamento de erro assíncrono e documentação da limitação
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0011
 
@@ -364,7 +364,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Corrigir a ausência do botão de entrada na tela de login
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Correção de configuração do NativeWind, declaração de tipos e ajuste de usabilidade do teclado
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0012
 
@@ -392,7 +392,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Corrigir o crash da tela de Estatísticas
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Diagnóstico via logcat e correção de compatibilidade com o `@expo/ui` no Expo Go
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0013
 
@@ -422,7 +422,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Aplicar a paleta da marca e melhorar a percepção de resposta dos controles da UI
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Reformulação de tema/design system, ajustes de acessibilidade e de usabilidade dos componentes
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0014
 
@@ -449,7 +449,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Concluir a tela de Configurações e revisar a visibilidade dos controles
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Ajuste de interface e validação de consistência visual
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0015
 
@@ -475,7 +475,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Alinhar o tipo de autenticação aos dados realmente cadastrados
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Limpeza do contrato de dados do usuário
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0016
 
@@ -502,7 +502,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Refinar tamanho, cor e hierarquia dos botões
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Ajuste de estilos e hierarquia visual dos componentes
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0017
 
@@ -529,7 +529,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Reorganizar fluxos e padronizar ações
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Reordenação de layout e reutilização de componentes
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0018
 
@@ -556,7 +556,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Adicionar acesso explícito aos detalhes do pet
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Inclusão de ação de interface e controle de propagação de eventos
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0019
 
@@ -582,7 +582,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Ajustar a prioridade visual das ações do card
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Reordenação de controles de interface
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0020
 
@@ -609,7 +609,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Permitir cancelar o passeio do pet
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Inclusão de ação de interface e exibição de erros
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0021
 
@@ -636,7 +636,7 @@ incluindo sua correção, adequação e integração ao projeto.
 - **Finalidade do uso da IA:** Prevenir cancelamentos e exclusões acidentais
 - **Etapa da atividade:** Etapa 5 (Ajustes finais) do Mini-Projeto
 - **Tipo de contribuição da IA:** Alteração do fluxo de ações, diálogos de confirmação e acessibilidade do botão de exclusão
-- **Confirmação de revisão crítica e responsabilidade humana:** Pendente de revisão e teste em aparelho por Raphael
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0022
 
@@ -664,7 +664,7 @@ integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Concluir ajustes da revisão das etapas 1 a 5
 - **Etapa da atividade:** Revisão e validação da entrega
 - **Tipo de contribuição da IA:** Implementação de fluxos, integração de dependências, atualização de documentação e limpeza de comentários
-- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0027
 
@@ -694,7 +694,7 @@ e integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Importar o projeto completo sem sobrescrever o histórico do destino
 - **Etapa da atividade:** Comparação, integração e validação da branch
 - **Tipo de contribuição da IA:** Comparação de históricos, integração por merge preservando os dois históricos, resolução de conflitos e execução de typechecks
-- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0023
 
@@ -722,7 +722,7 @@ integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Corrigir falha de bundling e validar o projeto
 - **Etapa da atividade:** Correção e verificação do bundle
 - **Tipo de contribuição da IA:** Ajuste de dependências, import do provider e tipo de atualização
-- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0024
 
@@ -748,7 +748,7 @@ integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Atualizar o Checklist Final de Entrega
 - **Etapa da atividade:** Revisão da entrega
 - **Tipo de contribuição da IA:** Revisão da evidência de implementação e edição do checklist
-- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0025
 
@@ -774,7 +774,7 @@ integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Distinguir falhas de permissão conforme a Regra 10
 - **Etapa da atividade:** Revisão e correção do fluxo de permissões
 - **Tipo de contribuição da IA:** Tipagem discriminada do resultado e mensagens de orientação distintas na interface
-- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
 
 ## Registro da atividade 0026
 
@@ -801,4 +801,83 @@ integração do resultado permanecem com Raphael Miranda.
 - **Finalidade do uso da IA:** Remover casts sem justificativa nas rotas
 - **Etapa da atividade:** Revisão de qualidade do backend
 - **Tipo de contribuição da IA:** Validação estrutural de payloads e narrowing de tipos sem assertions
-- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
+
+## Registro da atividade 0028
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
+VS Code (versão não informada pelo ambiente)** nesta atividade: inclusão do
+logotipo fornecido na tela de autenticação.
+
+A ferramenta foi utilizada com a finalidade de **melhorar a identidade visual
+da tela de login**, durante a etapa de **ajuste da interface**, para realizar
+a seguinte contribuição: **adicionar a imagem fornecida como asset do app e
+exibi-la com dimensionamento proporcional e texto alternativo no layout de
+autenticação**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `assets/pet-routine-logo.png`, `src/components/layout-autenticacao.tsx`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Adiciona o logo Pet Routine fornecido ao layout de autenticação, em tamanho proporcional e com descrição acessível.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Melhorar a marca visual da tela de login
+- **Etapa da atividade:** Ajuste da interface de autenticação
+- **Tipo de contribuição da IA:** Integração do asset de imagem e atualização do layout compartilhado
+- **Confirmação de revisão crítica e responsabilidade humana:** Verificado por Raphael
+
+## Registro da atividade 0029
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
+VS Code (versão não informada pelo ambiente)** nesta atividade: restauração da
+ação de registrar passeio na lista de pets.
+
+A ferramenta foi utilizada com a finalidade de **restaurar o acesso direto ao
+registro de passeio a partir do cartão do pet**, durante a etapa de **ajuste do
+fluxo de interação da lista**, para realizar a seguinte contribuição:
+**substituir a ação principal de foto por “Registrar passeio” e encaminhar à
+tela de detalhes já aberta no formulário de registro**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `src/app/pet/[id].tsx`, `src/components/card-pet.tsx`, `src/components/item-pet.tsx`, `src/screens/tela-pet-detalhe.tsx`, `src/screens/tela-pets.tsx`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Restaura o botão “Registrar passeio” no cartão e abre diretamente o formulário de registro do pet selecionado.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Restaurar o atalho para registrar passeio na lista de pets
+- **Etapa da atividade:** Ajuste do fluxo da lista
+- **Tipo de contribuição da IA:** Atualização dos componentes e passagem de parâmetro para abrir o formulário de registro
+- **Confirmação de revisão crítica e responsabilidade humana:** revisão por Raphael Miranda
+
+## Registro da atividade 0030
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
+VS Code (versão não informada pelo ambiente)** nesta atividade: documentação
+visual do redesign da interface com capturas fornecidas pelo usuário.
+
+A ferramenta foi utilizada com a finalidade de **documentar as decisões
+visuais e de usabilidade com evidências antes/depois**, durante a etapa de
+**atualização do README**, para realizar a seguinte contribuição: **organizar
+as capturas em `docs/capturas/`, criar comparativos do login e da lista de
+pets e incluir imagens das telas de estatísticas e configurações após o
+redesign**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `README.md`, `USO_IA.md`, `docs/capturas/antes-login.png`, `docs/capturas/depois-login.png`, `docs/capturas/antes-meus-pets.png`, `docs/capturas/depois-meus-pets.png`, `docs/capturas/depois-estatisticas.png`, `docs/capturas/depois-configuracoes.png`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Documenta o redesign com comparativos de login e lista de pets e capturas das telas finais de estatísticas e configurações.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Documentar evidências visuais do redesign
+- **Etapa da atividade:** Atualização da documentação da interface
+- **Tipo de contribuição da IA:** Organização de imagens fornecidas e edição da seção de capturas do README
+- **Confirmação de revisão crítica e responsabilidade humana:** Rrevisão por Raphael Miranda

@@ -39,8 +39,10 @@ import { WalkTimer } from '../components/walk-timer';
 import { espaco, type PaletaCores } from '../theme';
 
 // Created by AI.
+// Updated by AI.
 type TelaPetDetalheProps = {
   petId?: string;
+  iniciarRegistro?: boolean;
 };
 
 // Created by AI.
@@ -55,7 +57,7 @@ const TOM_DO_STATUS: Record<Pet['statusPasseio'], TomBadge> = {
 // Updated by AI.
 // Updated by AI.
 // Updated by AI.
-export function TelaPetDetalhe({ petId }: TelaPetDetalheProps) {
+export function TelaPetDetalhe({ petId, iniciarRegistro = false }: TelaPetDetalheProps) {
   const router = useRouter();
   const { cores } = useTheme();
   const estilos = useMemo(() => criarEstilos(cores), [cores]);
@@ -67,7 +69,7 @@ export function TelaPetDetalhe({ petId }: TelaPetDetalheProps) {
   const atualizarPet = usePetStore((estado) => estado.updatePet);
   const removePet = usePetStore((estado) => estado.removePet);
 
-  const [registrando, setRegistrando] = useState(false);
+  const [registrando, setRegistrando] = useState(iniciarRegistro);
   const [aviso, setAviso] = useState('');
   const [erroAcao, setErroAcao] = useState('');
   const [agendando, setAgendando] = useState(false);

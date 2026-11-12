@@ -19,11 +19,11 @@ type ItemPetProps = {
   pet: Pet;
   onAbrir: (id: string) => void;
   onRemover: (id: string) => void;
-  onEscolherFoto: (id: string) => void;
+  onRegistrarPasseio: (id: string) => void;
 };
 
 // Updated by AI.
-export function ItemPet({ pet, onAbrir, onRemover, onEscolherFoto }: ItemPetProps) {
+export function ItemPet({ pet, onAbrir, onRemover, onRegistrarPasseio }: ItemPetProps) {
   return (
     <Pressable
       onPress={() => onAbrir(pet.id)}
@@ -43,7 +43,7 @@ export function ItemPet({ pet, onAbrir, onRemover, onEscolherFoto }: ItemPetProp
       <CardPet
         pet={pet}
         aoAbrir={() => onAbrir(pet.id)}
-        aoEscolherFoto={() => onEscolherFoto(pet.id)}
+        aoRegistrarPasseio={() => onRegistrarPasseio(pet.id)}
       />
     </Pressable>
   );
