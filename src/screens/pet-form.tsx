@@ -61,6 +61,7 @@ export default function PetForm() {
   );
 }
 
+// Updated by AI.
 const styles = StyleSheet.create({
   tela: {
     flex: 1,
@@ -91,8 +92,6 @@ const styles = StyleSheet.create({
   areaBotao: {
     borderRadius: 8,
     overflow: 'hidden',
-    // TODO P2.38: marginTop AQUI é legítima — é espaço extra em volta do grupo,
-    //   não espaço entre irmãos. Use um token de espaco (ex: espaco.lg).
-    marginTop: espaco.lg,
+    // O espaçamento entre irmãos vem do `gap` do contentContainerStyle.
   },
 });

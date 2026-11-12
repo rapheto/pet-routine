@@ -1,3 +1,5 @@
+// Declaração: este arquivo foi desenvolvido com apoio de IA e revisado por mim.
+
 // ============================================================
 // Item tocável da lista de pets
 // Disciplina: Desenvolvimento Mobile (2026.2.DM) — CESAR School
@@ -12,6 +14,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import type { Pet } from '../types/pet';
 import { CardPet } from './card-pet';
 
+// Updated by AI.
 type ItemPetProps = {
   pet: Pet;
   onAbrir: (id: string) => void;
@@ -25,7 +28,6 @@ export function ItemPet({ pet, onAbrir, onRemover, onEscolherFoto }: ItemPetProp
     <Pressable
       onPress={() => onAbrir(pet.id)}
       onLongPress={() => onRemover(pet.id)}
-      // TODO P3.7: acessibilidade — papel e rótulo.
       accessibilityRole="button"
       accessibilityLabel={`${pet.nome}, toque para ver os detalhes`}
       accessibilityHint="Mantenha pressionado para confirmar a exclusão do pet."

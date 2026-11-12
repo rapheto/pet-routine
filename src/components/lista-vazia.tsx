@@ -12,8 +12,8 @@ import { Heading } from './heading';
 import { Text } from './texto';
 import { VStack } from './vstack';
 
+// Updated by AI.
 type ListaVaziaProps = {
-  // TODO P3.12: uma prop que permita distinguir "primeiro acesso" de "busca sem resultado".
   termoBusca?: string;
   temPets?: boolean;
   aoCadastrar?: () => void;
