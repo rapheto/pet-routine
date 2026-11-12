@@ -666,6 +666,36 @@ integração do resultado permanecem com Raphael Miranda.
 - **Tipo de contribuição da IA:** Implementação de fluxos, integração de dependências, atualização de documentação e limpeza de comentários
 - **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
 
+## Registro da atividade 0027
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
+VS Code (versão não informada pelo ambiente)** nesta atividade: comparação e
+importação do estado completo do projeto para uma branch baseada no `main` do
+repositório CESAR School.
+
+A ferramenta foi utilizada com a finalidade de **preservar o histórico remoto
+e integrar o projeto completo sem sobrescrever o `main`**, durante a etapa de
+**preparação e validação da branch `pet_routine`**, para realizar a seguinte
+contribuição: **comparar os históricos, importar os commits e a configuração
+anteriores necessários, resolver conflitos favorecendo o projeto local nos
+arquivos compartilhados, manter arquivos exclusivos do destino e executar os
+typechecks do app e do backend**.
+
+Declaro que **o nome e o endereço de e-mail fornecidos pelo usuário foram
+tratados somente para atribuição dos commits; nenhum dado pessoal de terceiros
+foi processado**. A revisão crítica final e a responsabilidade pela aprovação
+e integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `.env.example`, `.gitignore`, `AGENTS.md`, `AdobeColor-My Color Theme.jpeg`, `App.tsx` (removido), `README.md`, `USO_IA.md`, `app.json`, `babel.config.js`, `backend/src/request-body.ts`, `backend/src/routes/auth.routes.ts`, `backend/src/routes/pets.routes.ts`, `docs/MINI-PROJETO.md`, `eas.json`, `global.css`, `index.ts` (removido), `metro.config.js`, `nativewind-env.d.ts`, `package-lock.json`, `package.json`, `src/app/(auth)/_layout.tsx`, `src/app/(auth)/login.tsx`, `src/app/(auth)/signup.tsx`, `src/app/(tabs)/_layout.tsx`, `src/app/(tabs)/index.tsx`, `src/app/(tabs)/settings.tsx`, `src/app/(tabs)/stats.tsx`, `src/app/_layout.tsx`, `src/app/foto-do-pet.tsx`, `src/app/pet/[id].tsx`, `src/app/sobre.tsx`, `src/components/badge.tsx`, `src/components/botao.tsx`, `src/components/campo-texto.tsx`, `src/components/card-pet.tsx`, `src/components/card.tsx`, `src/components/formulario-pet.tsx`, `src/components/gluestack-provider.tsx`, `src/components/heading.tsx`, `src/components/hstack.tsx`, `src/components/item-pet.tsx`, `src/components/layout-autenticacao.tsx`, `src/components/lista-vazia.tsx`, `src/components/native-pet-reminder-settings.tsx`, `src/components/ota-status-card.tsx`, `src/components/texto.tsx`, `src/components/vstack.tsx`, `src/components/walk-timer.tsx`, `src/context/theme-context.tsx`, `src/data/pets.ts`, `src/lib/agrupar.ts`, `src/lib/duracao.ts`, `src/lib/erro.ts`, `src/screens/pet-form.tsx`, `src/screens/tela-cadastro.tsx`, `src/screens/tela-configuracoes.tsx`, `src/screens/tela-estatisticas.tsx`, `src/screens/tela-login.tsx`, `src/screens/tela-pet-detalhe.tsx`, `src/screens/tela-pets.tsx`, `src/screens/tela-registro.tsx`, `src/services/api.ts`, `src/services/auth-service.ts`, `src/services/notifications.ts`, `src/services/passeio-db.ts`, `src/services/pet-service.ts`, `src/store/use-auth-store.ts`, `src/store/use-pet-store.ts`, `src/tela-pet.ts`, `src/theme.ts`, `src/types/auth.ts`, `src/types/pet.ts`, `tailwind.config.js`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Importa o projeto completo em `pet_routine`, preserva o histórico e os arquivos exclusivos do destino e valida app e backend com typecheck.
+- **Tratamento de dados pessoais:** Nome e e-mail do usuário usados exclusivamente para autoria/committer; nenhum dado pessoal de terceiros foi tratado.
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Importar o projeto completo sem sobrescrever o histórico do destino
+- **Etapa da atividade:** Comparação, integração e validação da branch
+- **Tipo de contribuição da IA:** Comparação de históricos, integração por merge preservando os dois históricos, resolução de conflitos e execução de typechecks
+- **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+
 ## Registro da atividade 0023
 
 Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
