@@ -43,6 +43,14 @@
           "cameraPermission": "O app Pet Routine usa a câmera para tirar a foto do seu pet.",
           "microphonePermission": false
         }
+      ],
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
       ]
     ]
   }
