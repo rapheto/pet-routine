@@ -993,3 +993,33 @@ integração do resultado permanecem com Raphael Miranda.
 - **Etapa da atividade:** Entrega do mini-projeto
 - **Tipo de contribuição da IA:** Inspeção de diffs, criação do commit e push para o remoto
 - **Confirmação de revisão crítica e responsabilidade humana:** autorizado explicitamente por Raphael Miranda
+
+## Registro da atividade 0035
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **DeepSeek V4.1
+Flash Free via OpenCode (versão não informada pelo ambiente)** nesta atividade:
+envio do commit `d33d83d` para o repositório da disciplina na organização CESAR
+School.
+
+A ferramenta foi utilizada com a finalidade de **corrigir o destino do envio, que
+havia sido feito apenas para o remoto pessoal**, durante a etapa de **entrega do
+mini-projeto**, para realizar a seguinte contribuição: **identificação do
+repositório correto
+(`school-cesar/desenvolvimento-mobile-pet-routine-mini-projeto-rapheto`),
+verificação por `git ls-remote` de que a branch remota estava no commit anterior,
+adição do remoto `cesar` e push em fast-forward de `1635b05..d33d83d` para
+`pet_routine`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Adiciona o remoto `cesar` e envia a branch `pet_routine` (`1635b05..d33d83d`) para o repositório da disciplina, em fast-forward, sem reescrever histórico.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** DeepSeek V4.1 Flash Free via OpenCode (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Publicar o commit no repositório correto da disciplina
+- **Etapa da atividade:** Entrega do mini-projeto
+- **Tipo de contribuição da IA:** Verificação do remoto, configuração do remoto `cesar` e push da branch
+- **Confirmação de revisão crítica e responsabilidade humana:** autorizado explicitamente por Raphael Miranda
