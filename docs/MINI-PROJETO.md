@@ -527,7 +527,8 @@ Os itens marcados foram implementados no código ou executados no ambiente de de
 - [x] `app.json` e `eas.json` estão configurados para o perfil `preview` gerar `.apk` Android.
 - [x] A seção de **Reformulação de UI/UX** está preenchida no `README.md`.
 - [x] Executar e validar todos os fluxos funcionais em aparelhos/emuladores iOS e Android.
-- [ ] Gerar e testar os builds EAS de preview/produção; configurar uma URL de API acessível antes de distribuir o Preview.
+- [x] URL da API configurada para o Preview: `EXPO_PUBLIC_API_URL=http://192.168.1.28:3000` (IP da LAN) em `eas.json`, com `usesCleartextTraffic` habilitado via `expo-build-properties` para o APK acessar HTTP.
+- [ ] Gerar e testar os builds EAS de preview/produção.
 - [ ] Preencher `docs/relatorio-uso-ia.md` e anexar as evidências solicitadas.
 
 ---

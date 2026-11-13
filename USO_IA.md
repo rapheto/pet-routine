@@ -907,3 +907,119 @@ integração do resultado permanecem com Raphael Miranda.
 - **Etapa da atividade:** Preparação do PR
 - **Tipo de contribuição da IA:** Verificação de identidade da imagem e preparação do registro para commit
 - **Confirmação de revisão crítica e responsabilidade humana:** A revisão crítica final e a responsabilidade pela aprovação e integração do resultado permanecem com Raphael Miranda
+
+## Registro da atividade 0032
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **DeepSeek V4.1
+Flash Free via OpenCode (versão não informada pelo ambiente)** nesta atividade:
+configuração de uma URL de API acessível no perfil `preview` do EAS Build,
+usando o IP da rede local (opção LAN).
+
+A ferramenta foi utilizada com a finalidade de **tornar o backend alcançável
+pelos aparelhos de teste antes de distribuir o Preview**, durante a etapa de
+**configuração de build e distribuição**, para realizar a seguinte
+contribuição: **detectar o IP atual da máquina com `ipconfig getifaddr en0`,
+apontar `EXPO_PUBLIC_API_URL` do perfil `preview` em `eas.json` para
+`http://192.168.1.28:3000`, instalar `expo-build-properties` e habilitar
+`android.usesCleartextTraffic` em `app.json` para permitir HTTP no APK de
+release, além de documentar o procedimento no `README.md` e atualizar os
+checklists do `README.md` e de `docs/MINI-PROJETO.md`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `eas.json`, `app.json`, `package.json`, `package-lock.json`, `README.md`, `docs/MINI-PROJETO.md`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Aponta o Preview para `http://192.168.1.28:3000` (IP da LAN), habilita cleartext HTTP no Android via `expo-build-properties` e documenta como reconfigurar a URL antes de distribuir.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** DeepSeek V4.1 Flash Free via OpenCode (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Configurar uma URL de API acessível no build Preview
+- **Etapa da atividade:** Configuração de build e distribuição
+- **Tipo de contribuição da IA:** Edição do perfil `preview`, inclusão do plugin `expo-build-properties` e documentação do procedimento
+- **Confirmação de revisão crítica e responsabilidade humana:** revisão por Raphael Miranda
+
+## Registro da atividade 0033
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **DeepSeek V4.1
+Flash Free via OpenCode (versão não informada pelo ambiente)** nesta atividade:
+preenchimento e revisão do relatório de uso de IA da Unidade 2.
+
+A ferramenta foi utilizada com a finalidade de **deixar o relatório completo e
+correto para a entrega**, durante a etapa de **documentação final do
+mini-projeto**, para realizar a seguinte contribuição: **preenchimento do texto
+da declaração oficial com os temas e etapas efetivamente atendidos com IA,
+montagem e posterior enxugamento da tabela da Seção 2, redação e revisão das
+Seções 3.1 e 3.2 a partir dos registros deste arquivo e correção da quebra de
+linha do cabeçalho em `docs/relatorio-uso-ia.md`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `docs/relatorio-uso-ia.md`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Declaração oficial, tabela por etapa e curadoria técnica do relatório preenchidas e revisadas com base nos registros de uso de IA do projeto; cabeçalho corrigido.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** DeepSeek V4.1 Flash Free via OpenCode (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Preencher e revisar o relatório de uso de IA
+- **Etapa da atividade:** Documentação final do mini-projeto
+- **Tipo de contribuição da IA:** Redação, síntese e revisão de texto técnico
+- **Confirmação de revisão crítica e responsabilidade humana:** revisão por Raphael Miranda
+
+## Registro da atividade 0034
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **DeepSeek V4.1
+Flash Free via OpenCode (versão não informada pelo ambiente)** nesta atividade:
+commit e push das alterações pendentes da branch `pet_routine`.
+
+A ferramenta foi utilizada com a finalidade de **registrar e publicar o estado
+atual do projeto**, durante a etapa de **entrega**, para realizar a seguinte
+contribuição: **verificação do `git status` e dos diffs, agrupamento das
+alterações de documentação e de configuração do Preview em um único commit na
+branch `pet_routine` e envio para o remoto `origin`, com autorização explícita
+de Raphael Miranda**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `README.md`, `USO_IA.md`, `app.json`, `docs/MINI-PROJETO.md`, `docs/relatorio-uso-ia.md`, `eas.json`, `package.json`, `package-lock.json`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Commit único com o relatório de uso de IA, os registros de uso e a configuração do Preview para a LAN, seguido de push para `origin/pet_routine`.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** DeepSeek V4.1 Flash Free via OpenCode (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Registrar e publicar as alterações pendentes
+- **Etapa da atividade:** Entrega do mini-projeto
+- **Tipo de contribuição da IA:** Inspeção de diffs, criação do commit e push para o remoto
+- **Confirmação de revisão crítica e responsabilidade humana:** autorizado explicitamente por Raphael Miranda
+
+## Registro da atividade 0035
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **DeepSeek V4.1
+Flash Free via OpenCode (versão não informada pelo ambiente)** nesta atividade:
+envio do commit `d33d83d` para o repositório da disciplina na organização CESAR
+School.
+
+A ferramenta foi utilizada com a finalidade de **corrigir o destino do envio, que
+havia sido feito apenas para o remoto pessoal**, durante a etapa de **entrega do
+mini-projeto**, para realizar a seguinte contribuição: **identificação do
+repositório correto
+(`school-cesar/desenvolvimento-mobile-pet-routine-mini-projeto-rapheto`),
+verificação por `git ls-remote` de que a branch remota estava no commit anterior,
+adição do remoto `cesar` e push em fast-forward de `1635b05..d33d83d` para
+`pet_routine`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Adiciona o remoto `cesar` e envia a branch `pet_routine` (`1635b05..d33d83d`) para o repositório da disciplina, em fast-forward, sem reescrever histórico.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** DeepSeek V4.1 Flash Free via OpenCode (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Publicar o commit no repositório correto da disciplina
+- **Etapa da atividade:** Entrega do mini-projeto
+- **Tipo de contribuição da IA:** Verificação do remoto, configuração do remoto `cesar` e push da branch
+- **Confirmação de revisão crítica e responsabilidade humana:** autorizado explicitamente por Raphael Miranda

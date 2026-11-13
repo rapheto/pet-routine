@@ -119,7 +119,7 @@ A sessão (`sessionToken` + usuário) é persistida no `AsyncStorage` pela `useA
 - [x] `npm run pratica:tela` e `git diff --check` passaram.
 - [x] Validar os fluxos funcionais em aparelhos/emuladores iOS e Android.
 - [ ] Gerar e testar os builds EAS de preview/produção.
-- [ ] Configurar uma URL de API acessível nos builds Preview antes de distribuir.
+- [x] Configurar uma URL de API acessível nos builds Preview antes de distribuir (`http://192.168.1.28:3000`, IP da LAN, com `usesCleartextTraffic` habilitado no Android).
 - [x] Capturar as telas finais e anexar as evidências solicitadas.
 - [ ] Preencher `docs/relatorio-uso-ia.md` e anexar as evidências solicitadas.
 
@@ -200,7 +200,25 @@ npx eas build --profile preview --platform android
 npx eas build --profile preview --platform ios
 ```
 
-O perfil `preview` publica no canal `preview`, usa `buildType: "apk"` no Android e `simulator: true` no iOS. Atualmente, `eas.json` aponta `EXPO_PUBLIC_API_URL` para `http://192.168.0.10:3000`, um endereço privado da rede local: o APK só alcançará esse backend se o aparelho estiver na rede compatível, com o servidor acessível e sem bloqueio de firewall. Antes de distribuir o APK, substitua esse valor por um endereço alcançável pelos aparelhos de teste (ou configure o IP correto da rede).
+O perfil `preview` publica no canal `preview`, usa `buildType: "apk"` no Android e `simulator: true` no iOS. O perfil aponta `EXPO_PUBLIC_API_URL` para `http://192.168.1.28:3000`, o IP do computador na rede local (LAN): o APK só alcança o backend enquanto o aparelho de teste estiver na mesma rede Wi-Fi, com o servidor rodando e a porta 3000 liberada no firewall.
+
+#### Como reconfigurar a URL da API antes de distribuir o Preview
+
+`EXPO_PUBLIC_API_URL` é embutida no bundle em tempo de build (`src/services/api.ts`), então alterá-la exige **gerar um novo build** — um `eas update` (OTA) não troca a URL de um APK já instalado.
+
+1. Descubra o IP atual da máquina e confirme que ele responde na rede:
+
+   ```bash
+   ipconfig getifaddr en0          # ex.: 192.168.1.28
+   curl http://192.168.1.28:3000/health
+   ```
+
+2. Atualize `build.preview.env.EXPO_PUBLIC_API_URL` em `eas.json` com `http://<IP>:3000` (ou defina a variável no EAS com `eas env:create --environment preview`).
+3. Suba o backend com `cd backend && npm run dev`. Ele já escuta em `0.0.0.0` (`backend/src/server.ts`), portanto aceita conexões da rede; libere a porta no firewall do macOS se o `curl` de outro aparelho falhar.
+4. Rebuild: `npx eas build --profile preview --platform android`.
+5. Instale o APK em um aparelho na mesma rede e valide o login com `tutor@cesar.school` / `123456`.
+
+Como o Android 9+ bloqueia HTTP sem TLS em builds de release, o app declara `"usesCleartextTraffic": true` via `expo-build-properties` em `app.json` — obrigatório para o APK acessar `http://192.168.1.28:3000`. No iOS, o ATS também restringe HTTP em builds de release: o perfil `preview` iOS é de Simulador (`simulator: true`), então valide a API nele ou prefira uma URL HTTPS (túnel ou deploy) para aparelhos físicos.
 
 ## Práticas da Aula 1
 
