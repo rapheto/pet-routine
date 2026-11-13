@@ -121,7 +121,7 @@ A sessão (`sessionToken` + usuário) é persistida no `AsyncStorage` pela `useA
 - [ ] Gerar e testar os builds EAS de preview/produção.
 - [x] Configurar uma URL de API acessível nos builds Preview antes de distribuir (`http://192.168.1.28:3000`, IP da LAN, com `usesCleartextTraffic` habilitado no Android).
 - [x] Capturar as telas finais e anexar as evidências solicitadas.
-- [ ] Preencher `docs/relatorio-uso-ia.md` e anexar as evidências solicitadas.
+- [x] Preencher `docs/relatorio-uso-ia.md` e anexar as evidências solicitadas.
 
 ## Reformulação de UI/UX
 
@@ -219,39 +219,3 @@ O perfil `preview` publica no canal `preview`, usa `buildType: "apk"` no Android
 5. Instale o APK em um aparelho na mesma rede e valide o login com `tutor@cesar.school` / `123456`.
 
 Como o Android 9+ bloqueia HTTP sem TLS em builds de release, o app declara `"usesCleartextTraffic": true` via `expo-build-properties` em `app.json` — obrigatório para o APK acessar `http://192.168.1.28:3000`. No iOS, o ATS também restringe HTTP em builds de release: o perfil `preview` iOS é de Simulador (`simulator: true`), então valide a API nele ou prefira uma URL HTTPS (túnel ou deploy) para aparelhos físicos.
-
-## Práticas da Aula 1
-
-Os arquivos de apoio das práticas permanecem no repositório; as implementações de domínio e estado de tela estão preenchidas. `src/services/pet-service.ts` é um serviço mockado de exercício e não substitui o backend REST usado pela aplicação.
-
-| Prática | Arquivo | Escopo |
-|---|---|---|
-| 1 — Modelagem do domínio Pet | `src/types/pet.ts` | TypeScript puro |
-| 2 — Serviço mockado | `src/services/pet-service.ts` | TypeScript puro |
-| 2 — Estado de tela | `src/tela-pet.ts` | TypeScript puro |
-| 3 — Relatório de plataforma | `docs/pratica-03-relatorio-plataforma.md` | Texto |
-| 4 — Material desatualizado *(bônus)* | `docs/pratica-04-material-desatualizado.md` | Texto |
-
-As Práticas 1 e 2 **não precisam de React Native nem do Expo** — são verificáveis só com o compilador:
-
-```bash
-npm run typecheck        # equivale a `npx tsc --noEmit`
-npm run pratica:tela     # roda src/tela-pet.ts via tsx
-```
-
-## Exercícios
-
-Consulte `exercises.md` e os enunciados da disciplina para atividades adicionais. O código de apoio das práticas não mantém instruções pendentes de implementação em comentários.
-
-## Decisões de Projeto (Prática 2)
-
-- **Decisão de modelagem**: Optamos por utilizar a prop condicional `destacado?: boolean` no componente `Card` no lugar de criar componentes separados. Como o destaque do cartão reflete mudanças mínimas de interface (bordas diferentes), o uso de um booleano mantém o componente genérico e de simples utilização.
-- **Decisão de organização de estilo**: As cores, os espaçamentos principais e as propriedades fixas de tipografia viraram tokens no `theme.ts` visando assegurar a consistência visual geral da aplicação. Já atributos de disposição e estruturais (como `flexDirection`, alinhamentos e variações focadas da margem interna) ficaram como estilos locais nos componentes, já que refletem a necessidade espacial e estrutural local de cada exibição.
-
-## Decisões da Prática 3
-
-- **SectionList**: escolhi `SectionList` em vez de `FlatList` porque a tela precisa separar visualmente os pets por status do passeio. Assim o tutor encontra primeiro os passeios pendentes, sem uma lógica de cabeçalho misturada com cada item.
-- **Agrupamento**: o filtro e o agrupamento ficam em `src/lib/agrupar.ts`, fora do JSX. Primeiro filtro pelo nome e depois agrupo por status; desse jeito uma busca sem resultado não deixa seções vazias aparecendo.
-- **Accuracy**: uso `Location.Accuracy.High` porque o registro precisa de uma localização útil para contextualizar o passeio, mas não precisa da precisão extrema de navegação. É um equilíbrio melhor entre precisão e bateria do que `BestForNavigation`.
-- **Limitações assumidas**: a localização é uma leitura única e a câmera é fechada depois da foto. Não há subscription para limpar nesta prática; a assinatura de sensores fica para a Aula 6. A foto fica no cache do aparelho, sem ser salva na galeria.
-- **Imagens**: uso `contentFit="cover"` nas prévias para preencher o espaço do card sem deformar a imagem, aceitando um pequeno corte nas bordas.

@@ -1023,3 +1023,33 @@ integração do resultado permanecem com Raphael Miranda.
 - **Etapa da atividade:** Entrega do mini-projeto
 - **Tipo de contribuição da IA:** Verificação do remoto, configuração do remoto `cesar` e push da branch
 - **Confirmação de revisão crítica e responsabilidade humana:** autorizado explicitamente por Raphael Miranda
+
+## Registro da atividade 0036
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **DeepSeek V4.1
+Flash Free via OpenCode (versão não informada pelo ambiente)** nesta atividade:
+commit da limpeza do `README.md` e envio da branch para a `main` do repositório
+da disciplina.
+
+A ferramenta foi utilizada com a finalidade de **publicar o estado final da
+entrega na branch principal do repositório da CESAR School**, durante a etapa de
+**entrega do mini-projeto**, para realizar a seguinte contribuição: **commit da
+marcação do relatório de uso de IA como concluído e da remoção, confirmada como
+intencional por Raphael Miranda, das seções "Práticas da Aula 1", "Exercícios",
+"Decisões de Projeto" e "Decisões da Prática 3"; merge do `cesar/main` (que já
+continha o PR #4) na branch local para permitir envio em fast-forward; push da
+`pet_routine` para `main` e para `origin`**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica final e a responsabilidade pela aprovação e
+integração do resultado permanecem com Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `README.md`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Commita a limpeza intencional do README e o checklist do relatório, integra o `cesar/main` já mergeado e envia a branch para a `main` em fast-forward.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** DeepSeek V4.1 Flash Free via OpenCode (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Publicar o estado final da entrega na `main` do repositório da disciplina
+- **Etapa da atividade:** Entrega do mini-projeto
+- **Tipo de contribuição da IA:** Commit, integração do remoto e push para a branch principal
+- **Confirmação de revisão crítica e responsabilidade humana:** remoção das seções do README confirmada como intencional por Raphael Miranda, que autorizou o commit e o push
