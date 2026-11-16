@@ -200,22 +200,24 @@ npx eas build --profile preview --platform android
 npx eas build --profile preview --platform ios
 ```
 
-O perfil `preview` publica no canal `preview`, usa `buildType: "apk"` no Android e `simulator: true` no iOS. O perfil aponta `EXPO_PUBLIC_API_URL` para `http://192.168.1.28:3000`, o IP do computador na rede local (LAN): o APK só alcança o backend enquanto o aparelho de teste estiver na mesma rede Wi-Fi, com o servidor rodando e a porta 3000 liberada no firewall.
+O perfil `preview` publica no canal `preview`, usa `buildType: "apk"` no Android e `simulator: true` no iOS. Para distribuir o app, configure `EXPO_PUBLIC_API_URL` nos perfis `preview` e `production` com a URL HTTPS pública do backend hospedado. Assim, o aparelho não precisa estar na mesma rede Wi-Fi do computador.
 
-#### Como reconfigurar a URL da API antes de distribuir o Preview
+#### Como configurar a URL da API após publicar o backend
 
 `EXPO_PUBLIC_API_URL` é embutida no bundle em tempo de build (`src/services/api.ts`), então alterá-la exige **gerar um novo build** — um `eas update` (OTA) não troca a URL de um APK já instalado.
 
-1. Descubra o IP atual da máquina e confirme que ele responde na rede:
+1. Depois de implantar o backend, copie sua URL pública HTTPS e confirme que o health check responde:
 
    ```bash
-   ipconfig getifaddr en0          # ex.: 192.168.1.28
-   curl http://192.168.1.28:3000/health
+   curl https://SUA-URL-DO-BACKEND/health
    ```
 
-2. Atualize `build.preview.env.EXPO_PUBLIC_API_URL` em `eas.json` com `http://<IP>:3000` (ou defina a variável no EAS com `eas env:create --environment preview`).
-3. Suba o backend com `cd backend && npm run dev`. Ele já escuta em `0.0.0.0` (`backend/src/server.ts`), portanto aceita conexões da rede; libere a porta no firewall do macOS se o `curl` de outro aparelho falhar.
-4. Rebuild: `npx eas build --profile preview --platform android`.
-5. Instale o APK em um aparelho na mesma rede e valide o login com `tutor@cesar.school` / `123456`.
+2. Em `eas.json`, substitua os valores de `build.preview.env.EXPO_PUBLIC_API_URL` e `build.production.env.EXPO_PUBLIC_API_URL` pela URL HTTPS do backend (por exemplo, `https://api.seudominio.com`). Não inclua caminhos como `/health` ou `/pets`; o app acrescenta as rotas da API.
+3. Gere um novo build para cada perfil que será distribuído:
 
-Como o Android 9+ bloqueia HTTP sem TLS em builds de release, o app declara `"usesCleartextTraffic": true` via `expo-build-properties` em `app.json` — obrigatório para o APK acessar `http://192.168.1.28:3000`. No iOS, o ATS também restringe HTTP em builds de release: o perfil `preview` iOS é de Simulador (`simulator: true`), então valide a API nele ou prefira uma URL HTTPS (túnel ou deploy) para aparelhos físicos.
+   ```bash
+   npx eas build --profile preview --platform android
+   npx eas build --profile production --platform android
+   ```
+
+4. Instale o build e valide login, cadastro e operações com pets. Com o backend hospedado em HTTPS, o aparelho não precisa estar na rede local nem depender do servidor rodando no computador.

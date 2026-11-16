@@ -1053,3 +1053,29 @@ integração do resultado permanecem com Raphael Miranda.
 - **Etapa da atividade:** Entrega do mini-projeto
 - **Tipo de contribuição da IA:** Commit, integração do remoto e push para a branch principal
 - **Confirmação de revisão crítica e responsabilidade humana:** remoção das seções do README confirmada como intencional por Raphael Miranda, que autorizou o commit e o push
+
+## Registro da atividade 0037
+
+Declaro que utilizei a ferramenta de Inteligência Artificial **Copilot SDK em
+VS Code (versão não informada pelo ambiente)** nesta atividade: atualização das
+instruções de configuração da URL da API para implantação do backend hospedado.
+
+A ferramenta foi utilizada com a finalidade de **documentar a configuração da
+URL HTTPS pública nos builds Preview e Production**, durante a etapa de
+**preparação para implantação**, para realizar a seguinte contribuição:
+**substituição das instruções de IP local por passos de verificação e build
+usando o backend hospedado**.
+
+Declaro que **não houve tratamento de dados pessoais** durante o uso da
+ferramenta. A revisão crítica humana, a aprovação e a responsabilidade pela
+integração final cabem a Raphael Miranda.
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `README.md`, `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Atualiza as instruções de configuração da API para builds EAS com backend hospedado em HTTPS.
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Documentar a configuração da API hospedada para distribuição do app
+- **Etapa da atividade:** Preparação para implantação do backend
+- **Tipo de contribuição da IA:** Atualização de documentação técnica e registro de uso de IA
+- **Confirmação de revisão crítica e responsabilidade humana:** Revisão crítica por Raphael Miranda
