@@ -1079,3 +1079,15 @@ integração final cabem a Raphael Miranda.
 - **Etapa da atividade:** Preparação para implantação do backend
 - **Tipo de contribuição da IA:** Atualização de documentação técnica e registro de uso de IA
 - **Confirmação de revisão crítica e responsabilidade humana:** Revisão crítica por Raphael Miranda
+
+## Registro da atividade 0038
+
+- **Revisado por (nome do usuário que está fazendo as edições):** Raphael Miranda
+- **Arquivo / Arquivos alterado(s):** `package-lock.json` (histórico da branch), `USO_IA.md`
+- **Breve resumo do que foi feito (200 caracteres ou menos):** Adicionando mais bibliotecas
+- **Tratamento de dados pessoais:** Não houve
+- **Alterado pela IA (nome da IA, versão da IA):** Copilot SDK em VS Code (versão não informada pelo ambiente)
+- **Finalidade do uso da IA:** Remover URLs de registry não público do histórico destinado à publicação
+- **Etapa da atividade:** Preparação para publicar nos repositórios do projeto
+- **Tipo de contribuição da IA:** Reescrita e verificação de histórico Git; atualização do registro de uso de IA
+- **Confirmação de revisão crítica e responsabilidade humana:** Reescrita autorizada por Raphael Miranda, responsável pela revisão final e publicação
